@@ -1,32 +1,41 @@
-🎓 Plataforma de Gestão de Eventos Universitários
+# 🎓 Plataforma de Gestão de Eventos Universitários
 
 Sistema web para gerenciamento de eventos acadêmicos, permitindo criação, inscrição e acompanhamento de participação.
 
-👥 Integrantes
-Rafaella Maciel —
-Nicolas Mariano —
-Nadson —
-Laura —
 
-⚙️ Tecnologias
-Node.js + Express
-React (Vite)
-PostgreSQL (futuro)
+## 👥 Integrantes
+* Laura Costa Sarto Barboza
+* Nadson Souza Matos
+* Nícolas Mariano Lima
+* Rafaella Maciel Pereira Leite
 
-🚀 Como rodar o projeto
 
-# Clonar repositório
+## ⚙️ Tecnologias Utilizadas
+| Categoria | Tecnologia |
+| :--- | :--- |
+| **Backend** | Django |
+| **Frontend** |  |
+| **Banco de Dados** | SQLite (Desenvolvimento) / PostgreSQL (Produção) |
+| **Autenticação** |  |
+| **Controle de Versão** | Git + GitHub |
 
+## 🚀 Como rodar o projeto
+
+**Clonar repositório:** 
+```bash
 git clone <link>
+````
 
-# Backend
-
+**Backend**
+```bash
 cd backend
 npm install
 node src/app.js
+````
 
-# Frontend
-
+**Frontend**
+```bash
 cd ../frontend
 npm install
 npm run dev
+````
