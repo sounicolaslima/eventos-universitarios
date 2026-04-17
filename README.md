@@ -56,7 +56,7 @@ python manage.py runserver
 
 ## 📌 Gerenciamento do Projeto
 **Board do Sprint 1:**
-https://github.com/users/sounicolaslima/projects/2
+https://github.com/users/sounicolaslima/projects/2/views/1
 
 **Board do Sprint 2:**
 https://github.com/users/sounicolaslima/projects/2/views/2
