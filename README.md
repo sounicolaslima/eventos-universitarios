@@ -7,6 +7,8 @@ A plataforma permite que organizadores criem e gerenciem eventos com controle de
 
 * Cadastro e divulgação de eventos com imagem, descrição, data, local e categoria
 * Tipos de ingresso configuráveis (inteira, meia-entrada, VIP) com controle de estoque
+* Controle de presença por QR Code — gerado por ingresso e validado pelo organizador no dia do evento
+* Emissão automática de certificados em PDF para participantes com presença confirmada
 * Fluxo completo de inscrição com acompanhamento de status (pendente, confirmada, cancelada)
 * Histórico de participação por usuário
 * Painel do organizador com visão de ingressos vendidos e receita por evento
