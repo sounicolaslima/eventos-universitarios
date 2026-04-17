@@ -13,10 +13,9 @@ Sistema web para gerenciamento de eventos acadêmicos, permitindo criação, ins
 ## ⚙️ Tecnologias Utilizadas
 | Categoria | Tecnologia |
 | :--- | :--- |
-| **Backend** | Node.Js |
-| **Frontend** | React + Vite |
-| **Banco de Dados** | PostgreSQL|
-| **Autenticação** |  |
+| **Backend** | Django |
+| **Frontend** | Django + Bootstrap |
+| **Banco de Dados** |SQLite (Desenvolvimento) / PostgreSQL (Produção)|
 | **Controle de Versão** | Git + GitHub |
 
 ## 🚀 Como rodar o projeto
