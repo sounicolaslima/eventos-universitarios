@@ -1,6 +1,16 @@
 # 🎓 Plataforma de Gestão de Eventos Universitários
 
-Sistema web para gerenciamento de eventos acadêmicos, permitindo criação, inscrição e acompanhamento de participação.
+Sistema web desenvolvido em Django para centralizar o ciclo de vida de eventos acadêmicos (palestras, workshops, semanas acadêmicas,congressos e simpósios). 
+A plataforma permite que organizadores criem e gerenciem eventos com controle de vagas, categorias e locais, enquanto estudantes e participantes podem se inscrever, acompanhar seus ingressos e consultar seu histórico de participação.
+
+**Funcionalidades principais:**
+
+* Cadastro e divulgação de eventos com imagem, descrição, data, local e categoria
+* Tipos de ingresso configuráveis (inteira, meia-entrada, VIP) com controle de estoque
+* Fluxo completo de inscrição com acompanhamento de status (pendente, confirmada, cancelada)
+* Histórico de participação por usuário
+* Painel do organizador com visão de ingressos vendidos e receita por evento
+* Busca e filtragem por categoria, data e faixa de preço
 
 
 ## ⚙️ Tecnologias Utilizadas
