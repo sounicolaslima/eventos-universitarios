@@ -75,25 +75,29 @@ https://github.com/users/sounicolaslima/projects/2/views/2
 https://github.com/users/sounicolaslima/projects/2/views/3
 
 ## 👥 Integrantes e Responsabilidades
-* Laura Costa Sarto Barboza 
+* **Laura Costa Sarto Barboza**
+
   → Testes e Qualidade  
   → Criação de testes unitários  
   → Validação das funcionalidades implementadas  
   → Apoio na documentação
 
-* Nadson Souza Matos  
+* **Nadson Souza Matos**
+
   → Desenvolvimento Backend  
   → Implementação das regras de negócio (views, lógica)  
   → Integração entre frontend e backend
   
-* Nícolas Mariano Lima 
+* **Nícolas Mariano Lima**
+
   → Configuração do projeto e ambiente (Django, estrutura inicial)  
   → Modelagem do banco de dados (models)  
   → Integração com banco (ORM, migrations)
 
-*  Rafaella Maciel Pereira Leite 
-  → Desenvolvimento de Frontend  
-  → Criação de templates (HTML + Bootstrap)  
-  → Experiência do usuário (interfaces e navegação)
+*  **Rafaella Maciel Pereira Leite**
+
+   → Desenvolvimento de Frontend  
+   → Criação de templates (HTML + Bootstrap)  
+   → Experiência do usuário (interfaces e navegação)
 
 
