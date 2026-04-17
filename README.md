@@ -22,19 +22,30 @@ Sistema web para gerenciamento de eventos acadêmicos, permitindo criação, ins
 
 **Clonar repositório:** 
 ```bash
-git clone <link>
+git clone <https://github.com/sounicolaslima/eventos-universitarios.git>
+````
+**Entrar na pasta do projeto**
+```bash
+cd <eventos-universitarios>
+````
+**Criar um ambiente virtual Python**
+```bash
+python -m venv venv
+````
+**Ativar ambiente virtual**
+```bash
+venv\Scripts\activate
+````
+**Instalar as dependências do projeto**
+```bash
+pip install -r requirements.txt
+````
+**Inicia o servidor local do Django**
+```bash
+python manage.py runserver
 ````
 
-**Backend**
-```bash
-cd backend
-npm install
-node src/app.js
-````
-
-**Frontend**
-```bash
-cd ../frontend
-npm install
-npm run dev
-````
+## 📊 Estrutura
+* /src → código fonte
+* /tests → testes
+* /docs → documentação
