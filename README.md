@@ -59,9 +59,10 @@ python manage.py runserver
 https://github.com/users/sounicolaslima/projects/2
 
 **Board do Sprint 2:**
+https://github.com/users/sounicolaslima/projects/2/views/2
 
 **Board do Sprint 3:**
-
+https://github.com/users/sounicolaslima/projects/2/views/3
 
 ## 👥 Integrantes e Responsabilidades
 * Laura Costa Sarto Barboza 
