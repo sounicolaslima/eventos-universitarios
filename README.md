@@ -26,14 +26,17 @@ A plataforma permite que organizadores criem e gerenciem eventos com controle de
 ## 🚀 Como rodar o projeto
 
 **Clonar repositório:**
-qualquercoisaque>>>>>>>>>>>>>>>>>>>>>```bash
+
+```bash
 git clone https://github.com/sounicolaslima/eventos-universitarios.git
 
-````
+```
+
 **Entrar na pasta do projeto**
+
 ```bash
 cd eventos-universitarios
-````
+```
 
 **migração do banco (Django)**
 
