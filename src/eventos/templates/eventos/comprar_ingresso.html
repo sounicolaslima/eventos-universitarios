@@ -63,7 +63,7 @@
                                    class="form-control form-control-lg" 
                                    min="1" 
                                    max="{{ ingresso.quantidade_disponivel }}" 
-                                   value="1" 
+                                   value="{{ quantidade|default:1 }}" 
                                    required>
                             <small class="text-muted">
                                 <i class="fas fa-box me-1"></i> Disponível: {{ ingresso.quantidade_disponivel }} ingressos

@@ -48,15 +48,24 @@ def comprar_ingresso(request, ingresso_id):
             quantidade = int(quantidade_raw)
         except (TypeError, ValueError):
             messages.error(request, 'Informe uma quantidade válida.')
-            return render(request, 'eventos/comprar_ingresso.html', {'ingresso': ingresso})
+            return render(request, 'eventos/comprar_ingresso.html', {
+                'ingresso': ingresso,
+                'quantidade': quantidade_raw
+            })
 
         if quantidade < 1:
             messages.error(request, 'A quantidade mínima para compra é 1 ingresso.')
-            return render(request, 'eventos/comprar_ingresso.html', {'ingresso': ingresso})
+            return render(request, 'eventos/comprar_ingresso.html', {
+                'ingresso': ingresso,
+                'quantidade': quantidade
+            })
 
         if quantidade > ingresso.quantidade_disponivel:
             messages.error(request, 'Quantidade indisponível para este ingresso.')
-            return render(request, 'eventos/comprar_ingresso.html', {'ingresso': ingresso})
+            return render(request, 'eventos/comprar_ingresso.html', {
+                'ingresso': ingresso,
+                'quantidade': quantidade
+            })
 
         valor_total = ingresso.preco * quantidade
 
@@ -66,7 +75,10 @@ def comprar_ingresso(request, ingresso_id):
             'valor_total': valor_total,
         })
 
-    return render(request, 'eventos/comprar_ingresso.html', {'ingresso': ingresso})
+    return render(request, 'eventos/comprar_ingresso.html', {
+        'ingresso': ingresso,
+        'quantidade': 1
+    })
 
 @login_required
 def confirmar_compra(request, ingresso_id):
