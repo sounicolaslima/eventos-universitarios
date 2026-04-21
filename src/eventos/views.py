@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db import transaction
 from django.db.models import Q
 from decimal import Decimal
 from .models import Evento, Ingresso, Compra, Categoria, Local
@@ -39,16 +40,61 @@ def detalhe_evento(request, evento_id):
 @login_required
 def comprar_ingresso(request, ingresso_id):
     ingresso = get_object_or_404(Ingresso, id=ingresso_id)
-    
+
     if request.method == 'POST':
-        quantidade = int(request.POST.get('quantidade', 1))
-        
+        quantidade_raw = request.POST.get('quantidade', '1')
+
+        try:
+            quantidade = int(quantidade_raw)
+        except (TypeError, ValueError):
+            messages.error(request, 'Informe uma quantidade válida.')
+            return render(request, 'eventos/comprar_ingresso.html', {'ingresso': ingresso})
+
+        if quantidade < 1:
+            messages.error(request, 'A quantidade mínima para compra é 1 ingresso.')
+            return render(request, 'eventos/comprar_ingresso.html', {'ingresso': ingresso})
+
         if quantidade > ingresso.quantidade_disponivel:
-            messages.error(request, 'Quantidade indisponível')
-            return redirect('detalhe_evento', ingresso.evento.id)
-        
+            messages.error(request, 'Quantidade indisponível para este ingresso.')
+            return render(request, 'eventos/comprar_ingresso.html', {'ingresso': ingresso})
+
         valor_total = ingresso.preco * quantidade
-        
+
+        return render(request, 'eventos/revisar_compra.html', {
+            'ingresso': ingresso,
+            'quantidade': quantidade,
+            'valor_total': valor_total,
+        })
+
+    return render(request, 'eventos/comprar_ingresso.html', {'ingresso': ingresso})
+
+@login_required
+def confirmar_compra(request, ingresso_id):
+    if request.method != 'POST':
+        return redirect('comprar_ingresso', ingresso_id=ingresso_id)
+
+    try:
+        quantidade = int(request.POST.get('quantidade', '1'))
+    except (TypeError, ValueError):
+        messages.error(request, 'Quantidade inválida para confirmar a compra.')
+        return redirect('comprar_ingresso', ingresso_id=ingresso_id)
+
+    if quantidade < 1:
+        messages.error(request, 'A quantidade mínima para compra é 1 ingresso.')
+        return redirect('comprar_ingresso', ingresso_id=ingresso_id)
+
+    with transaction.atomic():
+        ingresso = get_object_or_404(
+            Ingresso.objects.select_for_update(),
+            id=ingresso_id
+        )
+
+        if quantidade > ingresso.quantidade_disponivel:
+            messages.error(request, 'Os ingressos ficaram indisponíveis antes da confirmação. Tente novamente.')
+            return redirect('comprar_ingresso', ingresso_id=ingresso.id)
+
+        valor_total = ingresso.preco * quantidade
+
         compra = Compra.objects.create(
             usuario=request.user,
             ingresso=ingresso,
@@ -56,14 +102,14 @@ def comprar_ingresso(request, ingresso_id):
             valor_total=valor_total,
             status='confirmada'
         )
-        
+
         ingresso.quantidade_disponivel -= quantidade
-        ingresso.save()
-        
-        messages.success(request, 'Compra realizada com sucesso!')
-        return redirect('meu_historico')
-    
-    return render(request, 'eventos/comprar_ingresso.html', {'ingresso': ingresso})
+        ingresso.save(update_fields=['quantidade_disponivel'])
+
+    messages.success(request, 'Compra simulada confirmada com sucesso!')
+    return render(request, 'eventos/compra_sucesso.html', {
+        'compra': compra,
+    })
 
 @login_required
 def meu_historico(request):

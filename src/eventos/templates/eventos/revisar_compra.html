@@ -1,0 +1,54 @@
+{% extends 'eventos/base.html' %}
+
+{% block title %}Revisar Compra - {{ ingresso.evento.titulo }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Revisar compra</h3>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-muted">Confira os dados antes de concluir a compra simulada.</p>
+
+                    <div class="mb-3">
+                        <strong>Evento:</strong> {{ ingresso.evento.titulo }}
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Ingresso:</strong> {{ ingresso.get_tipo_display }}
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Preço unitário:</strong> R$ {{ ingresso.preco }}
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Quantidade:</strong> {{ quantidade }}
+                    </div>
+
+                    <div class="mb-4">
+                        <strong>Total:</strong>
+                        <span class="text-success">R$ {{ valor_total }}</span>
+                    </div>
+
+                    <form method="post" action="{% url 'confirmar_compra' ingresso.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="quantidade" value="{{ quantidade }}">
+
+                        <button type="submit" class="btn btn-success w-100 mb-2">
+                            Confirmar compra
+                        </button>
+
+                        <a href="{% url 'comprar_ingresso' ingresso.id %}" class="btn btn-outline-secondary w-100">
+                            Voltar
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
