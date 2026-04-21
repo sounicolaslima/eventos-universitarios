@@ -1,0 +1,32 @@
+{% extends 'eventos/base.html' %}
+
+{% block title %}Compra confirmada{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-body p-5 text-center">
+                    <h2 class="text-success mb-4">Compra Confirmada!</h2>
+
+                    <p><strong>Evento:</strong> {{ compra.ingresso.evento.titulo }}</p>
+                    <p><strong>Ingresso:</strong> {{ compra.ingresso.get_tipo_display }}</p>
+                    <p><strong>Quantidade:</strong> {{ compra.quantidade }}</p>
+                    <p><strong>Total:</strong> R$ {{ compra.valor_total }}</p>
+                    <p><strong>Status:</strong> {{ compra.get_status_display }}</p>
+
+                    <div class="d-flex gap-2 justify-content-center mt-4">
+                        <a href="{% url 'meu_historico' %}" class="btn btn-primary">
+                            Ver histórico
+                        </a>
+                        <a href="{% url 'lista_eventos' %}" class="btn btn-outline-secondary">
+                            Continuar comprando
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
