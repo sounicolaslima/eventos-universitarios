@@ -120,6 +120,36 @@ class EventoModelTest(TestCase):
 
         self.assertEqual(evento.ingressos_vendidos(), 0)
 
+    def test_evento_receita_total_soma_apenas_status_validos(self):
+        evento = self._criar_evento()
+        ingresso = Ingresso.objects.create(
+            evento=evento, tipo='inteira',
+            preco=Decimal('50.00'), quantidade_disponivel=100
+        )
+
+        Compra.objects.create(
+            usuario=self.user, ingresso=ingresso,
+            quantidade=2, valor_total=Decimal('100.00'),
+            status='confirmada'
+        )
+        Compra.objects.create(
+            usuario=self.user, ingresso=ingresso,
+            quantidade=1, valor_total=Decimal('50.00'),
+            status='presente'
+        )
+        Compra.objects.create(
+            usuario=self.user, ingresso=ingresso,
+            quantidade=3, valor_total=Decimal('150.00'),
+            status='cancelada'
+        )
+
+        self.assertEqual(evento.receita_total(), Decimal('150.00'))
+
+    def test_evento_receita_total_zero_sem_compras(self):
+        evento = self._criar_evento()
+
+        self.assertEqual(evento.receita_total(), 0)
+
     def test_evento_meta_ordering_descendente_por_data(self):
         self._criar_evento(
             titulo='Antigo',
