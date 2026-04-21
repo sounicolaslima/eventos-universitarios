@@ -1,0 +1,161 @@
+{% extends 'eventos/base.html' %}
+{% load static %}
+
+{% block title %}{{ evento.titulo }} - Eventos Universitários{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'lista_eventos' %}">Eventos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ evento.titulo|truncatechars:50 }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <!-- Coluna da esquerda - Informações do evento -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <!-- Imagem -->
+                {% if evento.imagem %}
+                    <img src="{{ evento.imagem.url }}" class="card-img-top" alt="{{ evento.titulo }}" style="max-height: 400px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-gradient-primary text-white text-center py-5" style="height: 300px;">
+                        <i class="fas fa-calendar-alt fa-5x mb-3"></i>
+                        <h3>{{ evento.titulo }}</h3>
+                    </div>
+                {% endif %}
+
+                <div class="card-body p-4">
+                    <!-- Categoria -->
+                    <div class="mb-3">
+                        <span class="badge bg-primary px-3 py-2 rounded-pill">
+                            <i class="fas fa-tag me-1"></i> {{ evento.categoria.nome }}
+                        </span>
+                    </div>
+
+                    <!-- Título -->
+                    <h1 class="card-title fw-bold mb-3">{{ evento.titulo }}</h1>
+
+                    <!-- Descrição -->
+                    <div class="mb-4">
+                        <h5 class="fw-bold"><i class="fas fa-align-left me-2 text-primary"></i>Descrição</h5>
+                        <p class="text-muted">{{ evento.descricao }}</p>
+                    </div>
+
+                    <!-- Informações detalhadas -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="bg-light p-3 rounded">
+                                <i class="fas fa-calendar-alt text-primary me-2"></i>
+                                <strong>Data e Hora</strong><br>
+                                <span>{{ evento.data_evento|date:"d/m/Y" }} às {{ evento.data_evento|date:"H:i" }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-light p-3 rounded">
+                                <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                                <strong>Local</strong><br>
+                                <span>{{ evento.local.nome }}</span><br>
+                                <small class="text-muted">{{ evento.local.endereco }}</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-light p-3 rounded">
+                                <i class="fas fa-users text-info me-2"></i>
+                                <strong>Capacidade do Local</strong><br>
+                                <span>{{ evento.local.capacidade }} pessoas</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-light p-3 rounded">
+                                <i class="fas fa-dollar-sign text-success me-2"></i>
+                                <strong>Preço Base</strong><br>
+                                <span class="h5 text-success">R$ {{ evento.preco_base }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Organizador -->
+                    <div class="alert alert-info">
+                        <i class="fas fa-user-circle me-2"></i>
+                        <strong>Organizado por:</strong> {{ evento.organizador.username }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coluna da direita - Ingressos -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 sticky-top" style="top: 20px;">
+                <div class="card-header bg-success text-white py-3">
+                    <h4 class="mb-0"><i class="fas fa-ticket-alt me-2"></i>Ingressos Disponíveis</h4>
+                </div>
+                <div class="card-body p-4">
+                    {% if ingressos %}
+                        {% for ingresso in ingressos %}
+                            <div class="mb-4 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <h5 class="mb-0">
+                                            {% if ingresso.tipo == 'inteira' %}
+                                                <i class="fas fa-ticket-alt text-primary me-1"></i>
+                                            {% elif ingresso.tipo == 'meia' %}
+                                                <i class="fas fa-ticket-alt text-warning me-1"></i>
+                                            {% else %}
+                                                <i class="fas fa-crown text-danger me-1"></i>
+                                            {% endif %}
+                                            {{ ingresso.get_tipo_display }}
+                                        </h5>
+                                        <small class="text-muted">
+                                            <i class="fas fa-box me-1"></i> {{ ingresso.quantidade_disponivel }} disponíveis
+                                        </small>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="h4 text-success">R$ {{ ingresso.preco }}</span>
+                                    </div>
+                                </div>
+                                
+                                {% if ingresso.quantidade_disponivel > 0 %}
+                                    <a href="{% url 'comprar_ingresso' ingresso.id %}" class="btn btn-primary w-100 mt-2">
+                                        <i class="fas fa-shopping-cart me-2"></i>Comprar
+                                    </a>
+                                {% else %}
+                                    <button class="btn btn-secondary w-100 mt-2" disabled>
+                                        <i class="fas fa-times-circle me-2"></i>Esgotado
+                                    </button>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                            <p class="text-muted">Nenhum ingresso disponível para este evento no momento.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Botão voltar -->
+            <div class="mt-3 text-center">
+                <a href="{% url 'lista_eventos' %}" class="btn btn-outline-secondary w-100">
+                    <i class="fas fa-arrow-left me-2"></i>Voltar para Lista de Eventos
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .sticky-top {
+        position: sticky;
+        top: 20px;
+        z-index: 1;
+    }
+</style>
+{% endblock %}

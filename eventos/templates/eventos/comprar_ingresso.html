@@ -1,0 +1,142 @@
+{% extends 'eventos/base.html' %}
+{% load static %}
+
+{% block title %}Comprar Ingresso - {{ ingresso.evento.titulo }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'lista_eventos' %}">Eventos</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'detalhe_evento' ingresso.evento.id %}">{{ ingresso.evento.titulo|truncatechars:30 }}</a></li>
+                    <li class="breadcrumb-item active">Compra</li>
+                </ol>
+            </nav>
+
+            <!-- Card de Compra -->
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient-success text-white py-3">
+                    <h3 class="mb-0"><i class="fas fa-shopping-cart me-2"></i>Finalizar Compra</h3>
+                </div>
+                
+                <div class="card-body p-4">
+                    <!-- Resumo do evento -->
+                    <div class="alert alert-info mb-4">
+                        <h5 class="mb-2"><i class="fas fa-calendar-alt me-2"></i>{{ ingresso.evento.titulo }}</h5>
+                        <hr>
+                        <div class="row">
+                            <div class="col-6">
+                                <small class="text-muted">Tipo de ingresso:</small>
+                                <p class="mb-0 fw-bold">
+                                    {% if ingresso.tipo == 'inteira' %}
+                                        <i class="fas fa-ticket-alt text-primary me-1"></i>
+                                    {% elif ingresso.tipo == 'meia' %}
+                                        <i class="fas fa-ticket-alt text-warning me-1"></i>
+                                    {% else %}
+                                        <i class="fas fa-crown text-danger me-1"></i>
+                                    {% endif %}
+                                    {{ ingresso.get_tipo_display }}
+                                </p>
+                            </div>
+                            <div class="col-6 text-end">
+                                <small class="text-muted">Preço unitário:</small>
+                                <p class="mb-0 h5 text-success">R$ {{ ingresso.preco }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulário de compra -->
+                    <form method="post" id="compraForm">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label for="quantidade" class="form-label fw-bold">
+                                <i class="fas fa-hashtag me-1 text-primary"></i>Quantidade
+                            </label>
+                            <input type="number" 
+                                   name="quantidade" 
+                                   id="quantidade" 
+                                   class="form-control form-control-lg" 
+                                   min="1" 
+                                   max="{{ ingresso.quantidade_disponivel }}" 
+                                   value="1" 
+                                   required>
+                            <small class="text-muted">
+                                <i class="fas fa-box me-1"></i> Disponível: {{ ingresso.quantidade_disponivel }} ingressos
+                            </small>
+                        </div>
+
+                        <!-- Total -->
+                        <div class="bg-light p-4 rounded mb-4 text-center">
+                            <span class="text-muted">Total a pagar:</span>
+                            <h2 id="total" class="text-success mb-0">R$ {{ ingresso.preco }}</h2>
+                        </div>
+
+                        <!-- Botões -->
+                        <button type="submit" class="btn btn-success btn-lg w-100 mb-2">
+                            <i class="fas fa-check-circle me-2"></i>Confirmar Compra
+                        </button>
+                        <a href="{% url 'detalhe_evento' ingresso.evento.id %}" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </a>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Informações adicionais -->
+            <div class="alert alert-warning mt-3">
+                <i class="fas fa-info-circle me-2"></i>
+                <small>Após a confirmação, você receberá um QR Code para validação de presença no dia do evento.</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Cálculo do total dinâmico
+    var precoUnitario = parseFloat("{{ ingresso.preco }}");
+    var quantidadeInput = document.getElementById('quantidade');
+    var totalSpan = document.getElementById('total');
+    
+    function atualizarTotal() {
+        var quantidade = parseInt(quantidadeInput.value) || 1;
+        var total = precoUnitario * quantidade;
+        totalSpan.innerHTML = 'R$ ' + total.toFixed(2).replace('.', ',');
+    }
+    
+    if (quantidadeInput) {
+        quantidadeInput.addEventListener('input', atualizarTotal);
+        quantidadeInput.addEventListener('change', atualizarTotal);
+    }
+    
+    // Validação antes de enviar
+    document.getElementById('compraForm').addEventListener('submit', function(e) {
+        var quantidade = parseInt(quantidadeInput.value);
+        var maxDisponivel = parseInt("{{ ingresso.quantidade_disponivel }}");
+        
+        if (quantidade > maxDisponivel) {
+            e.preventDefault();
+            alert('Quantidade solicitada indisponível. Máximo disponível: ' + maxDisponivel);
+            return false;
+        }
+        
+        if (quantidade < 1) {
+            e.preventDefault();
+            alert('Quantidade deve ser pelo menos 1');
+            return false;
+        }
+        
+        return true;
+    });
+</script>
+
+<style>
+    .bg-gradient-success {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+</style>
+{% endblock %}
