@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.db.models import Q
 from decimal import Decimal
+from django.utils import timezone
 from .models import Evento, Ingresso, Compra, Categoria, Local
 
 def home(request):
@@ -34,12 +35,17 @@ def detalhe_evento(request, evento_id):
     ingressos = evento.ingresso_set.all()
     return render(request, 'eventos/evento_detail.html', {
         'evento': evento,
-        'ingressos': ingressos
+        'ingressos': ingressos,
+        'now': timezone.now()
     })
 
 @login_required
 def comprar_ingresso(request, ingresso_id):
     ingresso = get_object_or_404(Ingresso, id=ingresso_id)
+
+    if ingresso.evento.data_evento <= timezone.now():
+        messages.error(request, 'Não é possível comprar ingressos para eventos já encerrados.')
+        return redirect('detalhe_evento', evento_id=ingresso.evento.id)
 
     if request.method == 'POST':
         quantidade_raw = request.POST.get('quantidade', '1')
@@ -97,13 +103,17 @@ def confirmar_compra(request, ingresso_id):
 
     with transaction.atomic():
         ingresso = get_object_or_404(
-            Ingresso.objects.select_for_update(),
-            id=ingresso_id
-        )
+        Ingresso.objects.select_for_update(),
+        id=ingresso_id
+    )
 
-        if quantidade > ingresso.quantidade_disponivel:
-            messages.error(request, 'Os ingressos ficaram indisponíveis antes da confirmação. Tente novamente.')
-            return redirect('comprar_ingresso', ingresso_id=ingresso.id)
+    if ingresso.evento.data_evento <= timezone.now():
+        messages.error(request, 'A compra não pode ser concluída porque o evento já foi encerrado.')
+        return redirect('detalhe_evento', evento_id=ingresso.evento.id)
+
+    if quantidade > ingresso.quantidade_disponivel:
+        messages.error(request, 'Os ingressos ficaram indisponíveis antes da confirmação. Tente novamente.')
+        return redirect('comprar_ingresso', ingresso_id=ingresso.id)
 
         valor_total = ingresso.preco * quantidade
 
@@ -125,8 +135,14 @@ def confirmar_compra(request, ingresso_id):
 
 @login_required
 def meu_historico(request):
-    compras = Compra.objects.filter(usuario=request.user).order_by('-data_compra')
-    return render(request, 'eventos/meu_historico.html', {'compras': compras})
+    compras = Compra.objects.filter(usuario=request.user).select_related(
+        'ingresso',
+        'ingresso__evento'
+    ).order_by('-data_compra')
+
+    return render(request, 'eventos/meu_historico.html', {
+        'compras': compras
+    })
 
 # ==================== VIEWS DO ORGANIZADOR ====================
 
