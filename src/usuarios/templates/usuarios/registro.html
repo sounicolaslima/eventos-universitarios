@@ -2,69 +2,116 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Eventos Universitários</title>
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body class="bg-light">
 
 <div class="container">
     <div class="row justify-content-center min-vh-100 align-items-center">
         <div class="col-md-6">
 
-            <div class="card shadow-lg p-4">
-                <h3 class="text-center mb-4">Criar Conta</h3>
+            <div class="card shadow-lg border-0 rounded-4">
 
-                <!-- 🔥 ERROS DO FORM -->
-                {% if form.errors %}
-                    <div class="alert alert-danger">
-                        {{ form.errors }}
-                    </div>
-                {% endif %}
+                <!-- Header -->
+                <div class="card-header bg-success text-white text-center rounded-top-4 py-3">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-plus me-2"></i> Criar Conta
+                    </h4>
+                </div>
 
-                <!-- 🔥 MESSAGES -->
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">
-                            {{ message }}
+                <div class="card-body p-4">
+
+                    <!-- MENSAGENS -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                                <i class="fas fa-info-circle me-2"></i>
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- ERROS -->
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            {{ form.errors }}
                         </div>
-                    {% endfor %}
-                {% endif %}
+                    {% endif %}
 
-                <form method="post">
-                    {% csrf_token %}
+                    <!-- FORM -->
+                    <form method="post">
+                        {% csrf_token %}
 
-                    <div class="mb-3">
-                        <label>Usuário</label>
-                        {{ form.username }}
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Usuário</label>
+                            <input 
+                                type="text" 
+                                name="username" 
+                                class="form-control form-control-lg"
+                                placeholder="Digite seu usuário"
+                                required>
+                        </div>
 
-                    <div class="mb-3">
-                        <label>Email</label>
-                        {{ form.email }}
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input 
+                                type="email" 
+                                name="email" 
+                                class="form-control form-control-lg"
+                                placeholder="Digite seu email"
+                                required>
+                        </div>
 
-                    <div class="mb-3">
-                        <label>Senha</label>
-                        {{ form.password1 }}
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Senha</label>
+                            <input 
+                                type="password" 
+                                name="password1" 
+                                class="form-control form-control-lg"
+                                placeholder="Digite sua senha"
+                                required>
+                        </div>
 
-                    <div class="mb-3">
-                        <label>Confirmar Senha</label>
-                        {{ form.password2 }}
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Confirmar Senha</label>
+                            <input 
+                                type="password" 
+                                name="password2" 
+                                class="form-control form-control-lg"
+                                placeholder="Confirme sua senha"
+                                required>
+                        </div>
 
-                    <button class="btn btn-success w-100">Cadastrar</button>
-                </form>
+                        <button type="submit" class="btn btn-success btn-lg w-100">
+                            <i class="fas fa-user-plus me-2"></i> Cadastrar
+                        </button>
+                    </form>
 
-                <hr>
-                <p class="text-center">
-                    Já tem conta? <a href="{% url 'login' %}">Login</a>
-                </p>
+                    <hr class="my-4">
+
+                    <p class="text-center mb-0">
+                        Já tem conta?
+                        <a href="{% url 'login' %}" class="fw-bold">Faça login</a>
+                    </p>
+
+                </div>
             </div>
 
         </div>
     </div>
 </div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
