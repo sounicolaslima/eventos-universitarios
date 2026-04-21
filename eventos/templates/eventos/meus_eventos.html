@@ -1,0 +1,51 @@
+{% extends 'eventos/base.html' %}
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-calendar-alt me-2"></i>Meus Eventos</h2>
+        <a href="{% url 'criar_evento' %}" class="btn btn-success">
+            <i class="fas fa-plus me-1"></i> Criar Novo Evento
+        </a>
+    </div>
+
+    {% if eventos %}
+        <div class="row">
+            {% for evento in eventos %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        {% if evento.imagem %}
+                            <img src="{{ evento.imagem.url }}" class="card-img-top" style="height: 180px; object-fit: cover;">
+                        {% else %}
+                            <div class="bg-secondary text-white text-center py-5" style="height: 180px;">
+                                <i class="fas fa-calendar-alt fa-3x"></i>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ evento.titulo }}</h5>
+                            <p class="card-text text-muted small">{{ evento.descricao|truncatewords:15 }}</p>
+                            <p><i class="fas fa-calendar-day me-1"></i> {{ evento.data_evento|date:"d/m/Y H:i" }}</p>
+                            <p><i class="fas fa-map-marker-alt me-1"></i> {{ evento.local.nome }}</p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="btn-group w-100">
+                                <a href="{% url 'editar_evento' evento.id %}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                                <a href="{% url 'excluir_evento' evento.id %}" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i> Excluir
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-calendar-times fa-5x text-muted mb-3"></i>
+            <h3>Você ainda não tem eventos</h3>
+            <p>Clique no botão acima para criar seu primeiro evento!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

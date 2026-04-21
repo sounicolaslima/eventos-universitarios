@@ -1,0 +1,162 @@
+{% extends 'eventos/base.html' %}
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Coluna do formulário de edição -->
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0"><i class="fas fa-edit me-2"></i>Editar Evento: {{ evento.titulo }}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Título do Evento *</label>
+                            <input type="text" name="titulo" class="form-control" value="{{ evento.titulo }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Descrição *</label>
+                            <textarea name="descricao" class="form-control" rows="5" required>{{ evento.descricao }}</textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Data e Hora *</label>
+                                <input type="datetime-local" name="data_evento" class="form-control" value="{{ evento.data_evento|date:'Y-m-d\TH:i' }}" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Preço Base (R$)</label>
+                                <input type="number" step="0.01" name="preco_base" class="form-control" value="{{ evento.preco_base }}">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Local do Evento *</label>
+                                <input type="text" name="local_nome" class="form-control" value="{{ evento.local.nome }}" required>
+                                <small class="text-muted">Digite o nome do local (ex: Auditório Principal, Sala 101)</small>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Endereço do Local</label>
+                                <input type="text" name="local_endereco" class="form-control" value="{{ evento.local.endereco|default:'' }}">
+                                <small class="text-muted">Opcional - Endereço completo</small>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Categoria *</label>
+                            <select name="categoria" class="form-select" required>
+                                <option value="">Selecione uma categoria</option>
+                                {% for categoria in categorias %}
+                                    <option value="{{ categoria.id }}" {% if evento.categoria.id == categoria.id %}selected{% endif %}>
+                                        {{ categoria.nome }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <small class="text-muted">
+                                Não encontrou a categoria? <a href="/admin/eventos/categoria/add/" target="_blank">Cadastre uma nova categoria</a>
+                            </small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Imagem do Evento</label>
+                            {% if evento.imagem %}
+                                <div class="mb-2">
+                                    <img src="{{ evento.imagem.url }}" class="img-thumbnail" style="height: 100px;">
+                                    <br>
+                                    <small class="text-muted">Imagem atual</small>
+                                </div>
+                            {% endif %}
+                            <input type="file" name="imagem" class="form-control" accept="image/*">
+                            <small class="text-muted">Deixe em branco para manter a imagem atual. Formatos: JPG, PNG, GIF</small>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Salvar Alterações
+                            </button>
+                            <a href="{% url 'meus_eventos' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Coluna dos ingressos -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-ticket-alt me-2"></i>Ingressos</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'adicionar_ingresso' evento.id %}" class="btn btn-success w-100 mb-3">
+                        <i class="fas fa-plus me-1"></i> Adicionar Novo Ingresso
+                    </a>
+                    
+                    <hr>
+                    
+                    {% if ingressos %}
+                        <div class="list-group">
+                            {% for ingresso in ingressos %}
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>
+                                                {% if ingresso.tipo == 'inteira' %}
+                                                    🎫 {{ ingresso.get_tipo_display }}
+                                                {% elif ingresso.tipo == 'meia' %}
+                                                    🎟️ {{ ingresso.get_tipo_display }}
+                                                {% else %}
+                                                    👑 {{ ingresso.get_tipo_display }}
+                                                {% endif %}
+                                            </strong><br>
+                                            <small>Preço: <strong class="text-success">R$ {{ ingresso.preco }}</strong></small><br>
+                                            <small>Disponível: {{ ingresso.quantidade_disponivel }}</small><br>
+                                            <small>Vendidos: {{ ingresso.quantidade_vendida }}</small>
+                                        </div>
+                                        <div class="btn-group-vertical">
+                                            <a href="{% url 'editar_ingresso' ingresso.id %}" class="btn btn-warning btn-sm" title="Editar ingresso">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{% url 'excluir_ingresso' ingresso.id %}" class="btn btn-danger btn-sm mt-1" title="Excluir ingresso">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info text-center">
+                            <i class="fas fa-info-circle fa-2x mb-2"></i>
+                            <p class="mb-0">Nenhum ingresso cadastrado ainda.</p>
+                            <small>Clique em "Adicionar Novo Ingresso" para começar.</small>
+                        </div>
+                    {% endif %}
+                    
+                    <hr>
+                    
+                    <div class="alert alert-secondary">
+                        <small>
+                            <i class="fas fa-lightbulb me-1"></i>
+                            <strong>Dica:</strong> Você pode adicionar diferentes tipos de ingresso:
+                            <ul class="mt-2 mb-0">
+                                <li><strong>Inteira</strong> - Valor completo</li>
+                                <li><strong>Meia-entrada</strong> - 50% do valor</li>
+                                <li><strong>VIP</strong> - Experiência premium</li>
+                            </ul>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends 'eventos/base.html' %}
+{% load static %}
+
+{% block title %}Eventos - Eventos Universitários{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Cabeçalho -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="display-5 fw-bold mb-0">
+                <i class="fas fa-calendar-alt text-primary me-2"></i>Eventos Disponíveis
+            </h1>
+            <p class="text-muted mt-2">Encontre os melhores eventos acadêmicos</p>
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-home me-1"></i> Voltar
+        </a>
+    </div>
+
+    <!-- Barra de busca e filtros -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fas fa-search text-primary"></i></span>
+                        <input type="text" name="q" class="form-control" placeholder="Buscar por título do evento..." 
+                               value="{{ request.GET.q }}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select name="categoria" class="form-select">
+                        <option value="">Todas as categorias</option>
+                        {% for cat in categorias %}
+                            <option value="{{ cat.id }}" {% if request.GET.categoria == cat.id|stringformat:"s" %}selected{% endif %}>
+                                {{ cat.nome }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-filter me-1"></i> Filtrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lista de Eventos -->
+    {% if eventos %}
+        <div class="row g-4">
+            {% for evento in eventos %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm border-0 hover-card">
+                        <!-- Imagem do evento -->
+                        <div class="position-relative">
+                            {% if evento.imagem %}
+                                <img src="{{ evento.imagem.url }}" class="card-img-top" alt="{{ evento.titulo }}" 
+                                     style="height: 200px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-gradient-primary text-white text-center py-5" style="height: 200px;">
+                                    <i class="fas fa-calendar-alt fa-4x"></i>
+                                    <p class="mt-2 mb-0">Sem imagem</p>
+                                </div>
+                            {% endif %}
+                            <!-- Badge da categoria -->
+                            <span class="badge bg-primary position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill">
+                                <i class="fas fa-tag me-1"></i> {{ evento.categoria.nome }}
+                            </span>
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">{{ evento.titulo }}</h5>
+                            <p class="card-text text-muted small">{{ evento.descricao|truncatewords:15 }}</p>
+                            
+                            <div class="mb-2">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-calendar-day text-primary me-2" style="width: 20px;"></i>
+                                    <span class="small">{{ evento.data_evento|date:"d/m/Y" }} às {{ evento.data_evento|date:"H:i" }}</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-map-marker-alt text-danger me-2" style="width: 20px;"></i>
+                                    <span class="small">{{ evento.local.nome }}</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-ticket-alt text-success me-2" style="width: 20px;"></i>
+                                    <span class="small">A partir de <strong>R$ {{ evento.preco_base }}</strong></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-0 pb-3">
+                            <a href="{% url 'detalhe_evento' evento.id %}" class="btn btn-primary w-100">
+                                <i class="fas fa-eye me-2"></i>Ver Detalhes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Mensagem quando não há eventos -->
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="fas fa-calendar-times fa-5x text-muted"></i>
+            </div>
+            <h3 class="text-muted">Nenhum evento disponível no momento</h3>
+            <p class="text-muted">Volte mais tarde para conferir novos eventos!</p>
+            <a href="{% url 'home' %}" class="btn btn-primary mt-3">
+                <i class="fas fa-home me-1"></i> Voltar para Home
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .hover-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+    }
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+</style>
+{% endblock %}

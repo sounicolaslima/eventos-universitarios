@@ -1,0 +1,109 @@
+{% extends 'eventos/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section text-center" data-aos="fade-up" style="margin-top: 20px;">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">
+            Descubra os Melhores<br>
+            Eventos Universitários
+        </h1>
+        <p class="lead mb-4 fs-4">
+            Palestras, workshops, congressos e muito mais. Tudo em um só lugar.
+        </p>
+        <div class="d-flex gap-3 justify-content-center">
+            <a href="{% url 'lista_eventos' %}" class="btn btn-light btn-lg px-5">
+                <i class="fas fa-search me-2"></i> Explorar Eventos
+            </a>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'registro' %}" class="btn btn-outline-light btn-lg px-5">
+                    <i class="fas fa-user-plus me-2"></i> Criar Conta
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="container mb-5">
+    <div class="row g-4">
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+            <div class="dashboard-stats">
+                <i class="fas fa-calendar-alt text-primary"></i>
+                <div class="stats-number">50+</div>
+                <p class="text-muted mb-0">Eventos Realizados</p>
+            </div>
+        </div>
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+            <div class="dashboard-stats">
+                <i class="fas fa-users text-success"></i>
+                <div class="stats-number">5000+</div>
+                <p class="text-muted mb-0">Participantes</p>
+            </div>
+        </div>
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
+            <div class="dashboard-stats">
+                <i class="fas fa-chalkboard-teacher text-warning"></i>
+                <div class="stats-number">100+</div>
+                <p class="text-muted mb-0">Palestrantes</p>
+            </div>
+        </div>
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="400">
+            <div class="dashboard-stats">
+                <i class="fas fa-certificate text-info"></i>
+                <div class="stats-number">100%</div>
+                <p class="text-muted mb-0">Certificados</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container mb-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+        <h2 class="display-6 fw-bold">Por que escolher nossa plataforma?</h2>
+        <p class="text-muted fs-5">Oferecemos a melhor experiência para eventos acadêmicos</p>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="card h-100 text-center p-4">
+                <div class="mb-3">
+                    <i class="fas fa-ticket-alt fa-3x text-primary"></i>
+                </div>
+                <h5 class="fw-bold">Compra Fácil</h5>
+                <p class="text-muted">Adquira ingressos de forma rápida e segura para os melhores eventos</p>
+            </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="card h-100 text-center p-4">
+                <div class="mb-3">
+                    <i class="fas fa-qrcode fa-3x text-success"></i>
+                </div>
+                <h5 class="fw-bold">QR Code Exclusivo</h5>
+                <p class="text-muted">Receba seu QR Code para validação de presença no dia do evento</p>
+            </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="card h-100 text-center p-4">
+                <div class="mb-3">
+                    <i class="fas fa-certificate fa-3x text-warning"></i>
+                </div>
+                <h5 class="fw-bold">Certificado Automático</h5>
+                <p class="text-muted">Receba certificados de participação automaticamente após o evento</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action - Texto em PRETO -->
+<div class="container mb-5" data-aos="fade-up">
+    <div class="p-5 rounded-4 text-center" style="background: linear-gradient(135deg, #f5f7fa 0%, #e5e9f0 100%); border: 1px solid #e0e4ec;">
+        <h2 class="fw-bold mb-3" style="color: #1f2937;">Pronto para participar do próximo evento?</h2>
+        <p class="fs-5 mb-4" style="color: #4b5563;">Não perca as melhores oportunidades de aprendizado e networking</p>
+        <a href="{% url 'lista_eventos' %}" class="btn btn-primary btn-lg px-5">
+            <i class="fas fa-calendar-check me-2"></i> Ver Eventos Agora
+        </a>
+    </div>
+</div>
+{% endblock %}
