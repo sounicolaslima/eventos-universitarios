@@ -38,12 +38,6 @@ git clone https://github.com/sounicolaslima/eventos-universitarios.git
 cd eventos-universitarios
 ```
 
-**migração do banco (Django)**
-
-```bash
-python manage.py migrate
-```
-
 **Criar um ambiente virtual Python**
 
 ```bash
@@ -66,10 +60,30 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+**Migração do banco (Django)**
+
+```bash
+python manage.py migrate
+```
+
+**Criar usuário admin**
+
+```bash
+python manage.py createsuperuser
+```
+
 **Inicia o servidor local do Django**
 
 ```bash
 python manage.py runserver
+```
+
+## 🧪 Testes
+
+**Para rodar os testes automatizados do projeto:**
+
+```bash
+python manage.py test
 ```
 
 ## 📊 Estrutura
