@@ -120,7 +120,7 @@ https://github.com/users/sounicolaslima/projects/2/views/3
 
 - **Nícolas Mariano Lima**
 
-  → Configuração do projeto e ambiente 
+  → Configuração do projeto e ambiente
   → Modelagem do banco de dados   
   → Integração com banco
   → Desenvolvimento de Frontend  
