@@ -5,134 +5,162 @@
 
 {% block content %}
 <div class="container py-4">
-    <!-- Cabeçalho -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="display-5 fw-bold mb-0">
-                <i class="fas fa-history text-primary me-2"></i>Meu Histórico
-            </h1>
-            <p class="text-muted mt-2">Acompanhe suas compras e certificados</p>
+
+  <!-- Cabeçalho -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="display-5 fw-bold mb-0">
+        <i class="fas fa-history text-primary me-2"></i>Meu Histórico
+      </h1>
+      <p class="text-muted mt-2">Acompanhe suas compras e certificados</p>
+    </div>
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+      <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+    </a>
+  </div>
+
+  <!-- MENSAGENS -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if compras %}
+    <div class="row g-4">
+
+      {% for compra in compras %}
+        <div class="col-12">
+          <div class="card shadow-sm border-0 hover-card">
+            <div class="card-body p-4">
+
+              <div class="row align-items-center">
+
+                <!-- Evento -->
+                <div class="col-md-5">
+                  <div class="d-flex align-items-start">
+
+                    <div class="me-3">
+                      {% if compra.status == 'confirmada' %}
+                        <i class="fas fa-check-circle text-success fa-2x"></i>
+                      {% elif compra.status == 'pendente' %}
+                        <i class="fas fa-clock text-warning fa-2x"></i>
+                      {% elif compra.status == 'cancelada' %}
+                        <i class="fas fa-times-circle text-danger fa-2x"></i>
+                      {% elif compra.status == 'presente' %}
+                        <i class="fas fa-star text-info fa-2x"></i>
+                      {% endif %}
+                    </div>
+
+                    <div>
+                      <h5 class="mb-1 fw-bold">
+                        {{ compra.ingresso.evento.titulo }}
+                      </h5>
+
+                      <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-secondary">
+                          <i class="fas fa-tag me-1"></i>
+                          {{ compra.ingresso.get_tipo_display }}
+                        </span>
+
+                        <span class="badge bg-info">
+                          <i class="fas fa-calendar me-1"></i>
+                          {{ compra.data_compra|date:"d/m/Y" }}
+                        </span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- Quantidade -->
+                <div class="col-md-3 text-center">
+                  <small class="text-muted">Quantidade</small>
+                  <p class="h5 mb-0">{{ compra.quantidade }}x</p>
+                </div>
+
+                <!-- Valor -->
+                <div class="col-md-2 text-center">
+                  <small class="text-muted">Valor Total</small>
+                  <p class="h5 text-success mb-0">R$ {{ compra.valor_total }}</p>
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-2 text-center">
+                  <small class="text-muted">Status</small>
+                  <div>
+                    {% if compra.status == 'confirmada' %}
+                      <span class="badge bg-success px-3 py-2">Confirmada</span>
+                    {% elif compra.status == 'pendente' %}
+                      <span class="badge bg-warning px-3 py-2">Pendente</span>
+                    {% elif compra.status == 'cancelada' %}
+                      <span class="badge bg-danger px-3 py-2">Cancelada</span>
+                    {% elif compra.status == 'presente' %}
+                      <span class="badge bg-info px-3 py-2">Presente</span>
+                    {% endif %}
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- BOTÃO CANCELAR -->
+              {% if compra.status == 'pendente' %}
+                <hr>
+                <div class="d-flex justify-content-end">
+                  <form method="post" action="{% url 'cancelar_compra' compra.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger">
+                      <i class="fas fa-times me-1"></i> Cancelar Compra
+                    </button>
+                  </form>
+                </div>
+              {% endif %}
+
+              <!-- AÇÕES -->
+              {% if compra.status == 'confirmada' or compra.status == 'presente' %}
+                <hr>
+                <div class="d-flex gap-2 justify-content-end">
+
+                  {% if compra.qr_code %}
+                    <a href="{{ compra.qr_code.url }}" class="btn btn-sm btn-info" target="_blank">
+                      <i class="fas fa-qrcode me-1"></i> Ver QR Code
+                    </a>
+                  {% endif %}
+
+                  {% if compra.status == 'presente' and compra.certificado %}
+                    <a href="{{ compra.certificado.url }}" class="btn btn-sm btn-success">
+                      <i class="fas fa-download me-1"></i> Baixar Certificado
+                    </a>
+                  {% elif compra.status == 'presente' %}
+                    <button class="btn btn-sm btn-secondary" disabled>
+                      <i class="fas fa-spinner fa-spin me-1"></i> Gerando certificado...
+                    </button>
+                  {% endif %}
+
+                </div>
+              {% endif %}
+
+            </div>
+          </div>
         </div>
-        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
-            <i class="fas fa-tachometer-alt me-1"></i> Dashboard
-        </a>
+      {% endfor %}
+
     </div>
 
-    {% if compras %}
-        <div class="row g-4">
-            {% for compra in compras %}
-                <div class="col-12">
-                    <div class="card shadow-sm border-0 hover-card">
-                        <div class="card-body p-4">
-                            <div class="row align-items-center">
-                                <!-- Informações do evento -->
-                                <div class="col-md-5">
-                                    <div class="d-flex align-items-start">
-                                        <div class="me-3">
-                                            {% if compra.status == 'confirmada' %}
-                                                <i class="fas fa-check-circle text-success fa-2x"></i>
-                                            {% elif compra.status == 'pendente' %}
-                                                <i class="fas fa-clock text-warning fa-2x"></i>
-                                            {% elif compra.status == 'cancelada' %}
-                                                <i class="fas fa-times-circle text-danger fa-2x"></i>
-                                            {% elif compra.status == 'presente' %}
-                                                <i class="fas fa-star text-info fa-2x"></i>
-                                            {% endif %}
-                                        </div>
-                                        <div>
-                                            <h5 class="mb-1 fw-bold">{{ compra.ingresso.evento.titulo }}</h5>
-                                            <div class="d-flex flex-wrap gap-2">
-                                                <span class="badge bg-secondary">
-                                                    <i class="fas fa-tag me-1"></i>{{ compra.ingresso.get_tipo_display }}
-                                                </span>
-                                                <span class="badge bg-info">
-                                                    <i class="fas fa-calendar me-1"></i>{{ compra.data_compra|date:"d/m/Y" }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+  {% else %}
+    <div class="text-center py-5">
+      <i class="fas fa-shopping-bag fa-5x text-muted mb-3"></i>
+      <h3 class="text-muted">Você ainda não possui compras</h3>
+      <p class="text-muted">
+        Explore nossos eventos e adquira seu primeiro ingresso!
+      </p>
+      <a href="{% url 'lista_eventos' %}" class="btn btn-primary btn-lg mt-3">
+        <i class="fas fa-calendar-alt me-2"></i>Ver Eventos
+      </a>
+    </div>
+  {% endif %}
 
-                                <!-- Detalhes da compra -->
-                                <div class="col-md-3">
-                                    <div class="text-center">
-                                        <small class="text-muted">Quantidade</small>
-                                        <p class="h5 mb-0">{{ compra.quantidade }}x</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="text-center">
-                                        <small class="text-muted">Valor Total</small>
-                                        <p class="h5 text-success mb-0">R$ {{ compra.valor_total }}</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="text-center">
-                                        <small class="text-muted">Status</small>
-                                        <div>
-                                            {% if compra.status == 'confirmada' %}
-                                                <span class="badge bg-success px-3 py-2">Confirmada</span>
-                                            {% elif compra.status == 'pendente' %}
-                                                <span class="badge bg-warning px-3 py-2">Pendente</span>
-                                            {% elif compra.status == 'cancelada' %}
-                                                <span class="badge bg-danger px-3 py-2">Cancelada</span>
-                                            {% elif compra.status == 'presente' %}
-                                                <span class="badge bg-info px-3 py-2">Presente</span>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Ações -->
-                            {% if compra.status == 'confirmada' or compra.status == 'presente' %}
-                                <hr>
-                                <div class="d-flex gap-2 justify-content-end">
-                                    {% if compra.qr_code %}
-                                        <a href="{{ compra.qr_code.url }}" class="btn btn-sm btn-info" target="_blank">
-                                            <i class="fas fa-qrcode me-1"></i> Ver QR Code
-                                        </a>
-                                    {% endif %}
-                                    {% if compra.status == 'presente' and compra.certificado %}
-                                        <a href="{{ compra.certificado.url }}" class="btn btn-sm btn-success">
-                                            <i class="fas fa-download me-1"></i> Baixar Certificado
-                                        </a>
-                                    {% elif compra.status == 'presente' %}
-                                        <button class="btn btn-sm btn-secondary" disabled>
-                                            <i class="fas fa-spinner fa-spin me-1"></i> Gerando certificado...
-                                        </button>
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <!-- Mensagem quando não há compras -->
-        <div class="text-center py-5">
-            <div class="mb-4">
-                <i class="fas fa-shopping-bag fa-5x text-muted"></i>
-            </div>
-            <h3 class="text-muted">Você ainda não possui compras</h3>
-            <p class="text-muted">Explore nossos eventos e adquira seu primeiro ingresso!</p>
-            <a href="{% url 'lista_eventos' %}" class="btn btn-primary btn-lg mt-3">
-                <i class="fas fa-calendar-alt me-2"></i>Ver Eventos Disponíveis
-            </a>
-        </div>
-    {% endif %}
 </div>
-
-<style>
-    .hover-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .hover-card:hover {
-        transform: translateX(5px);
-        box-shadow: 0 5px 20px rgba(0,0,0,0.1) !important;
-    }
-</style>
 {% endblock %}

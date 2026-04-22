@@ -103,18 +103,19 @@ def confirmar_compra(request, ingresso_id):
 
     with transaction.atomic():
         ingresso = get_object_or_404(
-        Ingresso.objects.select_for_update(),
-        id=ingresso_id
-    )
+            Ingresso.objects.select_for_update(),
+            id=ingresso_id
+        )
 
-    if ingresso.evento.data_evento <= timezone.now():
-        messages.error(request, 'A compra não pode ser concluída porque o evento já foi encerrado.')
-        return redirect('detalhe_evento', evento_id=ingresso.evento.id)
+        if ingresso.evento.data_evento <= timezone.now():
+            messages.error(request, 'Evento já encerrado.')
+            return redirect('detalhe_evento', evento_id=ingresso.evento.id)
 
-    if quantidade > ingresso.quantidade_disponivel:
-        messages.error(request, 'Os ingressos ficaram indisponíveis antes da confirmação. Tente novamente.')
-        return redirect('comprar_ingresso', ingresso_id=ingresso.id)
+        if quantidade > ingresso.quantidade_disponivel:
+            messages.error(request, 'Ingressos indisponíveis.')
+            return redirect('comprar_ingresso', ingresso_id=ingresso.id)
 
+        # 👉 AGORA FORA DO IF (CORRETO)
         valor_total = ingresso.preco * quantidade
 
         compra = Compra.objects.create(
@@ -128,7 +129,7 @@ def confirmar_compra(request, ingresso_id):
         ingresso.quantidade_disponivel -= quantidade
         ingresso.save(update_fields=['quantidade_disponivel'])
 
-    messages.success(request, 'Compra simulada confirmada com sucesso!')
+    messages.success(request, 'Compra confirmada com sucesso!')
     return render(request, 'eventos/compra_sucesso.html', {
         'compra': compra,
     })
