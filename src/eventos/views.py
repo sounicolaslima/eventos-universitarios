@@ -370,3 +370,28 @@ def excluir_ingresso(request, ingresso_id):
         return redirect('editar_evento', evento_id=evento_id)
     
     return render(request, 'eventos/excluir_ingresso.html', {'ingresso': ingresso})
+
+@login_required
+def cancelar_compra(request, compra_id):
+    compra = get_object_or_404(Compra, id=compra_id)
+
+    # Só o dono pode cancelar
+    if compra.usuario != request.user:
+        return HttpResponseForbidden()
+
+    # Só pode cancelar se estiver pendente
+    if compra.status != 'pendente':
+        messages.error(request, 'Compra não pode ser cancelada')
+        return redirect('meu_historico')
+
+    # Cancela
+    compra.status = 'cancelada'
+    compra.save()
+
+    # Devolve estoque
+    ingresso = compra.ingresso
+    ingresso.quantidade_disponivel += compra.quantidade
+    ingresso.save()
+
+    messages.success(request, 'Compra cancelada com sucesso!')
+    return redirect('meu_historico')

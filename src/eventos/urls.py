@@ -8,6 +8,7 @@ urlpatterns = [
     path('comprar/<int:ingresso_id>/', views.comprar_ingresso, name='comprar_ingresso'),
     path('comprar/<int:ingresso_id>/confirmar/', views.confirmar_compra, name='confirmar_compra'),
     path('meu-historico/', views.meu_historico, name='meu_historico'),
+    path('compras/<int:compra_id>/cancelar/', views.cancelar_compra, name='cancelar_compra'),
 
     path('organizador/eventos/', views.meus_eventos, name='meus_eventos'),
     path('organizador/evento/criar/', views.criar_evento, name='criar_evento'),
