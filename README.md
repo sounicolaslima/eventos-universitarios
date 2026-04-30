@@ -19,7 +19,7 @@ A plataforma permite que organizadores criem e gerenciem eventos com controle de
 | Categoria              | Tecnologia                                       |
 | :--------------------- | :----------------------------------------------- |
 | **Backend**            | Django                                           |
-| **Frontend**           | Django + Bootstrap                               |
+| **Frontend**           | Django + Bootstrap 5                              |
 | **Banco de Dados**     | SQLite (Desenvolvimento) / PostgreSQL (Produção) |
 | **Controle de Versão** | Git + GitHub                                     |
 
