@@ -91,6 +91,7 @@ def confirmar_compra(request, ingresso_id):
     if request.method != 'POST':
         return redirect('comprar_ingresso', ingresso_id=ingresso_id)
 
+    # Validação da quantidade
     try:
         quantidade = int(request.POST.get('quantidade', '1'))
     except (TypeError, ValueError):
@@ -102,19 +103,23 @@ def confirmar_compra(request, ingresso_id):
         return redirect('comprar_ingresso', ingresso_id=ingresso_id)
 
     with transaction.atomic():
+        # 🔒 trava o registro no banco (evita duas pessoas comprarem ao mesmo tempo)
         ingresso = get_object_or_404(
-        Ingresso.objects.select_for_update(),
-        id=ingresso_id
-    )
+            Ingresso.objects.select_for_update(),
+            id=ingresso_id
+        )
 
-    if ingresso.evento.data_evento <= timezone.now():
-        messages.error(request, 'A compra não pode ser concluída porque o evento já foi encerrado.')
-        return redirect('detalhe_evento', evento_id=ingresso.evento.id)
+        # 🚫 evento já aconteceu
+        if ingresso.evento.data_evento <= timezone.now():
+            messages.error(request, 'A compra não pode ser concluída porque o evento já foi encerrado.')
+            return redirect('detalhe_evento', evento_id=ingresso.evento.id)
 
-    if quantidade > ingresso.quantidade_disponivel:
-        messages.error(request, 'Os ingressos ficaram indisponíveis antes da confirmação. Tente novamente.')
-        return redirect('comprar_ingresso', ingresso_id=ingresso.id)
+        # 🚫 sem estoque
+        if quantidade > ingresso.quantidade_disponivel:
+            messages.error(request, 'Os ingressos ficaram indisponíveis antes da confirmação. Tente novamente.')
+            return redirect('comprar_ingresso', ingresso_id=ingresso.id)
 
+        # ✅ cria a compra
         valor_total = ingresso.preco * quantidade
 
         compra = Compra.objects.create(
@@ -125,10 +130,13 @@ def confirmar_compra(request, ingresso_id):
             status='confirmada'
         )
 
+        # ✅ atualiza estoque
         ingresso.quantidade_disponivel -= quantidade
         ingresso.save(update_fields=['quantidade_disponivel'])
 
+    # fora da transação
     messages.success(request, 'Compra simulada confirmada com sucesso!')
+
     return render(request, 'eventos/compra_sucesso.html', {
         'compra': compra,
     })

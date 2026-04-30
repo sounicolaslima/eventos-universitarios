@@ -17,7 +17,7 @@
                 <i class="fas fa-search me-2"></i> Explorar Eventos
             </a>
             {% if not user.is_authenticated %}
-                <a href="{% url 'registro' %}" class="btn btn-outline-light btn-lg px-5">
+                <a href="{% url 'registro' %}" class="btn btn-light btn-lg px-5">
                     <i class="fas fa-user-plus me-2"></i> Criar Conta
                 </a>
             {% endif %}
@@ -25,35 +25,38 @@
     </div>
 </div>
 
-<!-- Stats Section -->
+<!-- Espaço entre os botões e as estatísticas -->
+<div style="margin-top: 80px;"></div>
+
+<!-- Stats Section - Centralizada -->
 <div class="container mb-5">
-    <div class="row g-4">
-        <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
-            <div class="dashboard-stats">
-                <i class="fas fa-calendar-alt text-primary"></i>
-                <div class="stats-number">50+</div>
-                <p class="text-muted mb-0">Eventos Realizados</p>
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="dashboard-stats text-center">
+                <i class="fas fa-calendar-alt text-primary fs-1 mb-3"></i>
+                <div class="stats-number display-5 fw-bold">50+</div>
+                <p class="text-muted mb-0 fs-5">Eventos Realizados</p>
             </div>
         </div>
-        <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
-            <div class="dashboard-stats">
-                <i class="fas fa-users text-success"></i>
-                <div class="stats-number">5000+</div>
-                <p class="text-muted mb-0">Participantes</p>
+        <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="dashboard-stats text-center">
+                <i class="fas fa-users text-success fs-1 mb-3"></i>
+                <div class="stats-number display-5 fw-bold">5000+</div>
+                <p class="text-muted mb-0 fs-5">Participantes</p>
             </div>
         </div>
-        <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
-            <div class="dashboard-stats">
-                <i class="fas fa-chalkboard-teacher text-warning"></i>
-                <div class="stats-number">100+</div>
-                <p class="text-muted mb-0">Palestrantes</p>
+        <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="dashboard-stats text-center">
+                <i class="fas fa-chalkboard-teacher text-warning fs-1 mb-3"></i>
+                <div class="stats-number display-5 fw-bold">100+</div>
+                <p class="text-muted mb-0 fs-5">Palestrantes</p>
             </div>
         </div>
-        <div class="col-md-3" data-aos="fade-up" data-aos-delay="400">
-            <div class="dashboard-stats">
-                <i class="fas fa-certificate text-info"></i>
-                <div class="stats-number">100%</div>
-                <p class="text-muted mb-0">Certificados</p>
+        <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="dashboard-stats text-center">
+                <i class="fas fa-certificate text-info fs-1 mb-3"></i>
+                <div class="stats-number display-5 fw-bold">100%</div>
+                <p class="text-muted mb-0 fs-5">Certificados</p>
             </div>
         </div>
     </div>
@@ -96,7 +99,7 @@
     </div>
 </div>
 
-<!-- Call to Action - Texto em PRETO -->
+<!-- Call to Action -->
 <div class="container mb-5" data-aos="fade-up">
     <div class="p-5 rounded-4 text-center" style="background: linear-gradient(135deg, #f5f7fa 0%, #e5e9f0 100%); border: 1px solid #e0e4ec;">
         <h2 class="fw-bold mb-3" style="color: #1f2937;">Pronto para participar do próximo evento?</h2>

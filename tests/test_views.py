@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
 from eventos.models import Evento, Categoria, Local
-from datetime import datetime
+from django.utils import timezone
 
 
 class EventosViewsTest(TestCase):
@@ -30,7 +30,7 @@ class EventosViewsTest(TestCase):
         self.evento = Evento.objects.create(
             titulo='Evento Teste',
             descricao='Descrição teste',
-            data_evento=datetime.now(),
+            data_evento=timezone.now(),
             local=self.local,
             categoria=self.categoria,
             preco_base=10.00,
