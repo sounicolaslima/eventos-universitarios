@@ -107,6 +107,7 @@ http://localhost:8000
 - requirements.txt → dependências Python
 - Dockerfile → configuração Docker
 - docker-compose.yml → orquestração dos containers
+- Celery + Redis para processamento assíncrono
 
 ## 📌 Gerenciamento do Projeto
 
@@ -147,3 +148,5 @@ https://github.com/users/sounicolaslima/projects/2/views/3
   → Desenvolvimento de Frontend  
   → Criação de templates (HTML + Bootstrap)  
   → Experiência do usuário (interfaces e navegação)
+
+  
