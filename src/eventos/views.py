@@ -6,6 +6,8 @@ from django.db.models import Q
 from decimal import Decimal
 from django.utils import timezone
 from .models import Evento, Ingresso, Compra, Categoria, Local
+from .tasks import send_confirmation_email
+from django.http import HttpResponseForbidden
 
 def home(request):
     return render(request, 'eventos/home.html')
@@ -124,6 +126,13 @@ def confirmar_compra(request, ingresso_id):
             quantidade=quantidade,
             valor_total=valor_total,
             status='confirmada'
+        )
+
+        send_confirmation_email.delay(
+            request.user.email,
+            compra.ingresso.evento.titulo,
+            compra.quantidade,
+            compra.id
         )
 
         ingresso.quantidade_disponivel -= quantidade
