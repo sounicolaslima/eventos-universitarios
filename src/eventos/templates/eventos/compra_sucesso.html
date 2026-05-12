@@ -16,6 +16,25 @@
                     <p><strong>Total:</strong> R$ {{ compra.valor_total }}</p>
                     <p><strong>Status:</strong> {{ compra.get_status_display }}</p>
 
+                    {% if compra.qr_code %}
+                        <div class="mt-4">
+                            <h4 class="mb-3">
+                                QR Code do Ingresso
+                            </h4>
+
+                            <img
+                                src="{{ compra.qr_code.url }}"
+                                alt="QR Code da compra"
+                                class="img-fluid border rounded p-2 shadow-sm"
+                                style="max-width: 250px;"
+                            >
+
+                            <p class="text-muted mt-2">
+                                Apresente este QR Code na entrada do evento.
+                            </p>
+                        </div>
+                    {% endif %}
+
                     <div class="d-flex gap-2 justify-content-center mt-4">
                         <a href="{% url 'meu_historico' %}" class="btn btn-primary">
                             Ver histórico
