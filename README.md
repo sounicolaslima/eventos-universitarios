@@ -86,11 +86,27 @@ python manage.py runserver
 python manage.py test
 ```
 
+## 🐳 Executando com Docker
+
+### Build e inicialização do container
+
+```bash
+docker compose up --build
+```
+
+### Acessar aplicação
+
+http://localhost:8000
+
+
 ## 📊 Estrutura
 
 - /src → código fonte
 - /tests → testes
 - /docs → documentação
+- requirements.txt → dependências Python
+- Dockerfile → configuração Docker
+- docker-compose.yml → orquestração dos containers
 
 ## 📌 Gerenciamento do Projeto
 
