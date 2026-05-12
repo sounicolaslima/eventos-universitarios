@@ -16,7 +16,7 @@ services:
 
   worker:
     build: .
-    command: celery -A eventos_universitarios worker --loglevel=info
+    command: sh -c "cd src && celery -A eventos_universitarios worker --loglevel=info"
     volumes:
       - .:/app
     depends_on:
