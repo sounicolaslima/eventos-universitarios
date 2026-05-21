@@ -6,6 +6,8 @@ from django.db.models import Q
 from decimal import Decimal
 from django.utils import timezone
 from .models import Evento, Ingresso, Compra, Categoria, Local
+from django.http import HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     return render(request, 'eventos/home.html')
@@ -377,3 +379,39 @@ def excluir_ingresso(request, ingresso_id):
         return redirect('editar_evento', evento_id=evento_id)
     
     return render(request, 'eventos/excluir_ingresso.html', {'ingresso': ingresso})
+
+@login_required
+def validar_qr(request, uuid):
+
+    # Apenas organizador pode validar
+    if not request.user.is_staff:
+        return HttpResponseForbidden(
+            'Apenas organizadores podem validar presença.'
+        )
+
+    try:
+        compra = Compra.objects.get(codigo_uuid=uuid)
+
+    except Compra.DoesNotExist:
+        messages.error(request, 'QR Code inválido.')
+        return redirect('home')
+
+    # Impede reutilização
+    if compra.status == 'presente':
+        messages.warning(
+            request,
+            'Este QR Code já foi utilizado.'
+        )
+
+        return redirect('home')
+
+    # Marca presença
+    compra.status = 'presente'
+    compra.save()
+
+    messages.success(
+        request,
+        f'Presença confirmada para {compra.usuario.username}!'
+    )
+
+    return redirect('home')
