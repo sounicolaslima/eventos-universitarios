@@ -18,6 +18,7 @@ urlpatterns = [
     path('organizador/ingresso/adicionar/<int:evento_id>/', views.adicionar_ingresso, name='adicionar_ingresso'),
     path('organizador/ingresso/editar/<int:ingresso_id>/', views.editar_ingresso, name='editar_ingresso'),
     path('organizador/ingresso/excluir/<int:ingresso_id>/', views.excluir_ingresso, name='excluir_ingresso'),
+    path('organizador/validar-qr/<str:uuid>/', views.validar_qr, name='validar_qr'),
 ]
 
 if settings.DEBUG:
