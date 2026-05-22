@@ -1,10 +1,14 @@
-import os
 from pathlib import Path
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-SECRET_KEY = 'django-insecure-m^37p@qw-3p6!q&4pL_o7#hpbzn!wp(*kfpr4@!8m&x*x$-f*y'
-DEBUG = True
+# 🔐 SEGREDO AGORA NO .env
+SECRET_KEY = config('SECRET_KEY')
+
+# DEBUG também pode vir do .env (melhor prática)
+DEBUG = config('DEBUG', default=False, cast=bool)
+
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -76,26 +80,15 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'home'
 
-# Celery (opcional por enquanto)
+# Celery
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
-# Email para testes
+# Email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'dashboard'
-LOGOUT_REDIRECT_URL = 'home'
-
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
