@@ -4,7 +4,6 @@ from django.urls import reverse
 
 from decimal import Decimal
 from datetime import timedelta
-
 from django.utils import timezone
 
 from .models import (
@@ -22,7 +21,7 @@ class QRCodeCompraTests(TestCase):
 
         self.user = User.objects.create_user(
             username='rafa',
-            password='123'
+            password='SecurePass123!'  # corrigido
         )
 
         self.categoria = Categoria.objects.create(
@@ -93,13 +92,13 @@ class ValidacaoQRTests(TestCase):
 
         self.organizador = User.objects.create_user(
             username='admin',
-            password='123',
+            password='SecurePass123!',  # corrigido
             is_staff=True
         )
 
         self.user = User.objects.create_user(
             username='rafa',
-            password='123'
+            password='SecurePass123!'  # corrigido
         )
 
         self.categoria = Categoria.objects.create(
@@ -140,7 +139,7 @@ class ValidacaoQRTests(TestCase):
 
         self.client.login(
             username='admin',
-            password='123'
+            password='SecurePass123!'
         )
 
         response = self.client.get(
@@ -161,7 +160,7 @@ class ValidacaoQRTests(TestCase):
 
         self.client.login(
             username='admin',
-            password='123'
+            password='SecurePass123!'
         )
 
         response = self.client.get(
@@ -177,7 +176,7 @@ class ValidacaoQRTests(TestCase):
 
         self.client.login(
             username='admin',
-            password='123'
+            password='SecurePass123!'
         )
 
         self.compra.status = 'presente'
