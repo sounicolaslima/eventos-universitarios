@@ -111,6 +111,16 @@ http://localhost:8000
 - docker-compose.yml → orquestração dos containers
 - Celery + Redis para processamento assíncrono
 
+## 🗂️ Diagramas
+
+### Diagrama de Classes
+
+![Diagrama de Classes](docs/retrospectiva/diagramas/diagrama_classes.svg)
+
+### Diagrama de Casos de Uso
+
+![Diagrama de Casos de Uso](docs/retrospectiva/diagramas/diagrama_casos_uso.svg)
+
 ## 📌 Gerenciamento do Projeto
 
 **Board do Sprint 1:**
