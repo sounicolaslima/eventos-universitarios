@@ -1,5 +1,7 @@
 # 🎓 Plataforma de Gestão de Eventos Universitários
 
+![CI](https://github.com/sounicolaslima/eventos-universitarios/actions/workflows/ci.yml/badge.svg)  [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sounicolaslima_eventos-universitarios&metric=alert_status)](https://sonarcloud.io)
+
 Sistema web desenvolvido em Django para centralizar o ciclo de vida de eventos acadêmicos (palestras, workshops, semanas acadêmicas,congressos e simpósios).
 A plataforma permite que organizadores criem e gerenciem eventos com controle de vagas, categorias e locais, enquanto estudantes e participantes podem se inscrever, acompanhar seus ingressos e consultar seu histórico de participação.
 
@@ -149,4 +151,5 @@ https://github.com/users/sounicolaslima/projects/2/views/3
   → Criação de templates (HTML + Bootstrap)  
   → Experiência do usuário (interfaces e navegação)
 
-  
+
+
