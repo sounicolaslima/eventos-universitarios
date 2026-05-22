@@ -30,6 +30,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # 🔥 FIX CRÍTICO DO SEU ERRO (SECRET_KEY)
+      - name: Set environment variables
+        run: |
+          echo "SECRET_KEY=test-secret-key" >> $GITHUB_ENV
+
       - name: Run tests with coverage
         run: |
           coverage run manage.py test

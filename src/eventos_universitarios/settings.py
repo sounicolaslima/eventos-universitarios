@@ -4,7 +4,7 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # 🔐 SEGREDO AGORA NO .env
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-ci-key')
 
 # DEBUG também pode vir do .env (melhor prática)
 DEBUG = config('DEBUG', default=False, cast=bool)
