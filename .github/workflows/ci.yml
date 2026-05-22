@@ -30,7 +30,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 🔥 FIX CRÍTICO DO SEU ERRO (SECRET_KEY)
       - name: Set environment variables
         run: |
           echo "SECRET_KEY=test-secret-key" >> $GITHUB_ENV
@@ -40,7 +39,11 @@ jobs:
           coverage run manage.py test
           coverage xml
 
+      # 🔥 ESSENCIAL PARA O SONAR ENTENDER O COVERAGE
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.python.coverage.reportPaths=coverage.xml
