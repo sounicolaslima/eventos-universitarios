@@ -67,7 +67,7 @@
                             <label class="form-label fw-bold" for="editar-evento-imagem">Imagem do Evento</label>
                             {% if evento.imagem %}
                                 <div class="mb-2">
-                                    <img src="{{ evento.imagem.url }}" class="img-thumbnail" style="height: 100px;">
+                                    <img src="{{ evento.imagem.url }}" class="img-thumbnail" style="height: 100px;" alt="Foto atual do evento {{ evento.titulo }}">
                                     <br>
                                     <small class="text-muted">Imagem atual</small>
                                 </div>

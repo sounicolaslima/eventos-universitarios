@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=100, unique=True)
-    descricao = models.TextField(blank=True, null=True)
+    descricao = models.TextField(blank=True)
 
     def __str__(self):
         return self.nome
@@ -23,7 +23,7 @@ class Evento(models.Model):
     local = models.ForeignKey(Local, on_delete=models.PROTECT)
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT)
     preco_base = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
-    imagem = models.ImageField(upload_to='eventos/', null=True, blank=True)
+    imagem = models.ImageField(upload_to='eventos/', blank=True)
     organizador = models.ForeignKey(User, on_delete=models.CASCADE)
     data_criacao = models.DateTimeField(auto_now_add=True)
 

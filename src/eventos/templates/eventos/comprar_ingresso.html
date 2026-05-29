@@ -98,12 +98,12 @@
 
 <script>
     // Cálculo do total dinâmico
-    var precoUnitario = parseFloat("{{ ingresso.preco }}");
+    var precoUnitario = Number.parseFloat("{{ ingresso.preco }}");
     var quantidadeInput = document.getElementById('quantidade');
     var totalSpan = document.getElementById('total');
     
     function atualizarTotal() {
-        var quantidade = parseInt(quantidadeInput.value) || 1;
+        var quantidade = Number.parseInt(quantidadeInput.value, 10) || 1;
         var total = precoUnitario * quantidade;
         totalSpan.innerHTML = 'R$ ' + total.toFixed(2).replace('.', ',');
     }
@@ -115,8 +115,8 @@
     
     // Validação antes de enviar
     document.getElementById('compraForm').addEventListener('submit', function(e) {
-        var quantidade = parseInt(quantidadeInput.value);
-        var maxDisponivel = parseInt("{{ ingresso.quantidade_disponivel }}");
+        var quantidade = Number.parseInt(quantidadeInput.value, 10);
+        var maxDisponivel = Number.parseInt("{{ ingresso.quantidade_disponivel }}", 10);
         
         if (quantidade > maxDisponivel) {
             e.preventDefault();
