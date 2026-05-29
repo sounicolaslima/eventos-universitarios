@@ -14,7 +14,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm">
                         {% if evento.imagem %}
-                            <img src="{{ evento.imagem.url }}" class="card-img-top" style="height: 180px; object-fit: cover;">
+                            <img src="{{ evento.imagem.url }}" class="card-img-top" style="height: 180px; object-fit: cover;" alt="Imagem do evento {{ evento.titulo }}">
                         {% else %}
                             <div class="bg-secondary text-white text-center py-5" style="height: 180px;">
                                 <i class="fas fa-calendar-alt fa-3x"></i>
