@@ -222,36 +222,6 @@ def editar_evento(request, evento_id):
     ingressos = evento.ingresso_set.all()
     
     if request.method == 'POST':
-        evento.titulo = request.POST.get('titulo')
-        evento.descricao = request.POST.get('descricao')
-        evento.data_evento = request.POST.get('data_evento')
-        evento.local_id = request.POST.get('local')
-        evento.categoria_id = request.POST.get('categoria')
-        evento.preco_base = request.POST.get('preco_base') or 0
-        
-        if request.FILES.get('imagem'):
-            evento.imagem = request.FILES.get('imagem')
-        
-        evento.save()
-        messages.success(request, 'Evento atualizado com sucesso!')
-        return redirect('meus_eventos')
-    
-    locais = Local.objects.all()
-    categorias = Categoria.objects.all()
-    return render(request, 'eventos/editar_evento.html', {
-        'evento': evento,
-        'locais': locais,
-        'categorias': categorias,
-        'ingressos': ingressos
-    })
-
-@login_required
-def editar_evento(request, evento_id):
-    """Edita um evento existente"""
-    evento = get_object_or_404(Evento, id=evento_id, organizador=request.user)
-    ingressos = evento.ingresso_set.all()
-    
-    if request.method == 'POST':
         try:
             # Pegar dados do formulário
             titulo = request.POST.get('titulo')

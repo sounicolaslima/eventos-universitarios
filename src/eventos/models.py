@@ -11,7 +11,7 @@ from django.core.files import File
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=100, unique=True)
-    descricao = models.TextField(blank=True, null=True)
+    descricao = models.TextField(blank=True)
 
     def __str__(self):
         return self.nome
@@ -24,7 +24,7 @@ class Categoria(models.Model):
 
 class Local(models.Model):
     nome = models.CharField(max_length=200)
-    endereco = models.CharField(max_length=255, blank=True, null=True)
+    endereco = models.CharField(max_length=255, blank=True)
     capacidade = models.PositiveIntegerField(default=100)
 
     def __str__(self):
@@ -72,7 +72,6 @@ class Evento(models.Model):
 
     imagem = models.ImageField(
         upload_to='eventos/',
-        null=True,
         blank=True
     )
 

@@ -29,7 +29,7 @@ class LocalModelTest(TestCase):
     def test_local_endereco_opcional(self):
         local = Local.objects.create(nome='Auditório B', capacidade=80)
 
-        self.assertIsNone(local.endereco)
+        self.assertEqual(local.endereco, '')
 
     def test_get_or_create_local_cria_novo_quando_nao_existe(self):
         local, created = Local.get_or_create_local(

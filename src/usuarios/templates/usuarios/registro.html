@@ -52,40 +52,44 @@
                         {% csrf_token %}
 
                         <div class="mb-3">
-                            <label class="form-label">Usuário</label>
+                            <label class="form-label" for="registro-username">Usuário</label>
                             <input 
                                 type="text" 
                                 name="username" 
+                                id="registro-username"
                                 class="form-control form-control-lg"
                                 placeholder="Digite seu usuário"
                                 required>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Email</label>
+                            <label class="form-label" for="registro-email">Email</label>
                             <input 
                                 type="email" 
                                 name="email" 
+                                id="registro-email"
                                 class="form-control form-control-lg"
                                 placeholder="Digite seu email"
                                 required>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Senha</label>
+                            <label class="form-label" for="registro-password1">Senha</label>
                             <input 
                                 type="password" 
                                 name="password1" 
+                                id="registro-password1"
                                 class="form-control form-control-lg"
                                 placeholder="Digite sua senha"
                                 required>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Confirmar Senha</label>
+                            <label class="form-label" for="registro-password2">Confirmar Senha</label>
                             <input 
                                 type="password" 
                                 name="password2" 
+                                id="registro-password2"
                                 class="form-control form-control-lg"
                                 placeholder="Confirme sua senha"
                                 required>

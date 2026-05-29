@@ -12,44 +12,44 @@
                         {% csrf_token %}
                         
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Título do Evento *</label>
-                            <input type="text" name="titulo" class="form-control" required>
+                            <label class="form-label fw-bold" for="evento-titulo">Título do Evento *</label>
+                            <input type="text" name="titulo" id="evento-titulo" class="form-control" required>
                         </div>
                         
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Descrição *</label>
-                            <textarea name="descricao" class="form-control" rows="5" required></textarea>
+                            <label class="form-label fw-bold" for="evento-descricao">Descrição *</label>
+                            <textarea name="descricao" id="evento-descricao" class="form-control" rows="5" required></textarea>
                         </div>
                         
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Data e Hora *</label>
-                                <input type="datetime-local" name="data_evento" class="form-control" required>
+                                <label class="form-label fw-bold" for="evento-data">Data e Hora *</label>
+                                <input type="datetime-local" name="data_evento" id="evento-data" class="form-control" required>
                             </div>
                             
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Preço Base (R$)</label>
-                                <input type="number" step="0.01" name="preco_base" class="form-control" value="0.00">
+                                <label class="form-label fw-bold" for="evento-preco-base">Preço Base (R$)</label>
+                                <input type="number" step="0.01" name="preco_base" id="evento-preco-base" class="form-control" value="0.00">
                             </div>
                         </div>
                         
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Local do Evento *</label>
-                                <input type="text" name="local_nome" class="form-control" placeholder="Ex: Auditório Principal, Sala 101, Teatro Universitário" required>
+                                <label class="form-label fw-bold" for="evento-local-nome">Local do Evento *</label>
+                                <input type="text" name="local_nome" id="evento-local-nome" class="form-control" placeholder="Ex: Auditório Principal, Sala 101, Teatro Universitário" required>
                                 <small class="text-muted">Digite o nome do local onde será realizado o evento</small>
                             </div>
                             
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Endereço do Local</label>
-                                <input type="text" name="local_endereco" class="form-control" placeholder="Ex: Campus Central, Rua X, 123">
+                                <label class="form-label fw-bold" for="evento-local-endereco">Endereço do Local</label>
+                                <input type="text" name="local_endereco" id="evento-local-endereco" class="form-control" placeholder="Ex: Campus Central, Rua X, 123">
                                 <small class="text-muted">Opcional - Endereço completo do local</small>
                             </div>
                         </div>
                         
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Categoria *</label>
-                            <select name="categoria" class="form-select" required>
+                            <label class="form-label fw-bold" for="evento-categoria">Categoria *</label>
+                            <select name="categoria" id="evento-categoria" class="form-select" required>
                                 <option value="">Selecione uma categoria</option>
                                 {% for categoria in categorias %}
                                     <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
@@ -61,8 +61,8 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Imagem do Evento</label>
-                            <input type="file" name="imagem" class="form-control" accept="image/*">
+                            <label class="form-label fw-bold" for="evento-imagem">Imagem do Evento</label>
+                            <input type="file" name="imagem" id="evento-imagem" class="form-control" accept="image/*">
                             <small class="text-muted">Formatos permitidos: JPG, PNG, GIF (Opcional)</small>
                         </div>
                         

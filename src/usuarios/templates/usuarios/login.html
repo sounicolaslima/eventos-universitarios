@@ -45,20 +45,22 @@
                         {% csrf_token %}
 
                         <div class="mb-3">
-                            <label class="form-label">Usuário</label>
+                            <label class="form-label" for="login-username">Usuário</label>
                             <input 
                                 type="text" 
                                 name="username" 
+                                id="login-username"
                                 class="form-control form-control-lg"
                                 placeholder="Digite seu usuário"
                                 required>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Senha</label>
+                            <label class="form-label" for="login-password">Senha</label>
                             <input 
                                 type="password" 
                                 name="password" 
+                                id="login-password"
                                 class="form-control form-control-lg"
                                 placeholder="Digite sua senha"
                                 required>

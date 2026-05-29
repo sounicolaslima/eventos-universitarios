@@ -68,6 +68,8 @@ class IngressoCompraModelTest(TestCase):
         self.assertEqual(compra.ingresso, ingresso)
         self.assertEqual(compra.quantidade, 2)
         self.assertEqual(compra.valor_total, Decimal('200.00'))
+        self.assertIn('Compra', str(compra))
+        self.assertIn(self.user.username, str(compra))
 
     def test_status_padrao_de_compra_recem_criada_e_pendente(self):
         ingresso = Ingresso.objects.create(
@@ -85,3 +87,14 @@ class IngressoCompraModelTest(TestCase):
         )
 
         self.assertEqual(compra.status, 'pendente')
+
+    def test_ingresso_str_retorna_tipo_e_evento(self):
+        ingresso = Ingresso.objects.create(
+            evento=self.evento,
+            tipo='inteira',
+            preco=Decimal('50.00'),
+            quantidade_disponivel=20,
+        )
+
+        self.assertIn('Inteira', str(ingresso))
+        self.assertIn(self.evento.titulo, str(ingresso))
