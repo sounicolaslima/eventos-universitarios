@@ -9,6 +9,9 @@ from .models import Evento, Ingresso, Compra, Categoria, Local
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 
+# Template constants
+TEMPLATE_COMPRAR_INGRESSO = 'eventos/comprar_ingresso.html'
+
 def home(request):
     return render(request, 'eventos/home.html')
 
@@ -56,21 +59,21 @@ def comprar_ingresso(request, ingresso_id):
             quantidade = int(quantidade_raw)
         except (TypeError, ValueError):
             messages.error(request, 'Informe uma quantidade válida.')
-            return render(request, 'eventos/comprar_ingresso.html', {
+            return render(request, TEMPLATE_COMPRAR_INGRESSO, {
                 'ingresso': ingresso,
                 'quantidade': quantidade_raw
             })
 
         if quantidade < 1:
             messages.error(request, 'A quantidade mínima para compra é 1 ingresso.')
-            return render(request, 'eventos/comprar_ingresso.html', {
+            return render(request, TEMPLATE_COMPRAR_INGRESSO, {
                 'ingresso': ingresso,
                 'quantidade': quantidade
             })
 
         if quantidade > ingresso.quantidade_disponivel:
             messages.error(request, 'Quantidade indisponível para este ingresso.')
-            return render(request, 'eventos/comprar_ingresso.html', {
+            return render(request, TEMPLATE_COMPRAR_INGRESSO, {
                 'ingresso': ingresso,
                 'quantidade': quantidade
             })
@@ -83,7 +86,7 @@ def comprar_ingresso(request, ingresso_id):
             'valor_total': valor_total,
         })
 
-    return render(request, 'eventos/comprar_ingresso.html', {
+    return render(request, TEMPLATE_COMPRAR_INGRESSO, {
         'ingresso': ingresso,
         'quantidade': 1
     })
@@ -210,36 +213,6 @@ def criar_evento(request):
     return render(request, 'eventos/criar_evento.html', {
         'locais': locais,
         'categorias': categorias
-    })
-
-@login_required
-def editar_evento(request, evento_id):
-    """Edita um evento existente"""
-    evento = get_object_or_404(Evento, id=evento_id, organizador=request.user)
-    ingressos = evento.ingresso_set.all()
-    
-    if request.method == 'POST':
-        evento.titulo = request.POST.get('titulo')
-        evento.descricao = request.POST.get('descricao')
-        evento.data_evento = request.POST.get('data_evento')
-        evento.local_id = request.POST.get('local')
-        evento.categoria_id = request.POST.get('categoria')
-        evento.preco_base = request.POST.get('preco_base') or 0
-        
-        if request.FILES.get('imagem'):
-            evento.imagem = request.FILES.get('imagem')
-        
-        evento.save()
-        messages.success(request, 'Evento atualizado com sucesso!')
-        return redirect('meus_eventos')
-    
-    locais = Local.objects.all()
-    categorias = Categoria.objects.all()
-    return render(request, 'eventos/editar_evento.html', {
-        'evento': evento,
-        'locais': locais,
-        'categorias': categorias,
-        'ingressos': ingressos
     })
 
 @login_required

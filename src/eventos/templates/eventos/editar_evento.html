@@ -13,44 +13,44 @@
                         {% csrf_token %}
                         
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Título do Evento *</label>
-                            <input type="text" name="titulo" class="form-control" value="{{ evento.titulo }}" required>
+                            <label class="form-label fw-bold" for="editar-evento-titulo">Título do Evento *</label>
+                            <input type="text" name="titulo" id="editar-evento-titulo" class="form-control" value="{{ evento.titulo }}" required>
                         </div>
                         
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Descrição *</label>
-                            <textarea name="descricao" class="form-control" rows="5" required>{{ evento.descricao }}</textarea>
+                            <label class="form-label fw-bold" for="editar-evento-descricao">Descrição *</label>
+                            <textarea name="descricao" id="editar-evento-descricao" class="form-control" rows="5" required>{{ evento.descricao }}</textarea>
                         </div>
                         
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Data e Hora *</label>
-                                <input type="datetime-local" name="data_evento" class="form-control" value="{{ evento.data_evento|date:'Y-m-d\TH:i' }}" required>
+                                <label class="form-label fw-bold" for="editar-evento-data">Data e Hora *</label>
+                                <input type="datetime-local" name="data_evento" id="editar-evento-data" class="form-control" value="{{ evento.data_evento|date:'Y-m-d\TH:i' }}" required>
                             </div>
                             
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Preço Base (R$)</label>
-                                <input type="number" step="0.01" name="preco_base" class="form-control" value="{{ evento.preco_base }}">
+                                <label class="form-label fw-bold" for="editar-evento-preco-base">Preço Base (R$)</label>
+                                <input type="number" step="0.01" name="preco_base" id="editar-evento-preco-base" class="form-control" value="{{ evento.preco_base }}">
                             </div>
                         </div>
                         
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Local do Evento *</label>
-                                <input type="text" name="local_nome" class="form-control" value="{{ evento.local.nome }}" required>
+                                <label class="form-label fw-bold" for="editar-evento-local-nome">Local do Evento *</label>
+                                <input type="text" name="local_nome" id="editar-evento-local-nome" class="form-control" value="{{ evento.local.nome }}" required>
                                 <small class="text-muted">Digite o nome do local (ex: Auditório Principal, Sala 101)</small>
                             </div>
                             
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Endereço do Local</label>
-                                <input type="text" name="local_endereco" class="form-control" value="{{ evento.local.endereco|default:'' }}">
+                                <label class="form-label fw-bold" for="editar-evento-local-endereco">Endereço do Local</label>
+                                <input type="text" name="local_endereco" id="editar-evento-local-endereco" class="form-control" value="{{ evento.local.endereco|default:'' }}">
                                 <small class="text-muted">Opcional - Endereço completo</small>
                             </div>
                         </div>
                         
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Categoria *</label>
-                            <select name="categoria" class="form-select" required>
+                            <label class="form-label fw-bold" for="editar-evento-categoria">Categoria *</label>
+                            <select name="categoria" id="editar-evento-categoria" class="form-select" required>
                                 <option value="">Selecione uma categoria</option>
                                 {% for categoria in categorias %}
                                     <option value="{{ categoria.id }}" {% if evento.categoria.id == categoria.id %}selected{% endif %}>
@@ -64,7 +64,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Imagem do Evento</label>
+                            <label class="form-label fw-bold" for="editar-evento-imagem">Imagem do Evento</label>
                             {% if evento.imagem %}
                                 <div class="mb-2">
                                     <img src="{{ evento.imagem.url }}" class="img-thumbnail" style="height: 100px;">
@@ -72,7 +72,7 @@
                                     <small class="text-muted">Imagem atual</small>
                                 </div>
                             {% endif %}
-                            <input type="file" name="imagem" class="form-control" accept="image/*">
+                            <input type="file" name="imagem" id="editar-evento-imagem" class="form-control" accept="image/*">
                             <small class="text-muted">Deixe em branco para manter a imagem atual. Formatos: JPG, PNG, GIF</small>
                         </div>
                         

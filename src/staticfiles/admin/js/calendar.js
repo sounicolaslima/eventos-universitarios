@@ -123,7 +123,8 @@ depends on core.js for utility functions like removeChildren or quickElement
 
             // Draw days of month
             let currentDay = 1;
-            for (let i = startingPos; currentDay <= days; i++) {
+            let i = startingPos;
+            while (currentDay <= days) {
                 if (i % 7 === 0 && currentDay !== 1) {
                     tableRow = quickElement('tr', tableBody);
                 }
@@ -145,6 +146,7 @@ depends on core.js for utility functions like removeChildren or quickElement
                 const link = quickElement('a', cell, currentDay, 'href', '#');
                 link.addEventListener('click', calendarMonth(year, month));
                 currentDay++;
+                i++;
             }
 
             // Draw blanks after end of month (optional, but makes for valid code)

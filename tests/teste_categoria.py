@@ -22,7 +22,7 @@ class CategoriaModelTest(TestCase):
     def test_categoria_descricao_opcional(self):
         categoria = Categoria.objects.create(nome='Simpósio')
 
-        self.assertIsNone(categoria.descricao)
+        self.assertEqual(categoria.descricao, '')
 
     def test_categoria_nome_e_unico(self):
         Categoria.objects.create(nome='Congresso')

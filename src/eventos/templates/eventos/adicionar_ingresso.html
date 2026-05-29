@@ -15,8 +15,8 @@
                         {% csrf_token %}
                         
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Tipo de Ingresso *</label>
-                            <select name="tipo" class="form-select" required>
+                            <label class="form-label fw-bold" for="ingresso-tipo">Tipo de Ingresso *</label>
+                            <select name="tipo" id="ingresso-tipo" class="form-select" required>
                                 <option value="">Selecione...</option>
                                 <option value="inteira">🎫 Inteira</option>
                                 <option value="meia">🎟️ Meia-entrada</option>
@@ -25,13 +25,13 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Preço (R$) *</label>
-                            <input type="number" step="0.01" name="preco" class="form-control" placeholder="Ex: 25.00" required>
+                            <label class="form-label fw-bold" for="ingresso-preco">Preço (R$) *</label>
+                            <input type="number" step="0.01" name="preco" id="ingresso-preco" class="form-control" placeholder="Ex: 25.00" required>
                         </div>
                         
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Quantidade Disponível *</label>
-                            <input type="number" name="quantidade" class="form-control" placeholder="Ex: 100" required>
+                            <label class="form-label fw-bold" for="ingresso-quantidade">Quantidade Disponível *</label>
+                            <input type="number" name="quantidade" id="ingresso-quantidade" class="form-control" placeholder="Ex: 100" required>
                         </div>
                         
                         <div class="alert alert-warning">
