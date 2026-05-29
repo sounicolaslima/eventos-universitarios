@@ -4,6 +4,7 @@ from django.urls import reverse
 from decimal import Decimal
 from datetime import timedelta
 from django.utils import timezone
+import secrets
 
 from .models import Evento, Ingresso, Compra, Categoria, Local
 
@@ -11,9 +12,11 @@ from .models import Evento, Ingresso, Compra, Categoria, Local
 class QRCodeCompraTests(TestCase):
 
     def setUp(self):
+        # generate a non-hardcoded password for tests to avoid committing secrets
+        self.user_password = secrets.token_urlsafe(8)
         self.user = User.objects.create_user(
             username='rafa',
-            password='SecurePass123!'
+            password=self.user_password
         )
 
         self.categoria = Categoria.objects.create(nome='Tecnologia')
@@ -77,15 +80,18 @@ class QRCodeCompraTests(TestCase):
 class ValidacaoQRTests(TestCase):
 
     def setUp(self):
+        # generate non-hardcoded passwords for test users
+        self.organizador_password = secrets.token_urlsafe(10)
         self.organizador = User.objects.create_user(
             username='admin',
-            password='SecurePass123!',
+            password=self.organizador_password,
             is_staff=True
         )
 
+        self.user_password = secrets.token_urlsafe(8)
         self.user = User.objects.create_user(
             username='rafa',
-            password='SecurePass123!'
+            password=self.user_password
         )
 
         self.categoria = Categoria.objects.create(nome='Tecnologia')
@@ -123,7 +129,7 @@ class ValidacaoQRTests(TestCase):
     def test_validacao_qr_valido(self):
         self.client.login(
             username='admin',
-            password='SecurePass123!'
+            password=self.organizador_password
         )
 
         response = self.client.get(
@@ -137,11 +143,11 @@ class ValidacaoQRTests(TestCase):
     def test_validacao_qr_invalido(self):
         self.client.login(
             username='admin',
-            password='SecurePass123!'
+            password=self.organizador_password
         )
 
         response = self.client.get(
-            '/validar-qr/123e4567-e89b-12d3-a456-426614174000/'
+            reverse('validar_qr', args=['123e4567-e89b-12d3-a456-426614174000'])
         )
 
         self.assertEqual(response.status_code, 302)
@@ -149,7 +155,7 @@ class ValidacaoQRTests(TestCase):
     def test_qr_ja_utilizado(self):
         self.client.login(
             username='admin',
-            password='SecurePass123!'
+            password=self.organizador_password
         )
 
         self.compra.status = 'presente'

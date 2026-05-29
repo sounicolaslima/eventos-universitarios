@@ -9,6 +9,9 @@ from .models import Evento, Ingresso, Compra, Categoria, Local
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 
+# Template constants
+TEMPLATE_COMPRAR_INGRESSO = 'eventos/comprar_ingresso.html'
+
 def home(request):
     return render(request, 'eventos/home.html')
 
@@ -56,21 +59,21 @@ def comprar_ingresso(request, ingresso_id):
             quantidade = int(quantidade_raw)
         except (TypeError, ValueError):
             messages.error(request, 'Informe uma quantidade válida.')
-            return render(request, 'eventos/comprar_ingresso.html', {
+            return render(request, TEMPLATE_COMPRAR_INGRESSO, {
                 'ingresso': ingresso,
                 'quantidade': quantidade_raw
             })
 
         if quantidade < 1:
             messages.error(request, 'A quantidade mínima para compra é 1 ingresso.')
-            return render(request, 'eventos/comprar_ingresso.html', {
+            return render(request, TEMPLATE_COMPRAR_INGRESSO, {
                 'ingresso': ingresso,
                 'quantidade': quantidade
             })
 
         if quantidade > ingresso.quantidade_disponivel:
             messages.error(request, 'Quantidade indisponível para este ingresso.')
-            return render(request, 'eventos/comprar_ingresso.html', {
+            return render(request, TEMPLATE_COMPRAR_INGRESSO, {
                 'ingresso': ingresso,
                 'quantidade': quantidade
             })
@@ -83,7 +86,7 @@ def comprar_ingresso(request, ingresso_id):
             'valor_total': valor_total,
         })
 
-    return render(request, 'eventos/comprar_ingresso.html', {
+    return render(request, TEMPLATE_COMPRAR_INGRESSO, {
         'ingresso': ingresso,
         'quantidade': 1
     })

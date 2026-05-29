@@ -250,25 +250,31 @@ Requires core.js and SelectBox.js.
             SelectFilter.refresh_filtered_warning(field_id);
             SelectFilter.refresh_icons(field_id);
         },
+        has_key_code: function(event, keyCode) {
+            return (event.which && event.which === keyCode) || (event.keyCode && event.keyCode === keyCode);
+        },
+        move_selection: function(source_box, source, target, field_id) {
+            const old_index = source_box.selectedIndex;
+            SelectBox.move(field_id + source, field_id + target);
+            SelectFilter.refresh_filtered_selects(field_id);
+            SelectFilter.refresh_filtered_warning(field_id);
+            source_box.selectedIndex = (old_index === source_box.length) ? source_box.length - 1 : old_index;
+        },
         filter_key_down: function(event, field_id, source, target) {
             const source_box = document.getElementById(field_id + source);
             // right key (39) or left key (37)
             const direction = source === '_from' ? 39 : 37;
             // right arrow -- move across
-            if ((event.which && event.which === direction) || (event.keyCode && event.keyCode === direction)) {
-                const old_index = source_box.selectedIndex;
-                SelectBox.move(field_id + source, field_id + target);
-                SelectFilter.refresh_filtered_selects(field_id);
-                SelectFilter.refresh_filtered_warning(field_id);
-                source_box.selectedIndex = (old_index === source_box.length) ? source_box.length - 1 : old_index;
+            if (SelectFilter.has_key_code(event, direction)) {
+                SelectFilter.move_selection(source_box, source, target, field_id);
                 return;
             }
             // down arrow -- wrap around
-            if ((event.which && event.which === 40) || (event.keyCode && event.keyCode === 40)) {
+            if (SelectFilter.has_key_code(event, 40)) {
                 source_box.selectedIndex = (source_box.length === source_box.selectedIndex + 1) ? 0 : source_box.selectedIndex + 1;
             }
             // up arrow -- wrap around
-            if ((event.which && event.which === 38) || (event.keyCode && event.keyCode === 38)) {
+            if (SelectFilter.has_key_code(event, 38)) {
                 source_box.selectedIndex = (source_box.selectedIndex === 0) ? source_box.length - 1 : source_box.selectedIndex - 1;
             }
         }
