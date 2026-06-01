@@ -7,6 +7,7 @@ from decimal import Decimal
 from django.utils import timezone
 from .models import Evento, Ingresso, Compra, Categoria, Local
 from django.http import HttpResponseForbidden
+from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 
 # Template constants
@@ -216,6 +217,7 @@ def criar_evento(request):
     })
 
 @login_required
+@require_http_methods(["GET", "POST"])
 def editar_evento(request, evento_id):
     """Edita um evento existente"""
     evento = get_object_or_404(Evento, id=evento_id, organizador=request.user)
@@ -266,8 +268,8 @@ def editar_evento(request, evento_id):
                 
             return redirect('meus_eventos')
             
-        except Exception as e:
-            messages.error(request, f'Erro ao atualizar evento: {str(e)}')
+        except Exception:
+            messages.error(request, 'Erro ao atualizar evento. Tente novamente.')
             return redirect('editar_evento', evento_id=evento.id)
     
     locais = Local.objects.all()
@@ -319,8 +321,8 @@ def adicionar_ingresso(request, evento_id):
             )
             messages.success(request, f'Ingresso {ingresso.get_tipo_display()} adicionado com sucesso!')
             return redirect('editar_evento', evento_id=evento.id)
-        except Exception as e:
-            messages.error(request, f'Erro ao criar ingresso: {str(e)}')
+        except Exception:
+            messages.error(request, 'Erro ao criar ingresso. Tente novamente.')
             return redirect('adicionar_ingresso', evento_id=evento.id)
     
     return render(request, 'eventos/adicionar_ingresso.html', {'evento': evento})
