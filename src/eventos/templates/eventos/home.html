@@ -8,51 +8,133 @@
     <div class="container">
         <div class="row align-items-center">
             
-            <div class="col-lg-6 text-center text-lg-start">
-                <div style="display: inline-block; background: rgba(99,102,241,0.15); color: #818cf8; padding: 6px 20px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; margin-bottom: 20px; border: 1px solid rgba(99,102,241,0.2);">
+            <div class="col-lg-7 text-center text-lg-start">
+                
+                <!-- Logo UniEvent Grande -->
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+                    <div style="
+                        width: 72px;
+                        height: 72px;
+                        background: linear-gradient(145deg, #7c3aed, #6d28d9, #5b21b6);
+                        border-radius: 20px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 12px 40px rgba(124,58,237,0.35);
+                        position: relative;
+                        overflow: hidden;
+                    ">
+                        <div style="position: absolute; top: -30px; right: -30px; width: 80px; height: 80px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+                        <div style="position: absolute; bottom: -20px; left: -20px; width: 50px; height: 50px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: relative; z-index: 1;">
+                            <path d="M19 4h-3V2h-2v2h-4V2H8v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM7 12h10v2H7zm0 4h10v2H7z" fill="white"/>
+                            <path d="M7 8h10v2H7z" fill="white" opacity="0.6"/>
+                            <circle cx="12" cy="15" r="2" fill="white" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span style="font-size: 2.8rem; font-weight: 800; color: white; letter-spacing: -1.5px; line-height: 1;">
+                            Uni<span style="background: linear-gradient(145deg, #a78bfa, #7c3aed, #6d28d9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Event</span>
+                        </span>
+                        <span style="display: block; font-size: 0.7rem; color: rgba(255,255,255,0.35); letter-spacing: 3px; text-transform: uppercase; margin-top: 2px; font-weight: 300;">Plataforma Acadêmica</span>
+                    </div>
+                </div>
+
+                <div style="display: inline-block; background: rgba(124,58,237,0.2); color: #a78bfa; padding: 6px 20px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; margin-bottom: 16px; border: 1px solid rgba(124,58,237,0.25);">
                     <i class="fas fa-sparkles me-2"></i> Plataforma Acadêmica #1
                 </div>
                 
-                <h1 style="font-size: 3.2rem; font-weight: 800; color: white; line-height: 1.15; margin-bottom: 16px;">
+                <h1 style="font-size: 3.5rem; font-weight: 800; color: white; line-height: 1.1; margin-bottom: 16px;">
                     Descubra os Melhores<br>
-                    <span style="background: linear-gradient(135deg, #818cf8, #c084fc); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: #818cf8;">
+                    <span style="background: linear-gradient(145deg, #a78bfa, #7c3aed, #6d28d9); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: #7c3aed;">
                         Eventos Universitários
                     </span>
                 </h1>
                 
-                <p style="font-size: 1.1rem; color: rgba(255,255,255,0.7); max-width: 500px; margin-bottom: 28px; line-height: 1.6;">
-                    Palestras, workshops, congressos e muito mais. Tudo em um só lugar para impulsionar sua carreira.
+                <p style="font-size: 1.15rem; color: rgba(255,255,255,0.6); max-width: 520px; margin-bottom: 32px; line-height: 1.7;">
+                    Palestras, workshops, congressos e muito mais. Tudo em um só lugar para impulsionar sua carreira acadêmica.
                 </p>
                 
-                <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; justify-content: lg-start;">
-                    <a href="{% url 'lista_eventos' %}" style="display: inline-block; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 12px 36px; border-radius: 50px; font-weight: 600; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 8px 30px rgba(99,102,241,0.3);">
+                <!-- Botões Padronizados - SEMPRE VISÍVEIS -->
+                <div style="display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; justify-content: lg-start;">
+                    <a href="{% url 'lista_eventos' %}" style="
+                        display: inline-block;
+                        background: linear-gradient(135deg, #7c3aed, #6d28d9);
+                        color: white;
+                        padding: 14px 42px;
+                        border-radius: 50px;
+                        font-weight: 600;
+                        text-decoration: none;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 8px 35px rgba(124,58,237,0.35);
+                    " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 14px 45px rgba(124,58,237,0.45)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 35px rgba(124,58,237,0.35)'">
                         <i class="fas fa-search me-2"></i> Explorar Eventos
                     </a>
-                    {% if not user.is_authenticated %}
-                        <a href="{% url 'registro' %}" style="display: inline-block; background: transparent; color: white; padding: 12px 36px; border-radius: 50px; font-weight: 600; text-decoration: none; border: 2px solid rgba(255,255,255,0.25); transition: all 0.3s ease;">
-                            <i class="fas fa-user-plus me-2"></i> Criar Conta
-                        </a>
-                    {% endif %}
+                    <a href="{% url 'registro' %}" style="
+                        display: inline-block;
+                        background: linear-gradient(135deg, #7c3aed, #6d28d9);
+                        color: white;
+                        padding: 14px 42px;
+                        border-radius: 50px;
+                        font-weight: 600;
+                        text-decoration: none;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 8px 35px rgba(124,58,237,0.35);
+                    " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 14px 45px rgba(124,58,237,0.45)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 35px rgba(124,58,237,0.35)'">
+                        <i class="fas fa-user-plus me-2"></i> Criar Conta
+                    </a>
                 </div>
             </div>
             
-            <div class="col-lg-6 d-none d-lg-block">
-                <div style="background: rgba(255,255,255,0.04); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.06); border-radius: 24px; padding: 40px; text-align: center;">
-                    <i class="fas fa-calendar-check" style="font-size: 3.5rem; color: #818cf8;"></i>
-                    <h3 style="color: white; margin-top: 12px; font-weight: 700;">Eventos em Destaque</h3>
-                    <p style="color: rgba(255,255,255,0.5);">+50 eventos realizados com sucesso</p>
-                    <div style="display: flex; justify-content: center; gap: 40px; margin-top: 20px;">
-                        <div>
-                            <div style="color: white; font-size: 1.4rem; font-weight: 700;">50+</div>
-                            <div style="color: rgba(255,255,255,0.4); font-size: 0.8rem;">Eventos</div>
+            <!-- Coluna da direita - Logo UniEvent Centralizada -->
+            <div class="col-lg-5 d-none d-lg-block">
+                <div style="
+                    background: rgba(255,255,255,0.03);
+                    backdrop-filter: blur(20px);
+                    border: 1px solid rgba(255,255,255,0.06);
+                    border-radius: 32px;
+                    padding: 50px 40px;
+                    text-align: center;
+                    position: relative;
+                    overflow: hidden;
+                ">
+                    <div style="position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%); border-radius: 50%;"></div>
+                    <div style="position: absolute; bottom: -40px; left: -40px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%); border-radius: 50%;"></div>
+                    
+                    <div style="position: relative; z-index: 1;">
+                        <div style="
+                            width: 120px;
+                            height: 120px;
+                            background: linear-gradient(145deg, #7c3aed, #6d28d9, #5b21b6);
+                            border-radius: 32px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin: 0 auto 20px;
+                            box-shadow: 0 20px 60px rgba(124,58,237,0.3);
+                            position: relative;
+                            overflow: hidden;
+                        ">
+                            <div style="position: absolute; top: -40px; right: -40px; width: 100px; height: 100px; background: rgba(255,255,255,0.06); border-radius: 50%;"></div>
+                            <div style="position: absolute; bottom: -30px; left: -30px; width: 70px; height: 70px; background: rgba(255,255,255,0.04); border-radius: 50%;"></div>
+                            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: relative; z-index: 1;">
+                                <path d="M19 4h-3V2h-2v2h-4V2H8v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM7 12h10v2H7zm0 4h10v2H7z" fill="white"/>
+                                <path d="M7 8h10v2H7z" fill="white" opacity="0.5"/>
+                                <circle cx="12" cy="15" r="2.5" fill="white" opacity="0.2"/>
+                            </svg>
                         </div>
-                        <div>
-                            <div style="color: white; font-size: 1.4rem; font-weight: 700;">5K+</div>
-                            <div style="color: rgba(255,255,255,0.4); font-size: 0.8rem;">Participantes</div>
-                        </div>
-                        <div>
-                            <div style="color: white; font-size: 1.4rem; font-weight: 700;">100+</div>
-                            <div style="color: rgba(255,255,255,0.4); font-size: 0.8rem;">Palestrantes</div>
+                        
+                        <h2 style="font-size: 2.5rem; font-weight: 800; color: white; letter-spacing: -1px; margin: 0;">
+                            Uni<span style="background: linear-gradient(145deg, #a78bfa, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Event</span>
+                        </h2>
+                        <p style="color: rgba(255,255,255,0.3); font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase; margin: 4px 0 0; font-weight: 300;">
+                            Eventos Universitários
+                        </p>
+                        
+                        <div style="display: flex; justify-content: center; gap: 8px; margin-top: 24px;">
+                            <span style="width: 8px; height: 8px; background: linear-gradient(145deg, #a78bfa, #7c3aed); border-radius: 50%; opacity: 0.6;"></span>
+                            <span style="width: 8px; height: 8px; background: linear-gradient(145deg, #a78bfa, #7c3aed); border-radius: 50%; opacity: 0.4;"></span>
+                            <span style="width: 8px; height: 8px; background: linear-gradient(145deg, #a78bfa, #7c3aed); border-radius: 50%; opacity: 0.2;"></span>
                         </div>
                     </div>
                 </div>
@@ -66,17 +148,17 @@
 <div class="container" style="margin-top: -20px;">
     <div class="row g-4">
         <div class="col-md-3 col-sm-6">
-            <div style="background: white; border-radius: 16px; padding: 28px 16px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s ease;">
-                <div style="width: 64px; height: 64px; background: rgba(99,102,241,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
-                    <i class="fas fa-calendar-alt" style="font-size: 1.8rem; color: #6366f1;"></i>
+            <div style="background: white; border-radius: 16px; padding: 28px 16px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s ease; border: 1px solid rgba(124,58,237,0.05);" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.06)'">
+                <div style="width: 64px; height: 64px; background: rgba(124,58,237,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                    <i class="fas fa-calendar-alt" style="font-size: 1.8rem; color: #7c3aed;"></i>
                 </div>
                 <div style="font-size: 2rem; font-weight: 800; color: #1a1a2e;">50+</div>
                 <p style="color: #6b7280; margin: 0; font-weight: 500; font-size: 0.9rem;">Eventos Realizados</p>
             </div>
         </div>
         <div class="col-md-3 col-sm-6">
-            <div style="background: white; border-radius: 16px; padding: 28px 16px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s ease;">
-                <div style="width: 64px; height: 64px; background: rgba(16,185,129,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+            <div style="background: white; border-radius: 16px; padding: 28px 16px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s ease; border: 1px solid rgba(124,58,237,0.05);" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.06)'">
+                <div style="width: 64px; height: 64px; background: rgba(16,185,129,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
                     <i class="fas fa-users" style="font-size: 1.8rem; color: #10b981;"></i>
                 </div>
                 <div style="font-size: 2rem; font-weight: 800; color: #1a1a2e;">5K+</div>
@@ -84,8 +166,8 @@
             </div>
         </div>
         <div class="col-md-3 col-sm-6">
-            <div style="background: white; border-radius: 16px; padding: 28px 16px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s ease;">
-                <div style="width: 64px; height: 64px; background: rgba(245,158,11,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+            <div style="background: white; border-radius: 16px; padding: 28px 16px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s ease; border: 1px solid rgba(124,58,237,0.05);" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.06)'">
+                <div style="width: 64px; height: 64px; background: rgba(245,158,11,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
                     <i class="fas fa-chalkboard-teacher" style="font-size: 1.8rem; color: #f59e0b;"></i>
                 </div>
                 <div style="font-size: 2rem; font-weight: 800; color: #1a1a2e;">100+</div>
@@ -93,8 +175,8 @@
             </div>
         </div>
         <div class="col-md-3 col-sm-6">
-            <div style="background: white; border-radius: 16px; padding: 28px 16px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s ease;">
-                <div style="width: 64px; height: 64px; background: rgba(6,182,212,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+            <div style="background: white; border-radius: 16px; padding: 28px 16px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s ease; border: 1px solid rgba(124,58,237,0.05);" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.06)'">
+                <div style="width: 64px; height: 64px; background: rgba(6,182,212,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
                     <i class="fas fa-certificate" style="font-size: 1.8rem; color: #06b6d4;"></i>
                 </div>
                 <div style="font-size: 2rem; font-weight: 800; color: #1a1a2e;">100%</div>
@@ -106,24 +188,24 @@
 
 <div class="container" style="padding: 60px 0;">
     <div style="text-align: center; margin-bottom: 40px;">
-        <div style="display: inline-block; background: rgba(99,102,241,0.1); color: #6366f1; padding: 4px 20px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; margin-bottom: 8px;">Diferenciais</div>
-        <h2 style="font-size: 2.2rem; font-weight: 800; color: #1a1a2e; margin-bottom: 4px;">Por que escolher nossa plataforma?</h2>
+        <div style="display: inline-block; background: rgba(124,58,237,0.08); color: #7c3aed; padding: 4px 20px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; margin-bottom: 8px; border: 1px solid rgba(124,58,237,0.1);">Diferenciais</div>
+        <h2 style="font-size: 2.2rem; font-weight: 800; color: #1a1a2e; margin-bottom: 4px;">Por que escolher a <span style="color: #7c3aed;">UniEvent</span>?</h2>
         <p style="color: #6b7280; font-size: 1rem;">Oferecemos a melhor experiência para eventos acadêmicos</p>
     </div>
     
     <div class="row g-4">
         <div class="col-md-4">
-            <div style="background: white; border-radius: 16px; padding: 28px 20px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #f1f3f5; transition: all 0.3s ease; height: 100%;">
-                <div style="width: 72px; height: 72px; background: rgba(99,102,241,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
-                    <i class="fas fa-ticket-alt" style="font-size: 2rem; color: #6366f1;"></i>
+            <div style="background: white; border-radius: 16px; padding: 28px 20px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #f1f3f5; transition: all 0.3s ease; height: 100%;" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.08)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 12px rgba(0,0,0,0.04)'">
+                <div style="width: 72px; height: 72px; background: rgba(124,58,237,0.06); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                    <i class="fas fa-ticket-alt" style="font-size: 2rem; color: #7c3aed;"></i>
                 </div>
                 <h5 style="font-weight: 700; color: #1a1a2e; margin-bottom: 6px;">Compra Fácil</h5>
                 <p style="color: #6b7280; margin: 0; font-size: 0.9rem;">Adquira ingressos de forma rápida e segura</p>
             </div>
         </div>
         <div class="col-md-4">
-            <div style="background: white; border-radius: 16px; padding: 28px 20px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #f1f3f5; transition: all 0.3s ease; height: 100%;">
-                <div style="width: 72px; height: 72px; background: rgba(16,185,129,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+            <div style="background: white; border-radius: 16px; padding: 28px 20px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #f1f3f5; transition: all 0.3s ease; height: 100%;" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.08)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 12px rgba(0,0,0,0.04)'">
+                <div style="width: 72px; height: 72px; background: rgba(16,185,129,0.06); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
                     <i class="fas fa-qrcode" style="font-size: 2rem; color: #10b981;"></i>
                 </div>
                 <h5 style="font-weight: 700; color: #1a1a2e; margin-bottom: 6px;">QR Code Exclusivo</h5>
@@ -131,8 +213,8 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div style="background: white; border-radius: 16px; padding: 28px 20px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #f1f3f5; transition: all 0.3s ease; height: 100%;">
-                <div style="width: 72px; height: 72px; background: rgba(245,158,11,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+            <div style="background: white; border-radius: 16px; padding: 28px 20px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #f1f3f5; transition: all 0.3s ease; height: 100%;" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.08)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 12px rgba(0,0,0,0.04)'">
+                <div style="width: 72px; height: 72px; background: rgba(245,158,11,0.06); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
                     <i class="fas fa-certificate" style="font-size: 2rem; color: #f59e0b;"></i>
                 </div>
                 <h5 style="font-weight: 700; color: #1a1a2e; margin-bottom: 6px;">Certificado Automático</h5>
@@ -143,10 +225,20 @@
 </div>
 
 <div class="container" style="padding-bottom: 60px;">
-    <div style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%); border-radius: 20px; padding: 48px 32px; text-align: center;">
+    <div style="background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 20px; padding: 48px 32px; text-align: center; border: 1px solid rgba(124,58,237,0.1);">
         <h2 style="font-size: 2rem; font-weight: 800; color: white; margin-bottom: 8px;">Pronto para participar do próximo evento?</h2>
-        <p style="font-size: 1rem; color: rgba(255,255,255,0.6); margin-bottom: 24px;">Não perca as melhores oportunidades de aprendizado e networking</p>
-        <a href="{% url 'lista_eventos' %}" style="display: inline-block; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 12px 40px; border-radius: 50px; font-weight: 600; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 8px 30px rgba(99,102,241,0.3);">
+        <p style="font-size: 1rem; color: rgba(255,255,255,0.5); margin-bottom: 24px;">Não perca as melhores oportunidades de aprendizado e networking</p>
+        <a href="{% url 'lista_eventos' %}" style="
+            display: inline-block;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: white;
+            padding: 14px 44px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 35px rgba(124,58,237,0.3);
+        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 14px 45px rgba(124,58,237,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 35px rgba(124,58,237,0.3)'">
             <i class="fas fa-calendar-check me-2"></i> Ver Eventos Agora
         </a>
     </div>

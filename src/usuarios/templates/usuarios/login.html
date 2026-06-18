@@ -1,92 +1,190 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Eventos Universitários</title>
+{% extends 'eventos/base.html' %}
+{% load static %}
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhOtr07O" crossorigin="anonymous">
+{% block content %}
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
-</head>
+<div style="
+    min-height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+">
 
-<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-7">
 
-<div class="container">
-    <div class="row justify-content-center min-vh-100 align-items-center">
-        <div class="col-md-5">
+                <div style="
+                    background: white;
+                    border-radius: 24px;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+                    overflow: hidden;
+                ">
 
-            <div class="card shadow-lg border-0 rounded-4">
-
-                <!-- Header -->
-                <div class="card-header bg-primary text-white text-center rounded-top-4 py-3">
-                    <h4 class="mb-0">
-                        <i class="fas fa-sign-in-alt me-2"></i> Login
-                    </h4>
-                </div>
-
-                <div class="card-body p-4">
-
-                    <!-- 🔥 MESSAGES BONITO -->
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
-                                <i class="fas fa-info-circle me-2"></i>
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <div style="
+                        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+                        padding: 32px 24px;
+                        text-align: center;
+                    ">
+                        <!-- Logo UniEvent -->
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;">
+                            <div style="
+                                width: 44px;
+                                height: 44px;
+                                background: linear-gradient(145deg, #7c3aed, #6d28d9);
+                                border-radius: 12px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                box-shadow: 0 4px 15px rgba(124,58,237,0.3);
+                            ">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19 4h-3V2h-2v2h-4V2H8v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM7 12h10v2H7zm0 4h10v2H7z" fill="white"/>
+                                    <path d="M7 8h10v2H7z" fill="white" opacity="0.6"/>
+                                </svg>
                             </div>
-                        {% endfor %}
-                    {% endif %}
-
-                    <!-- FORM -->
-                    <form method="post">
-                        {% csrf_token %}
-
-                        <div class="mb-3">
-                            <label class="form-label" for="login-username">Usuário</label>
-                            <input 
-                                type="text" 
-                                name="username" 
-                                id="login-username"
-                                class="form-control form-control-lg"
-                                placeholder="Digite seu usuário"
-                                required>
+                            <span style="font-size: 1.5rem; font-weight: 800; color: white;">
+                                Uni<span style="background: linear-gradient(145deg, #a78bfa, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Event</span>
+                            </span>
                         </div>
+                        
+                        <h4 style="color: white; font-weight: 700; margin: 0;">Login</h4>
+                        <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem; margin: 4px 0 0;">
+                            Acesse sua conta
+                        </p>
+                    </div>
 
-                        <div class="mb-3">
-                            <label class="form-label" for="login-password">Senha</label>
-                            <input 
-                                type="password" 
-                                name="password" 
-                                id="login-password"
-                                class="form-control form-control-lg"
-                                placeholder="Digite sua senha"
-                                required>
-                        </div>
+                    <div style="padding: 32px 28px;">
 
-                        <button type="submit" class="btn btn-primary btn-lg w-100">
-                            <i class="fas fa-sign-in-alt me-2"></i> Entrar
-                        </button>
-                    </form>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" style="border-radius: 12px; border: none; box-shadow: 0 2px 12px rgba(0,0,0,0.04);">
+                                    <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% else %}info-circle{% endif %} me-2"></i>
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
 
-                    <hr class="my-4">
+                        <form method="post">
+                            {% csrf_token %}
 
-                    <p class="text-center mb-0">
-                        Não tem conta?
-                        <a href="{% url 'registro' %}" class="fw-bold">Cadastre-se</a>
-                    </p>
+                            <div style="margin-bottom: 20px;">
+                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                    <i class="fas fa-user me-2" style="color: #7c3aed;"></i> Usuário
+                                </label>
+                                <input 
+                                    type="text" 
+                                    name="username" 
+                                    class="form-control"
+                                    placeholder="Digite seu usuário"
+                                    required
+                                    style="
+                                        padding: 12px 16px;
+                                        border-radius: 12px;
+                                        border: 2px solid #e5e7eb;
+                                        font-size: 1rem;
+                                        transition: all 0.3s ease;
+                                        background: #fafbfc;
+                                    "
+                                    onfocus="this.style.borderColor='#7c3aed'; this.style.boxShadow='0 0 0 4px rgba(124,58,237,0.1)'; this.style.background='white'"
+                                    onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'"
+                                >
+                            </div>
+
+                            <div style="margin-bottom: 24px;">
+                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                    <i class="fas fa-lock me-2" style="color: #7c3aed;"></i> Senha
+                                </label>
+                                <input 
+                                    type="password" 
+                                    name="password" 
+                                    class="form-control"
+                                    placeholder="Digite sua senha"
+                                    required
+                                    style="
+                                        padding: 12px 16px;
+                                        border-radius: 12px;
+                                        border: 2px solid #e5e7eb;
+                                        font-size: 1rem;
+                                        transition: all 0.3s ease;
+                                        background: #fafbfc;
+                                    "
+                                    onfocus="this.style.borderColor='#7c3aed'; this.style.boxShadow='0 0 0 4px rgba(124,58,237,0.1)'; this.style.background='white'"
+                                    onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'"
+                                >
+                            </div>
+
+                            <button type="submit" style="
+                                width: 100%;
+                                padding: 14px;
+                                background: linear-gradient(135deg, #7c3aed, #6d28d9);
+                                color: white;
+                                border: none;
+                                border-radius: 12px;
+                                font-weight: 600;
+                                font-size: 1rem;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                box-shadow: 0 4px 20px rgba(124,58,237,0.25);
+                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(124,58,237,0.35)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(124,58,237,0.25)'">
+                                <i class="fas fa-sign-in-alt me-2"></i> Entrar
+                            </button>
+                        </form>
+
+                        <hr style="margin: 24px 0; border-color: #f1f3f5;">
+
+                        <p style="text-align: center; margin: 0; color: #6b7280;">
+                            Não tem conta?
+                            <a href="{% url 'registro' %}" style="
+                                color: #7c3aed;
+                                font-weight: 600;
+                                text-decoration: none;
+                                transition: all 0.3s ease;
+                            " onmouseover="this.style.color='#6d28d9'; this.style.textDecoration='underline'" onmouseout="this.style.color='#7c3aed'; this.style.textDecoration='none'">
+                                Cadastre-se
+                            </a>
+                        </p>
+
+                    </div>
 
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
+
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<style>
+    .form-control:focus {
+        outline: none;
+    }
+    .alert {
+        border-radius: 12px !important;
+        border: none !important;
+    }
+    .alert-success {
+        background: #ecfdf5 !important;
+        color: #065f46 !important;
+    }
+    .alert-error {
+        background: #fef2f2 !important;
+        color: #991b1b !important;
+    }
+    .alert-warning {
+        background: #fffbeb !important;
+        color: #92400e !important;
+    }
+    .alert-info {
+        background: #eff6ff !important;
+        color: #1e40af !important;
+    }
+    .alert .btn-close {
+        padding: 0.75rem;
+    }
+</style>
 
-</body>
-</html>
+{% endblock %}
