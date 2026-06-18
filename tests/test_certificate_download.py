@@ -58,7 +58,7 @@ class CertificateDownloadTest(TestCase):
         response = self.client.get(reverse('meu_historico'))
 
         self.assertContains(response, reverse('download_certificado', args=[self.compra.id]))
-        self.assertContains(response, 'Baixar Certificado')
+        self.assertContains(response, 'fa-download')
 
     def test_download_certificado_autorizado(self):
         self.client.login(username='participante', password=self.password)

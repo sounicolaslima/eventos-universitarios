@@ -103,14 +103,14 @@ class EventosViewsTest(TestCase):
         response = self.client.get(reverse('comprar_ingresso', args=[self.ingresso.id]))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Comprar Ingresso')
+        self.assertContains(response, 'Revisar Compra')
 
     def test_comprar_ingresso_post_redireciona_para_revisao(self):
         response = self.post_purchase(self.ingresso.id, '2')
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Revisar compra')
-        self.assertContains(response, 'Confirmar compra')
+        self.assertContains(response, 'Revisar Compra')
+        self.assertContains(response, 'Confirmar Compra')
 
     def test_comprar_ingresso_quantidade_invalida(self):
         response = self.post_purchase(self.ingresso.id, 'abc')
