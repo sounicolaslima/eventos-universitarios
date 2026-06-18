@@ -133,14 +133,54 @@ class EventosViewsTest(TestCase):
             {'quantidade': '2'}
         )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Compra simulada confirmada com sucesso!')
+        self.assertEqual(response.status_code, 302)
 
         compra = Compra.objects.get(usuario=self.user, ingresso=self.ingresso)
-        schedule_mock.assert_called_once_with(compra)
+
         self.assertEqual(compra.quantidade, 2)
         self.ingresso.refresh_from_db()
         self.assertEqual(self.ingresso.quantidade_disponivel, 8)
+
+    def test_confirmacao_compra_exibe_dados_da_compra(self):
+        self.login_user()
+        compra = Compra.objects.create(
+            usuario=self.user,
+            ingresso=self.ingresso,
+            quantidade=2,
+            valor_total=Decimal('100.00'),
+            status='confirmada'
+        )
+
+        response = self.client.get(
+            reverse('confirmacao_compra', args=[compra.codigo_uuid])
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, str(compra.codigo_uuid))
+        self.assertContains(response, 'Evento Teste')
+        self.assertContains(response, 'Inteira')
+        self.assertContains(response, '2')
+        self.assertContains(response, '100,00')
+
+    def test_confirmacao_compra_nao_abre_para_outro_usuario(self):
+        outro = User.objects.create_user(
+            username='outro',
+            password='123456'
+        )
+        compra = Compra.objects.create(
+            usuario=outro,
+            ingresso=self.ingresso,
+            quantidade=1,
+            valor_total=Decimal('50.00'),
+            status='confirmada'
+        )
+        self.login_user()
+
+        response = self.client.get(
+            reverse('confirmacao_compra', args=[compra.codigo_uuid])
+        )
+
+        self.assertEqual(response.status_code, 404)
 
     def test_confirmar_compra_get_redireciona(self):
         self.login_user()

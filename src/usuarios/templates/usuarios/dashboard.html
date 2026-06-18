@@ -1,160 +1,443 @@
 {% extends 'eventos/base.html' %}
 {% load user_tags %}
+{% load static %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="alert alert-success">
-                <h4 class="mb-0">
-                    <i class="fas fa-check-circle"></i> Bem-vindo, {{ user.username }}!
+
+<div style="padding: 30px 0 50px; background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%); min-height: calc(100vh - 200px);">
+
+    <div class="container">
+
+        <!-- Header de Boas-vindas -->
+        <div style="
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            border-radius: 20px;
+            padding: 32px 28px;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        ">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+                        <div style="
+                            width: 56px;
+                            height: 56px;
+                            background: rgba(255,255,255,0.12);
+                            border-radius: 50%;
+                            display: inline-flex;
+                            align-items: center;
+                            justify-content: center;
+                        ">
+                            <i class="fas fa-user-circle" style="font-size: 2rem; color: white;"></i>
+                        </div>
+                        <div>
+                            <h4 style="color: white; font-weight: 700; margin: 0;">
+                                Bem-vindo, {{ user.username }}!
+                            </h4>
+                            <p style="color: rgba(255,255,255,0.6); margin: 0; font-size: 0.95rem;">
+                                <i class="fas fa-calendar-alt me-1"></i> Gerencie seus eventos e ingressos
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div>
                     {% if user.is_superuser %}
-                        <span class="badge bg-danger ms-2">
+                        <span style="
+                            background: rgba(239,68,68,0.15);
+                            color: #fca5a5;
+                            padding: 6px 16px;
+                            border-radius: 50px;
+                            font-size: 0.8rem;
+                            font-weight: 600;
+                            border: 1px solid rgba(239,68,68,0.2);
+                        ">
                             <i class="fas fa-crown me-1"></i> Super Administrador
                         </span>
                     {% elif user.is_staff %}
-                        <span class="badge bg-warning text-dark ms-2">
+                        <span style="
+                            background: rgba(245,158,11,0.15);
+                            color: #fcd34d;
+                            padding: 6px 16px;
+                            border-radius: 50px;
+                            font-size: 0.8rem;
+                            font-weight: 600;
+                            border: 1px solid rgba(245,158,11,0.2);
+                        ">
                             <i class="fas fa-shield-alt me-1"></i> Administrador
                         </span>
                     {% else %}
-                        <span class="badge bg-secondary ms-2">
+                        <span style="
+                            background: rgba(156,163,175,0.15);
+                            color: #d1d5db;
+                            padding: 6px 16px;
+                            border-radius: 50px;
+                            font-size: 0.8rem;
+                            font-weight: 600;
+                            border: 1px solid rgba(156,163,175,0.2);
+                        ">
                             <i class="fas fa-user me-1"></i> Usuário
                         </span>
                     {% endif %}
-                </h4>
-                <p class="mb-0 mt-2">Você está logado no sistema.</p>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card bg-primary text-white shadow-sm">
-                <div class="card-body text-center">
-                    <i class="fas fa-ticket-alt fa-3x mb-3"></i>
-                    <h3>{{ total_compras }}</h3>
-                    <p>Ingressos Comprados</p>
                 </div>
             </div>
         </div>
-        
-        <div class="col-md-4 mb-4">
-            <div class="card bg-success text-white shadow-sm">
-                <div class="card-body text-center">
-                    <i class="fas fa-calendar-check fa-3x mb-3"></i>
-                    <h3>{{ eventos_presentes }}</h3>
-                    <p>Eventos Participados</p>
+
+        <!-- Cards de Estatísticas -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-4 col-sm-6">
+                <div style="
+                    background: white;
+                    border-radius: 16px;
+                    padding: 24px 20px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+                    transition: all 0.3s ease;
+                    border: 1px solid #f1f3f5;
+                " onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 30px rgba(0,0,0,0.08)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.04)'">
+                    <div style="
+                        width: 56px;
+                        height: 56px;
+                        background: rgba(99,102,241,0.1);
+                        border-radius: 50%;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-bottom: 12px;
+                    ">
+                        <i class="fas fa-ticket-alt" style="font-size: 1.5rem; color: #6366f1;"></i>
+                    </div>
+                    <div style="font-size: 2rem; font-weight: 800; color: #1a1a2e;">{{ total_compras }}</div>
+                    <p style="color: #6b7280; margin: 0; font-weight: 500; font-size: 0.9rem;">Ingressos Comprados</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div style="
+                    background: white;
+                    border-radius: 16px;
+                    padding: 24px 20px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+                    transition: all 0.3s ease;
+                    border: 1px solid #f1f3f5;
+                " onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 30px rgba(0,0,0,0.08)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.04)'">
+                    <div style="
+                        width: 56px;
+                        height: 56px;
+                        background: rgba(16,185,129,0.1);
+                        border-radius: 50%;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-bottom: 12px;
+                    ">
+                        <i class="fas fa-calendar-check" style="font-size: 1.5rem; color: #10b981;"></i>
+                    </div>
+                    <div style="font-size: 2rem; font-weight: 800; color: #1a1a2e;">{{ eventos_presentes }}</div>
+                    <p style="color: #6b7280; margin: 0; font-weight: 500; font-size: 0.9rem;">Eventos Participados</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div style="
+                    background: white;
+                    border-radius: 16px;
+                    padding: 24px 20px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+                    transition: all 0.3s ease;
+                    border: 1px solid #f1f3f5;
+                " onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 30px rgba(0,0,0,0.08)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.04)'">
+                    <div style="
+                        width: 56px;
+                        height: 56px;
+                        background: rgba(245,158,11,0.1);
+                        border-radius: 50%;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-bottom: 12px;
+                    ">
+                        <i class="fas fa-certificate" style="font-size: 1.5rem; color: #f59e0b;"></i>
+                    </div>
+                    <div style="font-size: 2rem; font-weight: 800; color: #1a1a2e;">{{ certificados_count }}</div>
+                    <p style="color: #6b7280; margin: 0; font-weight: 500; font-size: 0.9rem;">Certificados Obtidos</p>
                 </div>
             </div>
         </div>
-        
-        <div class="col-md-4 mb-4">
-            <div class="card bg-info text-white shadow-sm">
-                <div class="card-body text-center">
-                    <i class="fas fa-certificate fa-3x mb-3"></i>
-                    <h3>{{ certificados_count }}</h3>
-                    <p>Certificados Obtidos</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-md-12 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-warning text-dark">
-                    <h5 class="mb-0"><i class="fas fa-history"></i> Últimas Compras</h5>
-                </div>
-                <div class="card-body">
-                    {% if compras_recentes %}
-                        <div class="list-group">
-                            {% for compra in compras_recentes %}
-                                <div class="list-group-item">
-                                    <div class="d-flex justify-content-between align-items-center">
+
+        <div class="row g-4">
+
+            <!-- Últimas Compras -->
+            <div class="col-lg-8">
+                <div style="
+                    background: white;
+                    border-radius: 16px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+                    border: 1px solid #f1f3f5;
+                    overflow: hidden;
+                ">
+                    <div style="
+                        padding: 16px 24px;
+                        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+                        border-bottom: 1px solid #f1f3f5;
+                    ">
+                        <h5 style="color: white; font-weight: 700; margin: 0;">
+                            <i class="fas fa-history me-2"></i> Últimas Compras
+                        </h5>
+                    </div>
+                    <div style="padding: 20px 24px;">
+                        {% if compras_recentes %}
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                {% for compra in compras_recentes %}
+                                    <div style="
+                                        background: #fafbfc;
+                                        border-radius: 12px;
+                                        padding: 16px 20px;
+                                        border: 1px solid #f1f3f5;
+                                        transition: all 0.3s ease;
+                                        display: flex;
+                                        justify-content: space-between;
+                                        align-items: center;
+                                        flex-wrap: wrap;
+                                        gap: 12px;
+                                    " onmouseover="this.style.background='white'; this.style.borderColor='#e5e7eb'" onmouseout="this.style.background='#fafbfc'; this.style.borderColor='#f1f3f5'">
                                         <div>
-                                            <strong>{{ compra.ingresso.evento.titulo }}</strong><br>
-                                            <small class="text-muted">
-                                                {{ compra.ingresso.get_tipo_display }} - 
-                                                {{ compra.quantidade }}x - 
-                                                R$ {{ compra.valor_total }}
-                                            </small>
-                                            <br>
-                                            <small>
-                                                Status: 
+                                            <strong style="color: #1a1a2e;">{{ compra.ingresso.evento.titulo }}</strong>
+                                            <div style="color: #6b7280; font-size: 0.85rem; margin-top: 2px;">
+                                                <i class="fas fa-tag me-1"></i> {{ compra.ingresso.get_tipo_display }}
+                                                <span style="margin: 0 8px;">•</span>
+                                                <i class="fas fa-times me-1"></i> {{ compra.quantidade }}x
+                                                <span style="margin: 0 8px;">•</span>
+                                                <i class="fas fa-dollar-sign me-1"></i> R$ {{ compra.valor_total }}
+                                            </div>
+                                            <div style="margin-top: 4px;">
                                                 {% if compra.status == 'confirmada' %}
-                                                    <span class="badge bg-success">Confirmada</span>
+                                                    <span style="background: #d1fae5; color: #065f46; padding: 2px 12px; border-radius: 50px; font-size: 0.7rem; font-weight: 600;">Confirmada</span>
                                                 {% elif compra.status == 'pendente' %}
-                                                    <span class="badge bg-warning">Pendente</span>
+                                                    <span style="background: #fef3c7; color: #92400e; padding: 2px 12px; border-radius: 50px; font-size: 0.7rem; font-weight: 600;">Pendente</span>
                                                 {% elif compra.status == 'cancelada' %}
-                                                    <span class="badge bg-danger">Cancelada</span>
+                                                    <span style="background: #fee2e2; color: #991b1b; padding: 2px 12px; border-radius: 50px; font-size: 0.7rem; font-weight: 600;">Cancelada</span>
                                                 {% elif compra.status == 'presente' %}
-                                                    <span class="badge bg-info">Presente</span>
+                                                    <span style="background: #dbeafe; color: #1e40af; padding: 2px 12px; border-radius: 50px; font-size: 0.7rem; font-weight: 600;">Presente</span>
                                                 {% endif %}
-                                            </small>
+                                            </div>
                                         </div>
-                                        <div>
+                                        <div style="display: flex; gap: 8px;">
                                             {% if compra.qr_code %}
-                                                <a href="{{ compra.qr_code.url }}" class="btn btn-sm btn-info" target="_blank">
+                                                <a href="{{ compra.qr_code.url }}" target="_blank" style="
+                                                    background: rgba(99,102,241,0.1);
+                                                    color: #6366f1;
+                                                    padding: 6px 12px;
+                                                    border-radius: 8px;
+                                                    text-decoration: none;
+                                                    font-size: 0.85rem;
+                                                    transition: all 0.3s ease;
+                                                " onmouseover="this.style.background='rgba(99,102,241,0.2)'" onmouseout="this.style.background='rgba(99,102,241,0.1)'">
                                                     <i class="fas fa-qrcode"></i>
                                                 </a>
                                             {% endif %}
                                             {% if compra.certificado %}
-                                                <a href="{{ compra.certificado.url }}" class="btn btn-sm btn-success">
+                                                <a href="{{ compra.certificado.url }}" style="
+                                                    background: rgba(16,185,129,0.1);
+                                                    color: #10b981;
+                                                    padding: 6px 12px;
+                                                    border-radius: 8px;
+                                                    text-decoration: none;
+                                                    font-size: 0.85rem;
+                                                    transition: all 0.3s ease;
+                                                " onmouseover="this.style.background='rgba(16,185,129,0.2)'" onmouseout="this.style.background='rgba(16,185,129,0.1)'">
                                                     <i class="fas fa-download"></i>
                                                 </a>
                                             {% endif %}
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <div class="text-center mt-3">
-                            <a href="{% url 'meu_historico' %}" class="btn btn-primary">
-                                Ver todas as compras <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    {% else %}
-                        <p class="text-muted text-center mb-0">
-                            Você ainda não realizou nenhuma compra.
-                            <br>
-                            <a href="{% url 'lista_eventos' %}" class="btn btn-primary mt-3">Explorar Eventos</a>
-                        </p>
-                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div style="text-align: center; margin-top: 16px;">
+                                <a href="{% url 'meu_historico' %}" style="
+                                    display: inline-block;
+                                    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                                    color: white;
+                                    padding: 10px 32px;
+                                    border-radius: 50px;
+                                    text-decoration: none;
+                                    font-weight: 600;
+                                    font-size: 0.9rem;
+                                    transition: all 0.3s ease;
+                                    box-shadow: 0 4px 16px rgba(99,102,241,0.2);
+                                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.2)'">
+                                    Ver todas as compras <i class="fas fa-arrow-right ms-2"></i>
+                                </a>
+                            </div>
+                        {% else %}
+                            <div style="text-align: center; padding: 30px 0;">
+                                <i class="fas fa-shopping-bag" style="font-size: 3rem; color: #d1d5db; margin-bottom: 12px;"></i>
+                                <p style="color: #6b7280; margin: 0;">Você ainda não realizou nenhuma compra.</p>
+                                <a href="{% url 'lista_eventos' %}" style="
+                                    display: inline-block;
+                                    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                                    color: white;
+                                    padding: 10px 32px;
+                                    border-radius: 50px;
+                                    text-decoration: none;
+                                    font-weight: 600;
+                                    margin-top: 12px;
+                                    transition: all 0.3s ease;
+                                " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                                    <i class="fas fa-calendar-alt me-2"></i> Explorar Eventos
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row mt-3">
-        <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-info text-white">
-                    <h5 class="mb-0"><i class="fas fa-chart-line"></i> Ações Rápidas</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row text-center">
-                        <div class="col-md-4 mb-3">
-                            <a href="{% url 'lista_eventos' %}" class="text-decoration-none">
-                                <i class="fas fa-calendar-alt fa-3x text-primary"></i>
-                                <p class="mt-2">Ver Eventos</p>
+            <!-- Ações Rápidas -->
+            <div class="col-lg-4">
+                <div style="
+                    background: white;
+                    border-radius: 16px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+                    border: 1px solid #f1f3f5;
+                    overflow: hidden;
+                ">
+                    <div style="
+                        padding: 16px 24px;
+                        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+                    ">
+                        <h5 style="color: white; font-weight: 700; margin: 0;">
+                            <i class="fas fa-rocket me-2"></i> Ações Rápidas
+                        </h5>
+                    </div>
+                    <div style="padding: 20px 24px;">
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <a href="{% url 'lista_eventos' %}" style="
+                                display: flex;
+                                align-items: center;
+                                gap: 14px;
+                                padding: 14px 18px;
+                                background: #fafbfc;
+                                border-radius: 12px;
+                                text-decoration: none;
+                                color: #1a1a2e;
+                                transition: all 0.3s ease;
+                                border: 1px solid #f1f3f5;
+                            " onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#6366f1'" onmouseout="this.style.background='#fafbfc'; this.style.borderColor='#f1f3f5'">
+                                <div style="
+                                    width: 40px;
+                                    height: 40px;
+                                    background: rgba(99,102,241,0.1);
+                                    border-radius: 10px;
+                                    display: inline-flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                ">
+                                    <i class="fas fa-calendar-alt" style="color: #6366f1;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Ver Eventos</div>
+                                    <div style="font-size: 0.8rem; color: #6b7280;">Explore todos os eventos disponíveis</div>
+                                </div>
+                                <i class="fas fa-chevron-right" style="margin-left: auto; color: #d1d5db;"></i>
                             </a>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <a href="{% url 'meu_historico' %}" class="text-decoration-none">
-                                <i class="fas fa-receipt fa-3x text-success"></i>
-                                <p class="mt-2">Meu Histórico</p>
+
+                            <a href="{% url 'meu_historico' %}" style="
+                                display: flex;
+                                align-items: center;
+                                gap: 14px;
+                                padding: 14px 18px;
+                                background: #fafbfc;
+                                border-radius: 12px;
+                                text-decoration: none;
+                                color: #1a1a2e;
+                                transition: all 0.3s ease;
+                                border: 1px solid #f1f3f5;
+                            " onmouseover="this.style.background='#ecfdf5'; this.style.borderColor='#10b981'" onmouseout="this.style.background='#fafbfc'; this.style.borderColor='#f1f3f5'">
+                                <div style="
+                                    width: 40px;
+                                    height: 40px;
+                                    background: rgba(16,185,129,0.1);
+                                    border-radius: 10px;
+                                    display: inline-flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                ">
+                                    <i class="fas fa-receipt" style="color: #10b981;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Meu Histórico</div>
+                                    <div style="font-size: 0.8rem; color: #6b7280;">Veja todas as suas compras</div>
+                                </div>
+                                <i class="fas fa-chevron-right" style="margin-left: auto; color: #d1d5db;"></i>
                             </a>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <a href="{% url 'logout' %}" class="text-decoration-none">
-                                <i class="fas fa-sign-out-alt fa-3x text-danger"></i>
-                                <p class="mt-2">Sair</p>
+
+                            <a href="{% url 'meus_eventos' %}" style="
+                                display: flex;
+                                align-items: center;
+                                gap: 14px;
+                                padding: 14px 18px;
+                                background: #fafbfc;
+                                border-radius: 12px;
+                                text-decoration: none;
+                                color: #1a1a2e;
+                                transition: all 0.3s ease;
+                                border: 1px solid #f1f3f5;
+                            " onmouseover="this.style.background='#fef3c7'; this.style.borderColor='#f59e0b'" onmouseout="this.style.background='#fafbfc'; this.style.borderColor='#f1f3f5'">
+                                <div style="
+                                    width: 40px;
+                                    height: 40px;
+                                    background: rgba(245,158,11,0.1);
+                                    border-radius: 10px;
+                                    display: inline-flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                ">
+                                    <i class="fas fa-calendar-plus" style="color: #f59e0b;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Meus Eventos</div>
+                                    <div style="font-size: 0.8rem; color: #6b7280;">Gerencie seus eventos criados</div>
+                                </div>
+                                <i class="fas fa-chevron-right" style="margin-left: auto; color: #d1d5db;"></i>
+                            </a>
+
+                            <a href="{% url 'logout' %}" style="
+                                display: flex;
+                                align-items: center;
+                                gap: 14px;
+                                padding: 14px 18px;
+                                background: #fafbfc;
+                                border-radius: 12px;
+                                text-decoration: none;
+                                color: #1a1a2e;
+                                transition: all 0.3s ease;
+                                border: 1px solid #f1f3f5;
+                            " onmouseover="this.style.background='#fef2f2'; this.style.borderColor='#ef4444'" onmouseout="this.style.background='#fafbfc'; this.style.borderColor='#f1f3f5'">
+                                <div style="
+                                    width: 40px;
+                                    height: 40px;
+                                    background: rgba(239,68,68,0.1);
+                                    border-radius: 10px;
+                                    display: inline-flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                ">
+                                    <i class="fas fa-sign-out-alt" style="color: #ef4444;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; color: #ef4444;">Sair</div>
+                                    <div style="font-size: 0.8rem; color: #6b7280;">Encerrar sessão</div>
+                                </div>
+                                <i class="fas fa-chevron-right" style="margin-left: auto; color: #d1d5db;"></i>
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
+
     </div>
+
 </div>
+
 {% endblock %}

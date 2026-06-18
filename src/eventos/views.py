@@ -2,14 +2,13 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
-from django.db.models import Q
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from django.utils import timezone
+from django.utils.dateparse import parse_date
 from .models import Evento, Ingresso, Compra, Categoria, Local
-from django.http import HttpResponseForbidden
+from django.http import FileResponse, Http404, HttpResponseForbidden
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
-from .tasks import schedule_event_reminder
 
 # Template constants
 TEMPLATE_COMPRAR_INGRESSO = 'eventos/comprar_ingresso.html'
@@ -17,21 +16,46 @@ TEMPLATE_COMPRAR_INGRESSO = 'eventos/comprar_ingresso.html'
 def home(request):
     return render(request, 'eventos/home.html')
 
+
+def filtrar_por_data(eventos, campo, valor):
+    data = parse_date(valor) if valor else None
+    if not data:
+        return eventos
+    return eventos.filter(**{campo: data})
+
+
+def filtrar_por_preco(eventos, campo, valor):
+    if not valor:
+        return eventos
+    try:
+        preco = Decimal(valor)
+    except (InvalidOperation, ValueError):
+        return eventos
+    return eventos.filter(**{campo: preco})
+
+
 def lista_eventos(request):
     eventos = Evento.objects.all()
     categorias = Categoria.objects.all()
-    
+
     q = request.GET.get('q')
     categoria_id = request.GET.get('categoria')
     data = request.GET.get('data')
+    data_inicio = request.GET.get('data_inicio') or data
+    data_fim = request.GET.get('data_fim') or data
+    preco_min = request.GET.get('preco_min')
+    preco_max = request.GET.get('preco_max')
 
     if q:
         eventos = eventos.filter(titulo__icontains=q)
     if categoria_id:
         eventos = eventos.filter(categoria_id=categoria_id)
-    if data:
-        eventos = eventos.filter(data_evento__date=data)
-    
+
+    eventos = filtrar_por_data(eventos, 'data_evento__date__gte', data_inicio)
+    eventos = filtrar_por_data(eventos, 'data_evento__date__lte', data_fim)
+    eventos = filtrar_por_preco(eventos, 'preco_base__gte', preco_min)
+    eventos = filtrar_por_preco(eventos, 'preco_base__lte', preco_max)
+
     return render(request, 'eventos/evento_list.html', {
         'eventos': eventos,
         'categorias': categorias
@@ -145,6 +169,18 @@ def confirmar_compra(request, ingresso_id):
     schedule_event_reminder(compra)
     messages.success(request, 'Compra simulada confirmada com sucesso!')
 
+    return redirect('confirmacao_compra', codigo_uuid=compra.codigo_uuid)
+
+
+@login_required
+@require_http_methods(["GET"])
+def confirmacao_compra(request, codigo_uuid):
+    compra = get_object_or_404(
+        Compra.objects.select_related('ingresso', 'ingresso__evento'),
+        codigo_uuid=codigo_uuid,
+        usuario=request.user
+    )
+
     return render(request, 'eventos/compra_sucesso.html', {
         'compra': compra,
     })
@@ -159,6 +195,28 @@ def meu_historico(request):
     return render(request, 'eventos/meu_historico.html', {
         'compras': compras
     })
+
+
+@login_required
+@require_http_methods(["GET"])
+def download_certificado(request, compra_id):
+    compra = get_object_or_404(
+        Compra.objects.select_related('ingresso', 'ingresso__evento'),
+        id=compra_id,
+        usuario=request.user,
+        status='presente'
+    )
+
+    if not compra.certificado:
+        raise Http404('Certificado não encontrado.')
+
+    filename = f'certificado-{compra.codigo_uuid}.pdf'
+    return FileResponse(
+        compra.certificado.open('rb'),
+        as_attachment=True,
+        filename=filename,
+        content_type='application/pdf'
+    )
 
 # ==================== VIEWS DO ORGANIZADOR ====================
 
@@ -385,6 +443,7 @@ def validar_qr(request, uuid):
     # Marca presença
     compra.status = 'presente'
     compra.save()
+    generate_certificate.delay(compra.id)
 
     messages.success(
         request,

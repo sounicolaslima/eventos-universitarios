@@ -1,199 +1,254 @@
 {% extends 'eventos/base.html' %}
 {% load static %}
 
-{% block title %}
-Meu Histórico - Eventos Universitários
-{% endblock %}
-
 {% block content %}
-<div class="container py-4">
 
-  <!-- Cabeçalho -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h1 class="display-5 fw-bold mb-0">
-        <i class="fas fa-history text-primary me-2"></i>
-        Meu Histórico
-      </h1>
-      <p class="text-muted mt-2">Acompanhe suas compras e certificados</p>
-    </div>
+<div style="padding: 30px 0 50px; background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%); min-height: calc(100vh - 200px);">
 
-    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
-      <i class="fas fa-tachometer-alt me-1"></i>
-      Dashboard
-    </a>
-  </div>
+    <div class="container">
 
-  {% if compras %}
-
-  <div class="row g-4">
-    {% for compra in compras %}
-
-    <div class="col-12">
-      <div class="card shadow-sm border-0 hover-card">
-        <div class="card-body p-4">
-
-          <div class="row align-items-center">
-
-            <!-- Info evento -->
-            <div class="col-md-5">
-              <div class="d-flex align-items-start">
-
-                <div class="me-3">
-                  {% if compra.status == 'confirmada' %}
-                    <i class="fas fa-check-circle text-success fa-2x"></i>
-                  {% elif compra.status == 'pendente' %}
-                    <i class="fas fa-clock text-warning fa-2x"></i>
-                  {% elif compra.status == 'cancelada' %}
-                    <i class="fas fa-times-circle text-danger fa-2x"></i>
-                  {% elif compra.status == 'presente' %}
-                    <i class="fas fa-star text-info fa-2x"></i>
-                  {% endif %}
-                </div>
-
-                <div>
-                  <h5 class="mb-1 fw-bold">
-                    {{ compra.ingresso.evento.titulo }}
-                  </h5>
-
-                  <div class="d-flex flex-wrap gap-2">
-                    <span class="badge bg-secondary">
-                      <i class="fas fa-tag me-1"></i>
-                      {{ compra.ingresso.get_tipo_display }}
-                    </span>
-
-                    <span class="badge bg-info">
-                      <i class="fas fa-calendar me-1"></i>
-                      {{ compra.data_compra|date:"d/m/Y" }}
-                    </span>
-                  </div>
-
-                  <small class="text-muted d-block mt-2">
-                    <strong>UUID:</strong> {{ compra.codigo_uuid }}
-                  </small>
-                </div>
-
-              </div>
+        <!-- Cabeçalho -->
+        <div style="
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            border-radius: 20px;
+            padding: 28px 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        ">
+            <div>
+                <h1 style="color: white; font-weight: 700; margin: 0; font-size: 1.8rem;">
+                    <i class="fas fa-history me-2"></i> Meu Histórico
+                </h1>
+                <p style="color: rgba(255,255,255,0.6); margin: 4px 0 0;">
+                    Acompanhe suas compras e certificados
+                </p>
             </div>
-
-            <!-- Quantidade -->
-            <div class="col-md-2 text-center">
-              <small class="text-muted">Quantidade</small>
-              <p class="h5 mb-0">{{ compra.quantidade }}x</p>
-            </div>
-
-            <!-- Valor -->
-            <div class="col-md-2 text-center">
-              <small class="text-muted">Valor Total</small>
-              <p class="h5 text-success mb-0">R$ {{ compra.valor_total }}</p>
-            </div>
-
-            <!-- Status -->
-            <div class="col-md-3 text-center">
-              <small class="text-muted">Status</small>
-
-              {% if compra.status == 'confirmada' %}
-                <span class="badge bg-success px-3 py-2">Confirmada</span>
-              {% elif compra.status == 'pendente' %}
-                <span class="badge bg-warning px-3 py-2">Pendente</span>
-              {% elif compra.status == 'cancelada' %}
-                <span class="badge bg-danger px-3 py-2">Cancelada</span>
-              {% elif compra.status == 'presente' %}
-                <span class="badge bg-info px-3 py-2">Presente</span>
-              {% endif %}
-            </div>
-
-          </div>
-
-          <!-- QR Code -->
-          {% if compra.qr_code %}
-          <hr>
-
-          <div class="text-center mb-4">
-            <h5 class="mb-3">
-              <i class="fas fa-qrcode me-2"></i>
-              QR Code da Compra
-            </h5>
-
-            <img src="{{ compra.qr_code.url }}"
-                 class="img-fluid border rounded shadow-sm p-2"
-                style="max-width: 220px"
-                alt="QR Code da compra de {{ compra.ingresso.evento.titulo }}">
-
-            <p class="text-muted mt-2 mb-0">
-              Apresente este QR Code na entrada do evento.
-            </p>
-          </div>
-          {% endif %}
-
-          <!-- Ações -->
-          {% if compra.status == 'confirmada' or compra.status == 'presente' %}
-          <hr>
-
-          <div class="d-flex gap-2 justify-content-end">
-
-            {% if compra.qr_code %}
-            <a href="{{ compra.qr_code.url }}"
-               class="btn btn-sm btn-info"
-               target="_blank">
-              <i class="fas fa-qrcode me-1"></i>
-              Abrir QR Code
+            <a href="{% url 'dashboard' %}" style="
+                display: inline-block;
+                background: rgba(255,255,255,0.1);
+                color: white;
+                padding: 10px 24px;
+                border-radius: 50px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                border: 1px solid rgba(255,255,255,0.1);
+            " onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                <i class="fas fa-tachometer-alt me-1"></i> Dashboard
             </a>
-            {% endif %}
-
-            {% if compra.status == 'presente' and compra.certificado %}
-              <a href="{{ compra.certificado.url }}"
-                 class="btn btn-sm btn-success">
-                <i class="fas fa-download me-1"></i>
-                Baixar Certificado
-              </a>
-            {% elif compra.status == 'presente' %}
-              <button class="btn btn-sm btn-secondary" disabled>
-                <i class="fas fa-spinner fa-spin me-1"></i>
-                Gerando certificado...
-              </button>
-            {% endif %}
-
-          </div>
-          {% endif %}
-
         </div>
-      </div>
+
+        {% if compras %}
+
+            <div class="row g-4">
+                {% for compra in compras %}
+                    <div class="col-12">
+                        <div style="
+                            background: white;
+                            border-radius: 16px;
+                            padding: 24px 28px;
+                            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+                            border: 1px solid #f1f3f5;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.transform='translateX(4px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.08)'" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.04)'">
+
+                            <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+
+                                <!-- Ícone de Status -->
+                                <div style="
+                                    width: 48px;
+                                    height: 48px;
+                                    border-radius: 12px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                ">
+                                    {% if compra.status == 'confirmada' %}
+                                        <div style="background: rgba(16,185,129,0.1); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-check-circle" style="font-size: 1.5rem; color: #10b981;"></i>
+                                        </div>
+                                    {% elif compra.status == 'pendente' %}
+                                        <div style="background: rgba(245,158,11,0.1); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-clock" style="font-size: 1.5rem; color: #f59e0b;"></i>
+                                        </div>
+                                    {% elif compra.status == 'cancelada' %}
+                                        <div style="background: rgba(239,68,68,0.1); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-times-circle" style="font-size: 1.5rem; color: #ef4444;"></i>
+                                        </div>
+                                    {% elif compra.status == 'presente' %}
+                                        <div style="background: rgba(6,182,212,0.1); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-star" style="font-size: 1.5rem; color: #06b6d4;"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Informações do evento -->
+                                <div style="flex: 1; min-width: 180px;">
+                                    <h5 style="font-weight: 700; color: #1a1a2e; margin: 0; font-size: 1.1rem;">
+                                        {{ compra.ingresso.evento.titulo }}
+                                    </h5>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px;">
+                                        <span style="
+                                            background: #f1f3f5;
+                                            color: #4b5563;
+                                            padding: 2px 12px;
+                                            border-radius: 50px;
+                                            font-size: 0.75rem;
+                                            font-weight: 600;
+                                        ">
+                                            <i class="fas fa-tag me-1"></i> {{ compra.ingresso.get_tipo_display }}
+                                        </span>
+                                        <span style="
+                                            background: #f1f3f5;
+                                            color: #4b5563;
+                                            padding: 2px 12px;
+                                            border-radius: 50px;
+                                            font-size: 0.75rem;
+                                            font-weight: 600;
+                                        ">
+                                            <i class="fas fa-calendar me-1"></i> {{ compra.data_compra|date:"d/m/Y" }}
+                                        </span>
+                                    </div>
+                                    <small style="color: #9ca3af; font-size: 0.7rem; display: block; margin-top: 2px;">
+                                        <strong>UUID:</strong> {{ compra.codigo_uuid }}
+                                    </small>
+                                </div>
+
+                                <!-- Quantidade -->
+                                <div style="text-align: center; min-width: 80px;">
+                                    <small style="color: #9ca3af; font-size: 0.7rem; font-weight: 500; display: block;">Quantidade</small>
+                                    <span style="font-size: 1.2rem; font-weight: 700; color: #1a1a2e;">{{ compra.quantidade }}x</span>
+                                </div>
+
+                                <!-- Valor -->
+                                <div style="text-align: center; min-width: 100px;">
+                                    <small style="color: #9ca3af; font-size: 0.7rem; font-weight: 500; display: block;">Valor Total</small>
+                                    <span style="font-size: 1.2rem; font-weight: 700; color: #10b981;">R$ {{ compra.valor_total }}</span>
+                                </div>
+
+                                <!-- Status -->
+                                <div style="text-align: center; min-width: 100px;">
+                                    <small style="color: #9ca3af; font-size: 0.7rem; font-weight: 500; display: block;">Status</small>
+                                    {% if compra.status == 'confirmada' %}
+                                        <span style="background: #d1fae5; color: #065f46; padding: 4px 16px; border-radius: 50px; font-size: 0.75rem; font-weight: 600;">Confirmada</span>
+                                    {% elif compra.status == 'pendente' %}
+                                        <span style="background: #fef3c7; color: #92400e; padding: 4px 16px; border-radius: 50px; font-size: 0.75rem; font-weight: 600;">Pendente</span>
+                                    {% elif compra.status == 'cancelada' %}
+                                        <span style="background: #fee2e2; color: #991b1b; padding: 4px 16px; border-radius: 50px; font-size: 0.75rem; font-weight: 600;">Cancelada</span>
+                                    {% elif compra.status == 'presente' %}
+                                        <span style="background: #dbeafe; color: #1e40af; padding: 4px 16px; border-radius: 50px; font-size: 0.75rem; font-weight: 600;">Presente</span>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Ações -->
+                                <div style="display: flex; gap: 6px; min-width: 60px; justify-content: flex-end;">
+                                    {% if compra.qr_code %}
+                                        <a href="{{ compra.qr_code.url }}" target="_blank" style="
+                                            background: rgba(99,102,241,0.1);
+                                            color: #6366f1;
+                                            padding: 6px 10px;
+                                            border-radius: 8px;
+                                            text-decoration: none;
+                                            transition: all 0.3s ease;
+                                            font-size: 0.85rem;
+                                        " onmouseover="this.style.background='rgba(99,102,241,0.2)'" onmouseout="this.style.background='rgba(99,102,241,0.1)'">
+                                            <i class="fas fa-qrcode"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if compra.status == 'presente' and compra.certificado %}
+                                        <a href="{% url 'download_certificado' compra.id %}" style="
+                                            background: rgba(16,185,129,0.1);
+                                            color: #10b981;
+                                            padding: 6px 10px;
+                                            border-radius: 8px;
+                                            text-decoration: none;
+                                            transition: all 0.3s ease;
+                                            font-size: 0.85rem;
+                                        " onmouseover="this.style.background='rgba(16,185,129,0.2)'" onmouseout="this.style.background='rgba(16,185,129,0.1)'">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                    {% elif compra.status == 'presente' %}
+                                        <span style="
+                                            background: #f1f3f5;
+                                            color: #9ca3af;
+                                            padding: 6px 10px;
+                                            border-radius: 8px;
+                                            font-size: 0.75rem;
+                                            cursor: not-allowed;
+                                        ">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                        </span>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+
+                            <!-- QR Code expandido (se houver) -->
+                            {% if compra.qr_code %}
+                                <hr style="margin: 16px 0 12px; border-color: #f1f3f5;">
+                                <div style="text-align: center;">
+                                    <h6 style="font-weight: 600; color: #1a1a2e; margin-bottom: 8px; font-size: 0.9rem;">
+                                        <i class="fas fa-qrcode me-2" style="color: #6366f1;"></i> QR Code da Compra
+                                    </h6>
+                                    <img src="{{ compra.qr_code.url }}"
+                                         alt="QR Code da compra de {{ compra.ingresso.evento.titulo }}"
+                                         style="max-width: 180px; border-radius: 12px; border: 2px solid #f1f3f5; padding: 8px; background: white;">
+                                    <p style="color: #9ca3af; font-size: 0.8rem; margin-top: 6px;">
+                                        Apresente este QR Code na entrada do evento.
+                                    </p>
+                                </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% else %}
+
+            <!-- Sem compras -->
+            <div style="
+                background: white;
+                border-radius: 16px;
+                padding: 60px 40px;
+                text-align: center;
+                border: 1px solid #f1f3f5;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            ">
+                <i class="fas fa-shopping-bag" style="font-size: 4rem; color: #d1d5db; margin-bottom: 16px;"></i>
+                <h3 style="color: #1a1a2e; font-weight: 700; margin-bottom: 4px;">Você ainda não possui compras</h3>
+                <p style="color: #6b7280;">Explore nossos eventos e adquira seu primeiro ingresso!</p>
+                <a href="{% url 'lista_eventos' %}" style="
+                    display: inline-block;
+                    margin-top: 16px;
+                    padding: 12px 36px;
+                    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                    color: white;
+                    border-radius: 50px;
+                    text-decoration: none;
+                    font-weight: 600;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 16px rgba(99,102,241,0.2);
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.2)'">
+                    <i class="fas fa-calendar-alt me-2"></i> Ver Eventos Disponíveis
+                </a>
+            </div>
+
+        {% endif %}
+
     </div>
-
-    {% endfor %}
-  </div>
-
-  {% else %}
-
-  <!-- Sem compras -->
-  <div class="text-center py-5">
-    <i class="fas fa-shopping-bag fa-5x text-muted mb-4"></i>
-
-    <h3 class="text-muted">Você ainda não possui compras</h3>
-    <p class="text-muted">
-      Explore nossos eventos e adquira seu primeiro ingresso!
-    </p>
-
-    <a href="{% url 'lista_eventos' %}" class="btn btn-primary btn-lg mt-3">
-      <i class="fas fa-calendar-alt me-2"></i>
-      Ver Eventos Disponíveis
-    </a>
-  </div>
-
-  {% endif %}
 
 </div>
 
 <style>
-.hover-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-card:hover {
-  transform: translateX(5px);
-  box-shadow: 0 5px 20px rgba(0,0,0,0.1) !important;
-}
+    .form-control:focus {
+        outline: none;
+    }
 </style>
 
 {% endblock %}

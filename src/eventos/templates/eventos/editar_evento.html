@@ -1,162 +1,376 @@
 {% extends 'eventos/base.html' %}
+{% load static %}
+
 {% block content %}
-<div class="container py-4">
-    <div class="row">
-        <!-- Coluna do formulário de edição -->
-        <div class="col-md-8">
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-warning text-dark">
-                    <h4 class="mb-0"><i class="fas fa-edit me-2"></i>Editar Evento: {{ evento.titulo }}</h4>
-                </div>
-                <div class="card-body">
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        
-                        <div class="mb-3">
-                            <label class="form-label fw-bold" for="editar-evento-titulo">Título do Evento *</label>
-                            <input type="text" name="titulo" id="editar-evento-titulo" class="form-control" value="{{ evento.titulo }}" required>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label fw-bold" for="editar-evento-descricao">Descrição *</label>
-                            <textarea name="descricao" id="editar-evento-descricao" class="form-control" rows="5" required>{{ evento.descricao }}</textarea>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold" for="editar-evento-data">Data e Hora *</label>
-                                <input type="datetime-local" name="data_evento" id="editar-evento-data" class="form-control" value="{{ evento.data_evento|date:'Y-m-d\TH:i' }}" required>
+
+<div style="padding: 30px 0 50px; background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%); min-height: calc(100vh - 200px);">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+            <!-- Coluna do formulário de edição -->
+            <div class="col-lg-8">
+
+                <div style="
+                    background: white;
+                    border-radius: 24px;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+                    overflow: hidden;
+                ">
+
+                    <!-- Header -->
+                    <div style="
+                        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+                        padding: 28px 32px;
+                    ">
+                        <h4 style="color: white; font-weight: 700; margin: 0;">
+                            <i class="fas fa-edit me-2"></i> Editar Evento
+                        </h4>
+                        <p style="color: rgba(255,255,255,0.5); margin: 4px 0 0; font-size: 0.9rem;">
+                            {{ evento.titulo }}
+                        </p>
+                    </div>
+
+                    <div style="padding: 32px 32px;">
+
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <!-- Título -->
+                            <div style="margin-bottom: 20px;">
+                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                    <i class="fas fa-heading me-2" style="color: #6366f1;"></i> Título do Evento *
+                                </label>
+                                <input type="text" name="titulo" class="form-control" value="{{ evento.titulo }}" required style="
+                                    padding: 12px 16px;
+                                    border-radius: 12px;
+                                    border: 2px solid #e5e7eb;
+                                    font-size: 1rem;
+                                    transition: all 0.3s ease;
+                                    background: #fafbfc;
+                                " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'">
                             </div>
-                            
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold" for="editar-evento-preco-base">Preço Base (R$)</label>
-                                <input type="number" step="0.01" name="preco_base" id="editar-evento-preco-base" class="form-control" value="{{ evento.preco_base }}">
+
+                            <!-- Descrição -->
+                            <div style="margin-bottom: 20px;">
+                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                    <i class="fas fa-align-left me-2" style="color: #6366f1;"></i> Descrição *
+                                </label>
+                                <textarea name="descricao" rows="5" class="form-control" required style="
+                                    padding: 12px 16px;
+                                    border-radius: 12px;
+                                    border: 2px solid #e5e7eb;
+                                    font-size: 1rem;
+                                    transition: all 0.3s ease;
+                                    background: #fafbfc;
+                                    resize: vertical;
+                                " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'">{{ evento.descricao }}</textarea>
                             </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold" for="editar-evento-local-nome">Local do Evento *</label>
-                                <input type="text" name="local_nome" id="editar-evento-local-nome" class="form-control" value="{{ evento.local.nome }}" required>
-                                <small class="text-muted">Digite o nome do local (ex: Auditório Principal, Sala 101)</small>
-                            </div>
-                            
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold" for="editar-evento-local-endereco">Endereço do Local</label>
-                                <input type="text" name="local_endereco" id="editar-evento-local-endereco" class="form-control" value="{{ evento.local.endereco|default:'' }}">
-                                <small class="text-muted">Opcional - Endereço completo</small>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label fw-bold" for="editar-evento-categoria">Categoria *</label>
-                            <select name="categoria" id="editar-evento-categoria" class="form-select" required>
-                                <option value="">Selecione uma categoria</option>
-                                {% for categoria in categorias %}
-                                    <option value="{{ categoria.id }}" {% if evento.categoria.id == categoria.id %}selected{% endif %}>
-                                        {{ categoria.nome }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                            <small class="text-muted">
-                                Não encontrou a categoria? <a href="/admin/eventos/categoria/add/" target="_blank">Cadastre uma nova categoria</a>
-                            </small>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label fw-bold" for="editar-evento-imagem">Imagem do Evento</label>
-                            {% if evento.imagem %}
-                                <div class="mb-2">
-                                    <img src="{{ evento.imagem.url }}" class="img-thumbnail" style="height: 100px;" alt="Foto atual do evento {{ evento.titulo }}">
-                                    <br>
-                                    <small class="text-muted">Imagem atual</small>
+
+                            <div class="row g-3">
+                                <!-- Data -->
+                                <div class="col-md-6">
+                                    <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                        <i class="fas fa-calendar-day me-2" style="color: #6366f1;"></i> Data e Hora *
+                                    </label>
+                                    <input type="datetime-local" name="data_evento" class="form-control" value="{{ evento.data_evento|date:'Y-m-d\TH:i' }}" required style="
+                                        padding: 12px 16px;
+                                        border-radius: 12px;
+                                        border: 2px solid #e5e7eb;
+                                        font-size: 1rem;
+                                        transition: all 0.3s ease;
+                                        background: #fafbfc;
+                                    " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'">
                                 </div>
-                            {% endif %}
-                            <input type="file" name="imagem" id="editar-evento-imagem" class="form-control" accept="image/*">
-                            <small class="text-muted">Deixe em branco para manter a imagem atual. Formatos: JPG, PNG, GIF</small>
-                        </div>
-                        
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> Salvar Alterações
-                            </button>
-                            <a href="{% url 'meus_eventos' %}" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left me-1"></i> Voltar
-                            </a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Coluna dos ingressos -->
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-success text-white">
-                    <h5 class="mb-0"><i class="fas fa-ticket-alt me-2"></i>Ingressos</h5>
-                </div>
-                <div class="card-body">
-                    <a href="{% url 'adicionar_ingresso' evento.id %}" class="btn btn-success w-100 mb-3">
-                        <i class="fas fa-plus me-1"></i> Adicionar Novo Ingresso
-                    </a>
-                    
-                    <hr>
-                    
-                    {% if ingressos %}
-                        <div class="list-group">
-                            {% for ingresso in ingressos %}
-                                <div class="list-group-item">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <strong>
-                                                {% if ingresso.tipo == 'inteira' %}
-                                                    🎫 {{ ingresso.get_tipo_display }}
-                                                {% elif ingresso.tipo == 'meia' %}
-                                                    🎟️ {{ ingresso.get_tipo_display }}
-                                                {% else %}
-                                                    👑 {{ ingresso.get_tipo_display }}
-                                                {% endif %}
-                                            </strong><br>
-                                            <small>Preço: <strong class="text-success">R$ {{ ingresso.preco }}</strong></small><br>
-                                            <small>Disponível: {{ ingresso.quantidade_disponivel }}</small><br>
-                                            <small>Vendidos: {{ ingresso.quantidade_vendida }}</small>
+
+                                <!-- Preço Base -->
+                                <div class="col-md-6">
+                                    <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                        <i class="fas fa-dollar-sign me-2" style="color: #6366f1;"></i> Preço Base (R$)
+                                    </label>
+                                    <input type="number" step="0.01" name="preco_base" class="form-control" value="{{ evento.preco_base }}" style="
+                                        padding: 12px 16px;
+                                        border-radius: 12px;
+                                        border: 2px solid #e5e7eb;
+                                        font-size: 1rem;
+                                        transition: all 0.3s ease;
+                                        background: #fafbfc;
+                                    " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'">
+                                </div>
+
+                                <!-- Local -->
+                                <div class="col-md-6">
+                                    <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                        <i class="fas fa-map-marker-alt me-2" style="color: #6366f1;"></i> Local do Evento *
+                                    </label>
+                                    <input type="text" name="local_nome" class="form-control" value="{{ evento.local.nome }}" required style="
+                                        padding: 12px 16px;
+                                        border-radius: 12px;
+                                        border: 2px solid #e5e7eb;
+                                        font-size: 1rem;
+                                        transition: all 0.3s ease;
+                                        background: #fafbfc;
+                                    " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'">
+                                    <small style="color: #9ca3af; font-size: 0.75rem;">Digite o nome do local (ex: Auditório Principal, Sala 101)</small>
+                                </div>
+
+                                <!-- Endereço -->
+                                <div class="col-md-6">
+                                    <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                        <i class="fas fa-location-dot me-2" style="color: #6366f1;"></i> Endereço do Local
+                                    </label>
+                                    <input type="text" name="local_endereco" class="form-control" value="{{ evento.local.endereco|default:'' }}" style="
+                                        padding: 12px 16px;
+                                        border-radius: 12px;
+                                        border: 2px solid #e5e7eb;
+                                        font-size: 1rem;
+                                        transition: all 0.3s ease;
+                                        background: #fafbfc;
+                                    " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'">
+                                    <small style="color: #9ca3af; font-size: 0.75rem;">Opcional - Endereço completo</small>
+                                </div>
+
+                                <!-- Categoria -->
+                                <div class="col-md-12">
+                                    <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                        <i class="fas fa-tag me-2" style="color: #6366f1;"></i> Categoria *
+                                    </label>
+                                    <select name="categoria" class="form-select" required style="
+                                        padding: 12px 16px;
+                                        border-radius: 12px;
+                                        border: 2px solid #e5e7eb;
+                                        font-size: 1rem;
+                                        transition: all 0.3s ease;
+                                        background: #fafbfc;
+                                        cursor: pointer;
+                                    " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+                                        <option value="">Selecione uma categoria</option>
+                                        {% for categoria in categorias %}
+                                            <option value="{{ categoria.id }}" {% if evento.categoria.id == categoria.id %}selected{% endif %}>
+                                                {{ categoria.nome }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <small style="color: #9ca3af; font-size: 0.75rem;">
+                                        Não encontrou a categoria? <a href="/admin/eventos/categoria/add/" target="_blank" style="color: #6366f1; text-decoration: none; font-weight: 600;">Cadastre uma nova categoria</a>
+                                    </small>
+                                </div>
+
+                                <!-- Imagem -->
+                                <div class="col-md-12">
+                                    <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                        <i class="fas fa-image me-2" style="color: #6366f1;"></i> Imagem do Evento
+                                    </label>
+                                    {% if evento.imagem %}
+                                        <div style="margin-bottom: 12px;">
+                                            <img src="{{ evento.imagem.url }}" style="height: 100px; border-radius: 8px; border: 2px solid #f1f3f5; padding: 4px;" alt="Foto atual do evento {{ evento.titulo }}">
+                                            <br>
+                                            <small style="color: #9ca3af; font-size: 0.75rem;">Imagem atual</small>
                                         </div>
-                                        <div class="btn-group-vertical">
-                                            <a href="{% url 'editar_ingresso' ingresso.id %}" class="btn btn-warning btn-sm" title="Editar ingresso">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a href="{% url 'excluir_ingresso' ingresso.id %}" class="btn btn-danger btn-sm mt-1" title="Excluir ingresso">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
+                                    {% endif %}
+                                    <input type="file" name="imagem" class="form-control" accept="image/*" style="
+                                        padding: 10px 16px;
+                                        border-radius: 12px;
+                                        border: 2px solid #e5e7eb;
+                                        font-size: 1rem;
+                                        transition: all 0.3s ease;
+                                        background: #fafbfc;
+                                    " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+                                    <small style="color: #9ca3af; font-size: 0.75rem;">Deixe em branco para manter a imagem atual. Formatos: JPG, PNG, GIF</small>
+                                </div>
+                            </div>
+
+                            <!-- Botões -->
+                            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px;">
+                                <button type="submit" style="
+                                    padding: 12px 36px;
+                                    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                                    color: white;
+                                    border: none;
+                                    border-radius: 12px;
+                                    font-weight: 600;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                    box-shadow: 0 4px 16px rgba(99,102,241,0.2);
+                                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.2)'">
+                                    <i class="fas fa-save me-2"></i> Salvar Alterações
+                                </button>
+                                <a href="{% url 'meus_eventos' %}" style="
+                                    display: inline-block;
+                                    padding: 12px 36px;
+                                    background: #f1f3f5;
+                                    color: #4b5563;
+                                    border-radius: 12px;
+                                    font-weight: 600;
+                                    text-decoration: none;
+                                    transition: all 0.3s ease;
+                                " onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f1f3f5'">
+                                    <i class="fas fa-arrow-left me-2"></i> Voltar
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Coluna dos ingressos -->
+            <div class="col-lg-4">
+
+                <div style="
+                    background: white;
+                    border-radius: 24px;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+                    overflow: hidden;
+                    position: sticky;
+                    top: 20px;
+                ">
+
+                    <!-- Header -->
+                    <div style="
+                        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+                        padding: 20px 24px;
+                    ">
+                        <h5 style="color: white; font-weight: 700; margin: 0;">
+                            <i class="fas fa-ticket-alt me-2"></i> Ingressos
+                        </h5>
+                        <p style="color: rgba(255,255,255,0.4); margin: 2px 0 0; font-size: 0.8rem;">
+                            Gerencie os tipos de ingresso
+                        </p>
+                    </div>
+
+                    <div style="padding: 20px 24px;">
+
+                        <a href="{% url 'adicionar_ingresso' evento.id %}" style="
+                            display: block;
+                            width: 100%;
+                            padding: 12px;
+                            background: linear-gradient(135deg, #10b981, #059669);
+                            color: white;
+                            border: none;
+                            border-radius: 12px;
+                            font-weight: 600;
+                            text-align: center;
+                            text-decoration: none;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 4px 16px rgba(16,185,129,0.2);
+                            margin-bottom: 16px;
+                        " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(16,185,129,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(16,185,129,0.2)'">
+                            <i class="fas fa-plus me-2"></i> Adicionar Novo Ingresso
+                        </a>
+
+                        <hr style="margin: 16px 0; border-color: #f1f3f5;">
+
+                        {% if ingressos %}
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                {% for ingresso in ingressos %}
+                                    <div style="
+                                        background: #fafbfc;
+                                        border-radius: 12px;
+                                        padding: 14px 16px;
+                                        border: 1px solid #f1f3f5;
+                                        transition: all 0.3s ease;
+                                    " onmouseover="this.style.background='white'; this.style.borderColor='#e5e7eb'" onmouseout="this.style.background='#fafbfc'; this.style.borderColor='#f1f3f5'">
+                                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                                            <div>
+                                                <strong style="color: #1a1a2e; font-size: 0.95rem;">
+                                                    {% if ingresso.tipo == 'inteira' %}
+                                                        🎫 {{ ingresso.get_tipo_display }}
+                                                    {% elif ingresso.tipo == 'meia' %}
+                                                        🎟️ {{ ingresso.get_tipo_display }}
+                                                    {% else %}
+                                                        👑 {{ ingresso.get_tipo_display }}
+                                                    {% endif %}
+                                                </strong>
+                                                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 2px;">
+                                                    <span style="color: #10b981; font-weight: 600;">R$ {{ ingresso.preco }}</span>
+                                                    <span style="margin: 0 4px;">•</span>
+                                                    Disponível: {{ ingresso.quantidade_disponivel }}
+                                                    <span style="margin: 0 4px;">•</span>
+                                                    Vendidos: {{ ingresso.quantidade_vendida }}
+                                                </div>
+                                            </div>
+                                            <div style="display: flex; gap: 4px;">
+                                                <a href="{% url 'editar_ingresso' ingresso.id %}" style="
+                                                    background: rgba(245,158,11,0.1);
+                                                    color: #f59e0b;
+                                                    padding: 6px 10px;
+                                                    border-radius: 8px;
+                                                    text-decoration: none;
+                                                    transition: all 0.3s ease;
+                                                    font-size: 0.85rem;
+                                                " onmouseover="this.style.background='rgba(245,158,11,0.2)'" onmouseout="this.style.background='rgba(245,158,11,0.1)'" title="Editar ingresso">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="{% url 'excluir_ingresso' ingresso.id %}" style="
+                                                    background: rgba(239,68,68,0.1);
+                                                    color: #ef4444;
+                                                    padding: 6px 10px;
+                                                    border-radius: 8px;
+                                                    text-decoration: none;
+                                                    transition: all 0.3s ease;
+                                                    font-size: 0.85rem;
+                                                " onmouseover="this.style.background='rgba(239,68,68,0.2)'" onmouseout="this.style.background='rgba(239,68,68,0.1)'" title="Excluir ingresso">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div style="
+                                text-align: center;
+                                padding: 30px 20px;
+                            ">
+                                <i class="fas fa-ticket" style="font-size: 2.5rem; color: #d1d5db; margin-bottom: 8px;"></i>
+                                <p style="color: #6b7280; margin: 0; font-weight: 500;">Nenhum ingresso cadastrado</p>
+                                <small style="color: #9ca3af;">Clique em "Adicionar Novo Ingresso" para começar</small>
+                            </div>
+                        {% endif %}
+
+                        <hr style="margin: 16px 0; border-color: #f1f3f5;">
+
+                        <div style="
+                            background: #f8fafc;
+                            border-radius: 12px;
+                            padding: 16px;
+                            border: 1px solid #f1f3f5;
+                        ">
+                            <small style="color: #6b7280;">
+                                <i class="fas fa-lightbulb me-1" style="color: #f59e0b;"></i>
+                                <strong>Dica:</strong> Você pode adicionar diferentes tipos de ingresso:
+                                <ul style="margin: 8px 0 0; padding-left: 18px; color: #6b7280; font-size: 0.8rem;">
+                                    <li><strong>Inteira</strong> - Valor completo</li>
+                                    <li><strong>Meia-entrada</strong> - 50% do valor</li>
+                                    <li><strong>VIP</strong> - Experiência premium</li>
+                                </ul>
+                            </small>
                         </div>
-                    {% else %}
-                        <div class="alert alert-info text-center">
-                            <i class="fas fa-info-circle fa-2x mb-2"></i>
-                            <p class="mb-0">Nenhum ingresso cadastrado ainda.</p>
-                            <small>Clique em "Adicionar Novo Ingresso" para começar.</small>
-                        </div>
-                    {% endif %}
-                    
-                    <hr>
-                    
-                    <div class="alert alert-secondary">
-                        <small>
-                            <i class="fas fa-lightbulb me-1"></i>
-                            <strong>Dica:</strong> Você pode adicionar diferentes tipos de ingresso:
-                            <ul class="mt-2 mb-0">
-                                <li><strong>Inteira</strong> - Valor completo</li>
-                                <li><strong>Meia-entrada</strong> - 50% do valor</li>
-                                <li><strong>VIP</strong> - Experiência premium</li>
-                            </ul>
-                        </small>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
 </div>
+
+<style>
+    .form-control:focus {
+        outline: none;
+    }
+    .form-select:focus {
+        outline: none;
+    }
+</style>
+
 {% endblock %}

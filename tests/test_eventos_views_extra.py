@@ -60,6 +60,40 @@ class EventosViewsExtraTest(TestCase):
         response = self.client.get(reverse('lista_eventos'), {'data': data_local})
         self.assertContains(response, 'Evento Principal')
 
+    def test_lista_eventos_combina_data_e_faixa_de_preco(self):
+        Evento.objects.create(
+            titulo='Evento Fora do Orçamento',
+            descricao='Descrição',
+            data_evento=timezone.now() + timedelta(days=10),
+            local=self.local,
+            categoria=self.categoria,
+            preco_base=Decimal('200.00'),
+            organizador=self.organizador,
+        )
+        Evento.objects.create(
+            titulo='Evento Fora da Data',
+            descricao='Descrição',
+            data_evento=timezone.now() + timedelta(days=40),
+            local=self.local,
+            categoria=self.categoria,
+            preco_base=Decimal('20.00'),
+            organizador=self.organizador,
+        )
+
+        response = self.client.get(
+            reverse('lista_eventos'),
+            {
+                'data_inicio': (timezone.now() + timedelta(days=9)).date().isoformat(),
+                'data_fim': (timezone.now() + timedelta(days=11)).date().isoformat(),
+                'preco_min': '10.00',
+                'preco_max': '30.00',
+            },
+        )
+
+        self.assertContains(response, 'Evento Principal')
+        self.assertNotContains(response, 'Evento Fora do Orçamento')
+        self.assertNotContains(response, 'Evento Fora da Data')
+
     def test_detalhe_evento_renderiza_ingressos(self):
         response = self.client.get(reverse('detalhe_evento', args=[self.evento.id]))
         self.assertEqual(response.status_code, 200)
@@ -234,7 +268,8 @@ class EventosViewsExtraTest(TestCase):
         response = self.client.get(reverse('validar_qr', args=['123e4567-e89b-12d3-a456-426614174000']))
         self.assertEqual(response.status_code, 302)
 
-    def test_validar_qr_marca_presenca(self):
+    @patch('eventos.views.generate_certificate.delay')
+    def test_validar_qr_marca_presenca(self, certificate_delay):
         self.client.login(username='organizador', password='StrongPass123!')
         compra = Compra.objects.create(
             usuario=self.outro_usuario,
@@ -247,6 +282,7 @@ class EventosViewsExtraTest(TestCase):
         self.assertEqual(response.status_code, 302)
         compra.refresh_from_db()
         self.assertEqual(compra.status, 'presente')
+        certificate_delay.assert_called_once_with(compra.id)
 
     def test_validar_qr_ja_utilizado(self):
         self.client.login(username='organizador', password='StrongPass123!')
