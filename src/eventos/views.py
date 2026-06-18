@@ -315,7 +315,7 @@ def criar_evento(request):
 
         categoria = get_object_or_404(Categoria, id=categoria_id)
 
-        local, created = Local.objects.get_or_create(
+        local, _ = Local.objects.get_or_create(
         nome=local_nome,
         defaults={'endereco': local_endereco}
         )
