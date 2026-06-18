@@ -2,9 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
-from django.db.models import Q
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from django.utils import timezone
+from django.utils.dateparse import parse_date
 from .models import Evento, Ingresso, Compra, Categoria, Local
 from django.http import HttpResponseForbidden
 from django.views.decorators.http import require_http_methods
@@ -16,21 +16,46 @@ TEMPLATE_COMPRAR_INGRESSO = 'eventos/comprar_ingresso.html'
 def home(request):
     return render(request, 'eventos/home.html')
 
+
+def filtrar_por_data(eventos, campo, valor):
+    data = parse_date(valor) if valor else None
+    if not data:
+        return eventos
+    return eventos.filter(**{campo: data})
+
+
+def filtrar_por_preco(eventos, campo, valor):
+    if not valor:
+        return eventos
+    try:
+        preco = Decimal(valor)
+    except (InvalidOperation, ValueError):
+        return eventos
+    return eventos.filter(**{campo: preco})
+
+
 def lista_eventos(request):
     eventos = Evento.objects.all()
     categorias = Categoria.objects.all()
-    
+
     q = request.GET.get('q')
     categoria_id = request.GET.get('categoria')
     data = request.GET.get('data')
+    data_inicio = request.GET.get('data_inicio') or data
+    data_fim = request.GET.get('data_fim') or data
+    preco_min = request.GET.get('preco_min')
+    preco_max = request.GET.get('preco_max')
 
     if q:
         eventos = eventos.filter(titulo__icontains=q)
     if categoria_id:
         eventos = eventos.filter(categoria_id=categoria_id)
-    if data:
-        eventos = eventos.filter(data_evento__date=data)
-    
+
+    eventos = filtrar_por_data(eventos, 'data_evento__date__gte', data_inicio)
+    eventos = filtrar_por_data(eventos, 'data_evento__date__lte', data_fim)
+    eventos = filtrar_por_preco(eventos, 'preco_base__gte', preco_min)
+    eventos = filtrar_por_preco(eventos, 'preco_base__lte', preco_max)
+
     return render(request, 'eventos/evento_list.html', {
         'eventos': eventos,
         'categorias': categorias
