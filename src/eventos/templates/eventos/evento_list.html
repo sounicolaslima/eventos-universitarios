@@ -23,14 +23,16 @@
         <div class="card-body">
             <form method="get" class="row g-3">
                 <div class="col-md-4">
+                    <label for="filtro-q" class="visually-hidden">Buscar por título</label>
                     <div class="input-group">
                         <span class="input-group-text bg-white"><i class="fas fa-search text-primary"></i></span>
-                        <input type="text" name="q" class="form-control" placeholder="Buscar por título do evento..." 
+                        <input type="text" id="filtro-q" name="q" class="form-control" placeholder="Buscar por título do evento..."
                                value="{{ request.GET.q }}">
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <select name="categoria" class="form-select">
+                    <label for="filtro-categoria" class="visually-hidden">Categoria</label>
+                    <select id="filtro-categoria" name="categoria" class="form-select">
                         <option value="">Todas as categorias</option>
                         {% for cat in categorias %}
                             <option value="{{ cat.id }}" {% if request.GET.categoria == cat.id|stringformat:"s" %}selected{% endif %}>
@@ -40,19 +42,23 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <input type="date" name="data_inicio" class="form-control"
-                           value="{{ request.GET.data_inicio }}" aria-label="Data inicial">
+                    <label for="filtro-data-inicio" class="visually-hidden">Data inicial</label>
+                    <input type="date" id="filtro-data-inicio" name="data_inicio" class="form-control"
+                           value="{{ request.GET.data_inicio }}">
                 </div>
                 <div class="col-md-2">
-                    <input type="date" name="data_fim" class="form-control"
-                           value="{{ request.GET.data_fim }}" aria-label="Data final">
+                    <label for="filtro-data-fim" class="visually-hidden">Data final</label>
+                    <input type="date" id="filtro-data-fim" name="data_fim" class="form-control"
+                           value="{{ request.GET.data_fim }}">
                 </div>
                 <div class="col-md-2">
-                    <input type="number" name="preco_min" class="form-control" min="0" step="0.01"
+                    <label for="filtro-preco-min" class="visually-hidden">Preço mínimo</label>
+                    <input type="number" id="filtro-preco-min" name="preco_min" class="form-control" min="0" step="0.01"
                            placeholder="Preço mín." value="{{ request.GET.preco_min }}">
                 </div>
                 <div class="col-md-2">
-                    <input type="number" name="preco_max" class="form-control" min="0" step="0.01"
+                    <label for="filtro-preco-max" class="visually-hidden">Preço máximo</label>
+                    <input type="number" id="filtro-preco-max" name="preco_max" class="form-control" min="0" step="0.01"
                            placeholder="Preço máx." value="{{ request.GET.preco_max }}">
                 </div>
                 <div class="col-md-2">
