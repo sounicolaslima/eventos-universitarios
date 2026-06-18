@@ -91,7 +91,7 @@
                             {% csrf_token %}
                             
                             <div style="margin-bottom: 24px;">
-                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;" for="quantidade">
                                     <i class="fas fa-hashtag me-2" style="color: #6366f1;"></i> Quantidade
                                 </label>
                                 <input type="number" 
@@ -109,7 +109,7 @@
                                            font-size: 1rem;
                                            transition: all 0.3s ease;
                                            background: #fafbfc;
-                                       " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'">
+                                       " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'" aria-label="Quantidade">
                                 <small style="color: #9ca3af; font-size: 0.8rem; display: block; margin-top: 4px;">
                                     <i class="fas fa-box me-1"></i> Disponível: {{ ingresso.quantidade_disponivel }} ingressos
                                 </small>
@@ -142,7 +142,7 @@
                                 transition: all 0.3s ease;
                                 box-shadow: 0 4px 20px rgba(16,185,129,0.25);
                                 margin-bottom: 12px;
-                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(16,185,129,0.35)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(16,185,129,0.25)'">
+                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(16,185,129,0.35)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(16,185,129,0.25)'" onfocus="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(16,185,129,0.35)'" onblur="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(16,185,129,0.25)'">
                                 <i class="fas fa-arrow-right me-2"></i> Ir para revisão
                             </button>
                             
@@ -157,7 +157,7 @@
                                 text-align: center;
                                 text-decoration: none;
                                 transition: all 0.3s ease;
-                            " onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f1f3f5'">
+                            " onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f1f3f5'" onfocus="this.style.background='#e5e7eb'" onblur="this.style.background='#f1f3f5'">
                                 <i class="fas fa-times me-2"></i> Cancelar
                             </a>
                         </form>

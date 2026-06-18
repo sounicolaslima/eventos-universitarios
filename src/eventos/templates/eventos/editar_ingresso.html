@@ -59,7 +59,7 @@
                             
                             <!-- Tipo de Ingresso -->
                             <div style="margin-bottom: 20px;">
-                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;" for="editar_ingresso_tipo">
                                     <i class="fas fa-ticket-alt me-2" style="color: #6366f1;"></i> Tipo de Ingresso *
                                 </label>
                                 <select name="tipo" class="form-select" required style="
@@ -70,7 +70,7 @@
                                     transition: all 0.3s ease;
                                     background: #fafbfc;
                                     cursor: pointer;
-                                " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+                                " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" id="editar_ingresso_tipo" aria-label="Tipo de Ingresso">
                                     <option value="inteira" {% if ingresso.tipo == 'inteira' %}selected{% endif %}>🎫 Inteira</option>
                                     <option value="meia" {% if ingresso.tipo == 'meia' %}selected{% endif %}>🎟️ Meia-entrada</option>
                                     <option value="vip" {% if ingresso.tipo == 'vip' %}selected{% endif %}>👑 VIP</option>
@@ -79,7 +79,7 @@
                             
                             <!-- Preço -->
                             <div style="margin-bottom: 20px;">
-                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;" for="editar_ingresso_preco">
                                     <i class="fas fa-dollar-sign me-2" style="color: #6366f1;"></i> Preço (R$) *
                                 </label>
                                 <input type="number" step="0.01" name="preco" class="form-control" value="{{ ingresso.preco }}" required style="
@@ -89,12 +89,12 @@
                                     font-size: 1rem;
                                     transition: all 0.3s ease;
                                     background: #fafbfc;
-                                " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'">
+                                " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'" id="editar_ingresso_preco" aria-label="Preço (R$)">
                             </div>
                             
                             <!-- Quantidade -->
                             <div style="margin-bottom: 24px;">
-                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;" for="editar_ingresso_quantidade">
                                     <i class="fas fa-hashtag me-2" style="color: #6366f1;"></i> Quantidade Disponível *
                                 </label>
                                 <input type="number" name="quantidade" class="form-control" value="{{ ingresso.quantidade_disponivel }}" required style="
@@ -104,7 +104,7 @@
                                     font-size: 1rem;
                                     transition: all 0.3s ease;
                                     background: #fafbfc;
-                                " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'">
+                                " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'" id="editar_ingresso_quantidade" aria-label="Quantidade Disponível">
                             </div>
                             
                             <!-- Botões -->
@@ -119,7 +119,7 @@
                                     cursor: pointer;
                                     transition: all 0.3s ease;
                                     box-shadow: 0 4px 16px rgba(99,102,241,0.2);
-                                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.2)'">
+                                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.2)'" onfocus="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.3)'" onblur="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.2)'">
                                     <i class="fas fa-save me-2"></i> Salvar
                                 </button>
                                 <a href="{% url 'editar_evento' ingresso.evento.id %}" style="
@@ -131,7 +131,7 @@
                                     font-weight: 600;
                                     text-decoration: none;
                                     transition: all 0.3s ease;
-                                " onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f1f3f5'">
+                                " onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f1f3f5'" onfocus="this.style.background='#e5e7eb'" onblur="this.style.background='#f1f3f5'">
                                     <i class="fas fa-times me-2"></i> Cancelar
                                 </button>
                             </div>
