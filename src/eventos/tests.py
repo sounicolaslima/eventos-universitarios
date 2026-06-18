@@ -5,6 +5,7 @@ from decimal import Decimal
 from datetime import timedelta
 from django.utils import timezone
 import secrets
+from unittest.mock import patch
 
 from .models import Evento, Ingresso, Compra, Categoria, Local
 
@@ -126,7 +127,8 @@ class ValidacaoQRTests(TestCase):
             status='confirmada'
         )
 
-    def test_validacao_qr_valido(self):
+    @patch('eventos.views.generate_certificate.delay')
+    def test_validacao_qr_valido(self, certificate_delay):
         self.client.login(
             username='admin',
             password=self.organizador_password
@@ -139,6 +141,7 @@ class ValidacaoQRTests(TestCase):
         self.compra.refresh_from_db()
 
         self.assertEqual(self.compra.status, 'presente')
+        certificate_delay.assert_called_once_with(self.compra.id)
 
     def test_validacao_qr_invalido(self):
         self.client.login(
