@@ -38,7 +38,7 @@
                 font-weight: 500;
                 transition: all 0.3s ease;
                 border: 1px solid rgba(255,255,255,0.1);
-            " onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+            " onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'" onfocus="this.style.background='rgba(255,255,255,0.2)'" onblur="this.style.background='rgba(255,255,255,0.1)'">
                 <i class="fas fa-home me-1"></i> Voltar
             </a>
         </div>
@@ -55,7 +55,7 @@
             <form method="get">
                 <div class="row g-3">
                     <div class="col-md-3">
-                        <label style="font-weight: 600; color: #1a1a2e; font-size: 0.85rem; margin-bottom: 4px; display: block;">
+                        <label style="font-weight: 600; color: #1a1a2e; font-size: 0.85rem; margin-bottom: 4px; display: block;" for="evento_list_q">
                             <i class="fas fa-search me-1" style="color: #6366f1;"></i> Buscar
                         </label>
                         <input type="text" name="q" class="form-control" placeholder="Título do evento..."
@@ -65,10 +65,10 @@
                                    border: 2px solid #e5e7eb;
                                    transition: all 0.3s ease;
                                    background: #fafbfc;
-                               " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'">
+                               " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'" id="evento_list_q" aria-label="Buscar">
                     </div>
                     <div class="col-md-2">
-                        <label style="font-weight: 600; color: #1a1a2e; font-size: 0.85rem; margin-bottom: 4px; display: block;">
+                        <label style="font-weight: 600; color: #1a1a2e; font-size: 0.85rem; margin-bottom: 4px; display: block;" for="evento_list_categoria">
                             <i class="fas fa-tag me-1" style="color: #6366f1;"></i> Categoria
                         </label>
                         <select name="categoria" class="form-select" style="
@@ -78,7 +78,7 @@
                             transition: all 0.3s ease;
                             background: #fafbfc;
                             cursor: pointer;
-                        " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+                        " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" id="evento_list_categoria" aria-label="Categoria">
                             <option value="">Todas</option>
                             {% for cat in categorias %}
                                 <option value="{{ cat.id }}" {% if request.GET.categoria == cat.id|stringformat:"s" %}selected{% endif %}>
@@ -88,7 +88,7 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label style="font-weight: 600; color: #1a1a2e; font-size: 0.85rem; margin-bottom: 4px; display: block;">
+                        <label style="font-weight: 600; color: #1a1a2e; font-size: 0.85rem; margin-bottom: 4px; display: block;" for="evento_list_data_inicio">
                             <i class="fas fa-calendar-day me-1" style="color: #6366f1;"></i> Data Início
                         </label>
                         <input type="date" name="data_inicio" class="form-control" value="{{ request.GET.data_inicio }}" style="
@@ -97,10 +97,10 @@
                             border: 2px solid #e5e7eb;
                             transition: all 0.3s ease;
                             background: #fafbfc;
-                        " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'">
+                        " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'" id="evento_list_data_inicio" aria-label="Data Início">
                     </div>
                     <div class="col-md-2">
-                        <label style="font-weight: 600; color: #1a1a2e; font-size: 0.85rem; margin-bottom: 4px; display: block;">
+                        <label style="font-weight: 600; color: #1a1a2e; font-size: 0.85rem; margin-bottom: 4px; display: block;" for="evento_list_data_fim">
                             <i class="fas fa-calendar-day me-1" style="color: #6366f1;"></i> Data Fim
                         </label>
                         <input type="date" name="data_fim" class="form-control" value="{{ request.GET.data_fim }}" style="
@@ -109,7 +109,7 @@
                             border: 2px solid #e5e7eb;
                             transition: all 0.3s ease;
                             background: #fafbfc;
-                        " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'">
+                        " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'" id="evento_list_data_fim" aria-label="Data Fim">
                     </div>
                     <div class="col-md-2">
                         <label style="font-weight: 600; color: #1a1a2e; font-size: 0.85rem; margin-bottom: 4px; display: block;">
@@ -123,7 +123,7 @@
                                 width: 50%;
                                 transition: all 0.3s ease;
                                 background: #fafbfc;
-                            " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'">
+                            " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'" id="evento_list_preco_min" aria-label="Evento List Preco Min">
                             <input type="number" name="preco_max" class="form-control" placeholder="Max" value="{{ request.GET.preco_max }}" style="
                                 padding: 10px 10px;
                                 border-radius: 10px;
@@ -131,7 +131,7 @@
                                 width: 50%;
                                 transition: all 0.3s ease;
                                 background: #fafbfc;
-                            " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'">
+                            " onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 4px rgba(99,102,241,0.1)'; this.style.background='white'" onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'" id="evento_list_preco_max" aria-label="Evento List Preco Max">
                         </div>
                     </div>
                     <div class="col-md-1" style="display: flex; align-items: flex-end;">
@@ -146,7 +146,7 @@
                             cursor: pointer;
                             transition: all 0.3s ease;
                             box-shadow: 0 4px 16px rgba(99,102,241,0.2);
-                        " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.2)'">
+                        " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.2)'" onfocus="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.3)'" onblur="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.2)'">
                             <i class="fas fa-filter"></i>
                         </button>
                     </div>
@@ -167,7 +167,7 @@
                             border: 1px solid #f1f3f5;
                             transition: all 0.3s ease;
                             height: 100%;
-                        " onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.04)'">
+                        " onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.04)'" onfocus="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.1)'" onblur="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.04)'">
                             
                             <!-- Imagem do evento -->
                             <div style="position: relative; height: 200px; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
@@ -244,7 +244,7 @@
                                     text-decoration: none;
                                     transition: all 0.3s ease;
                                     box-shadow: 0 4px 16px rgba(99,102,241,0.15);
-                                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.25)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.15)'">
+                                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.25)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.15)'" onfocus="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.25)'" onblur="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.15)'">
                                     <i class="fas fa-eye me-2"></i> Ver Detalhes
                                 </a>
                             </div>
@@ -276,7 +276,7 @@
                     font-weight: 600;
                     transition: all 0.3s ease;
                     box-shadow: 0 4px 16px rgba(99,102,241,0.2);
-                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.2)'">
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.2)'" onfocus="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(99,102,241,0.3)'" onblur="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(99,102,241,0.2)'">
                     <i class="fas fa-home me-2"></i> Voltar para Home
                 </a>
             </div>
