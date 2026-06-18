@@ -147,6 +147,7 @@ def confirmar_compra(request, ingresso_id):
 
 
 @login_required
+@require_http_methods(["GET"])
 def confirmacao_compra(request, codigo_uuid):
     compra = get_object_or_404(
         Compra.objects.select_related('ingresso', 'ingresso__evento'),
