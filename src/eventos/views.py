@@ -5,6 +5,7 @@ from django.db import transaction
 from django.db.models import Q
 from decimal import Decimal
 from django.utils import timezone
+from django.utils.dateparse import parse_date
 from .models import Evento, Ingresso, Compra, Categoria, Local
 from django.http import HttpResponseForbidden
 from django.views.decorators.http import require_http_methods
@@ -19,18 +20,38 @@ def home(request):
 def lista_eventos(request):
     eventos = Evento.objects.all()
     categorias = Categoria.objects.all()
-    
+
     q = request.GET.get('q')
     categoria_id = request.GET.get('categoria')
     data = request.GET.get('data')
+    data_inicio = request.GET.get('data_inicio') or data
+    data_fim = request.GET.get('data_fim') or data
+    preco_min = request.GET.get('preco_min')
+    preco_max = request.GET.get('preco_max')
 
     if q:
         eventos = eventos.filter(titulo__icontains=q)
     if categoria_id:
         eventos = eventos.filter(categoria_id=categoria_id)
-    if data:
-        eventos = eventos.filter(data_evento__date=data)
-    
+    if data_inicio:
+        inicio = parse_date(data_inicio)
+        if inicio:
+            eventos = eventos.filter(data_evento__date__gte=inicio)
+    if data_fim:
+        fim = parse_date(data_fim)
+        if fim:
+            eventos = eventos.filter(data_evento__date__lte=fim)
+    if preco_min:
+        try:
+            eventos = eventos.filter(preco_base__gte=Decimal(preco_min))
+        except ArithmeticError:
+            pass
+    if preco_max:
+        try:
+            eventos = eventos.filter(preco_base__lte=Decimal(preco_max))
+        except ArithmeticError:
+            pass
+
     return render(request, 'eventos/evento_list.html', {
         'eventos': eventos,
         'categorias': categorias

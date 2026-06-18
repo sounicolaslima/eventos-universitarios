@@ -56,8 +56,43 @@ class EventosViewsExtraTest(TestCase):
         response = self.client.get(reverse('lista_eventos'), {'categoria': self.categoria.id})
         self.assertContains(response, 'Evento Principal')
 
-        response = self.client.get(reverse('lista_eventos'), {'data': self.evento.data_evento.date().isoformat()})
+        data_local = timezone.localtime(self.evento.data_evento).date().isoformat()
+        response = self.client.get(reverse('lista_eventos'), {'data': data_local})
         self.assertContains(response, 'Evento Principal')
+
+    def test_lista_eventos_combina_data_e_faixa_de_preco(self):
+        Evento.objects.create(
+            titulo='Evento Fora do Orçamento',
+            descricao='Descrição',
+            data_evento=timezone.now() + timedelta(days=10),
+            local=self.local,
+            categoria=self.categoria,
+            preco_base=Decimal('200.00'),
+            organizador=self.organizador,
+        )
+        Evento.objects.create(
+            titulo='Evento Fora da Data',
+            descricao='Descrição',
+            data_evento=timezone.now() + timedelta(days=40),
+            local=self.local,
+            categoria=self.categoria,
+            preco_base=Decimal('20.00'),
+            organizador=self.organizador,
+        )
+
+        response = self.client.get(
+            reverse('lista_eventos'),
+            {
+                'data_inicio': (timezone.now() + timedelta(days=9)).date().isoformat(),
+                'data_fim': (timezone.now() + timedelta(days=11)).date().isoformat(),
+                'preco_min': '10.00',
+                'preco_max': '30.00',
+            },
+        )
+
+        self.assertContains(response, 'Evento Principal')
+        self.assertNotContains(response, 'Evento Fora do Orçamento')
+        self.assertNotContains(response, 'Evento Fora da Data')
 
     def test_detalhe_evento_renderiza_ingressos(self):
         response = self.client.get(reverse('detalhe_evento', args=[self.evento.id]))
