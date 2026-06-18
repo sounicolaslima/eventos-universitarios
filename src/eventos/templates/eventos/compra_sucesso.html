@@ -10,6 +10,7 @@
                 <div class="card-body p-5 text-center">
                     <h2 class="text-success mb-4">Compra Confirmada!</h2>
 
+                    <p><strong>Código do pedido:</strong> {{ compra.codigo_uuid }}</p>
                     <p><strong>Evento:</strong> {{ compra.ingresso.evento.titulo }}</p>
                     <p><strong>Ingresso:</strong> {{ compra.ingresso.get_tipo_display }}</p>
                     <p><strong>Quantidade:</strong> {{ compra.quantidade }}</p>

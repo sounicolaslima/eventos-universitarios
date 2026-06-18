@@ -143,6 +143,17 @@ def confirmar_compra(request, ingresso_id):
     # fora da transação
     messages.success(request, 'Compra simulada confirmada com sucesso!')
 
+    return redirect('confirmacao_compra', codigo_uuid=compra.codigo_uuid)
+
+
+@login_required
+def confirmacao_compra(request, codigo_uuid):
+    compra = get_object_or_404(
+        Compra.objects.select_related('ingresso', 'ingresso__evento'),
+        codigo_uuid=codigo_uuid,
+        usuario=request.user
+    )
+
     return render(request, 'eventos/compra_sucesso.html', {
         'compra': compra,
     })
