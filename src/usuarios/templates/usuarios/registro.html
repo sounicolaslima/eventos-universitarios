@@ -93,7 +93,7 @@
                             {% csrf_token %}
 
                             <div style="margin-bottom: 16px;">
-                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;" for="registro_username">
                                     <i class="fas fa-user me-2" style="color: #7c3aed;"></i> Usuário
                                 </label>
                                 <input 
@@ -112,11 +112,11 @@
                                     "
                                     onfocus="this.style.borderColor='#7c3aed'; this.style.boxShadow='0 0 0 4px rgba(124,58,237,0.1)'; this.style.background='white'"
                                     onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'"
-                                >
+                                 id="registro_username" aria-label="Usuário">
                             </div>
 
                             <div style="margin-bottom: 16px;">
-                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;" for="registro_email">
                                     <i class="fas fa-envelope me-2" style="color: #7c3aed;"></i> E-mail
                                 </label>
                                 <input 
@@ -135,11 +135,11 @@
                                     "
                                     onfocus="this.style.borderColor='#7c3aed'; this.style.boxShadow='0 0 0 4px rgba(124,58,237,0.1)'; this.style.background='white'"
                                     onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'"
-                                >
+                                 id="registro_email" aria-label="E-mail">
                             </div>
 
                             <div style="margin-bottom: 16px;">
-                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;" for="registro_password1">
                                     <i class="fas fa-lock me-2" style="color: #7c3aed;"></i> Senha
                                 </label>
                                 <input 
@@ -158,11 +158,11 @@
                                     "
                                     onfocus="this.style.borderColor='#7c3aed'; this.style.boxShadow='0 0 0 4px rgba(124,58,237,0.1)'; this.style.background='white'"
                                     onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'"
-                                >
+                                 id="registro_password1" aria-label="Senha">
                             </div>
 
                             <div style="margin-bottom: 24px;">
-                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;">
+                                <label style="font-weight: 600; color: #1a1a2e; font-size: 0.9rem; margin-bottom: 6px; display: block;" for="registro_password2">
                                     <i class="fas fa-check-circle me-2" style="color: #7c3aed;"></i> Confirmar Senha
                                 </label>
                                 <input 
@@ -181,7 +181,7 @@
                                     "
                                     onfocus="this.style.borderColor='#7c3aed'; this.style.boxShadow='0 0 0 4px rgba(124,58,237,0.1)'; this.style.background='white'"
                                     onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.background='#fafbfc'"
-                                >
+                                 id="registro_password2" aria-label="Confirmar Senha">
                             </div>
 
                             <button type="submit" style="
@@ -196,7 +196,7 @@
                                 cursor: pointer;
                                 transition: all 0.3s ease;
                                 box-shadow: 0 4px 20px rgba(124,58,237,0.25);
-                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(124,58,237,0.35)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(124,58,237,0.25)'">
+                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(124,58,237,0.35)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(124,58,237,0.25)'" onfocus="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(124,58,237,0.35)'" onblur="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(124,58,237,0.25)'">
                                 <i class="fas fa-user-plus me-2"></i> Cadastrar
                             </button>
                         </form>
@@ -210,7 +210,7 @@
                                 font-weight: 600;
                                 text-decoration: none;
                                 transition: all 0.3s ease;
-                            " onmouseover="this.style.color='#6d28d9'; this.style.textDecoration='underline'" onmouseout="this.style.color='#7c3aed'; this.style.textDecoration='none'">
+                            " onmouseover="this.style.color='#6d28d9'; this.style.textDecoration='underline'" onmouseout="this.style.color='#7c3aed'; this.style.textDecoration='none'" onfocus="this.style.color='#6d28d9'; this.style.textDecoration='underline'" onblur="this.style.color='#7c3aed'; this.style.textDecoration='none'">
                                 Faça login
                             </a>
                         </p>

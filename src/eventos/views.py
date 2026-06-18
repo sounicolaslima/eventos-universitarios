@@ -275,6 +275,7 @@ def meu_historico(request):
 # ==========================
 
 @login_required
+@require_http_methods(["GET"])
 def download_certificado(request, compra_id):
     compra = get_object_or_404(
         Compra,
