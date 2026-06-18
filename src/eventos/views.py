@@ -9,7 +9,6 @@ from .models import Evento, Ingresso, Compra, Categoria, Local
 from django.http import FileResponse, Http404, HttpResponseForbidden
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
-from .tasks import generate_certificate
 
 # Template constants
 TEMPLATE_COMPRAR_INGRESSO = 'eventos/comprar_ingresso.html'
@@ -167,6 +166,7 @@ def confirmar_compra(request, ingresso_id):
         ingresso.save(update_fields=['quantidade_disponivel'])
 
     # fora da transação
+    schedule_event_reminder(compra)
     messages.success(request, 'Compra simulada confirmada com sucesso!')
 
     return redirect('confirmacao_compra', codigo_uuid=compra.codigo_uuid)

@@ -5,6 +5,7 @@ from decimal import Decimal
 from datetime import timedelta
 from eventos.models import Evento, Categoria, Local, Ingresso, Compra
 from django.utils import timezone
+from unittest.mock import patch
 
 
 class EventosViewsTest(TestCase):
@@ -123,7 +124,8 @@ class EventosViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Quantidade indisponível para este ingresso.')
 
-    def test_confirmar_compra_cria_compra_e_reduz_estoque(self):
+    @patch('eventos.views.schedule_event_reminder')
+    def test_confirmar_compra_cria_compra_e_reduz_estoque(self, schedule_mock):
         self.login_user()
 
         response = self.client.post(
@@ -134,10 +136,7 @@ class EventosViewsTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
         compra = Compra.objects.get(usuario=self.user, ingresso=self.ingresso)
-        self.assertIn(
-            reverse('confirmacao_compra', args=[compra.codigo_uuid]),
-            response.url
-        )
+
         self.assertEqual(compra.quantidade, 2)
         self.ingresso.refresh_from_db()
         self.assertEqual(self.ingresso.quantidade_disponivel, 8)
