@@ -56,7 +56,8 @@ class EventosViewsExtraTest(TestCase):
         response = self.client.get(reverse('lista_eventos'), {'categoria': self.categoria.id})
         self.assertContains(response, 'Evento Principal')
 
-        response = self.client.get(reverse('lista_eventos'), {'data': self.evento.data_evento.date().isoformat()})
+        data_local = timezone.localtime(self.evento.data_evento).date().isoformat()
+        response = self.client.get(reverse('lista_eventos'), {'data': data_local})
         self.assertContains(response, 'Evento Principal')
 
     def test_detalhe_evento_renderiza_ingressos(self):
@@ -233,7 +234,8 @@ class EventosViewsExtraTest(TestCase):
         response = self.client.get(reverse('validar_qr', args=['123e4567-e89b-12d3-a456-426614174000']))
         self.assertEqual(response.status_code, 302)
 
-    def test_validar_qr_marca_presenca(self):
+    @patch('eventos.views.generate_certificate.delay')
+    def test_validar_qr_marca_presenca(self, certificate_delay):
         self.client.login(username='organizador', password='StrongPass123!')
         compra = Compra.objects.create(
             usuario=self.outro_usuario,
@@ -246,6 +248,7 @@ class EventosViewsExtraTest(TestCase):
         self.assertEqual(response.status_code, 302)
         compra.refresh_from_db()
         self.assertEqual(compra.status, 'presente')
+        certificate_delay.assert_called_once_with(compra.id)
 
     def test_validar_qr_ja_utilizado(self):
         self.client.login(username='organizador', password='StrongPass123!')

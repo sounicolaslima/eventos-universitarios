@@ -9,6 +9,7 @@ from .models import Evento, Ingresso, Compra, Categoria, Local
 from django.http import HttpResponseForbidden
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
+from .tasks import generate_certificate
 
 # Template constants
 TEMPLATE_COMPRAR_INGRESSO = 'eventos/comprar_ingresso.html'
@@ -383,6 +384,7 @@ def validar_qr(request, uuid):
     # Marca presença
     compra.status = 'presente'
     compra.save()
+    generate_certificate.delay(compra.id)
 
     messages.success(
         request,
