@@ -9,7 +9,7 @@ from django.views.decorators.http import require_http_methods
 
 from decimal import Decimal, InvalidOperation
 
-from .models import Evento, Categoria, Local
+from .models import Evento, Categoria, Local, Ingresso, Compra
 from .tasks import schedule_event_reminder, generate_certificate
 
 
