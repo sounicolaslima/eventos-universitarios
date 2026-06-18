@@ -6,7 +6,7 @@ from decimal import Decimal, InvalidOperation
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 from .models import Evento, Ingresso, Compra, Categoria, Local
-from django.http import HttpResponseForbidden
+from django.http import FileResponse, Http404, HttpResponseForbidden
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 
@@ -182,6 +182,28 @@ def meu_historico(request):
     return render(request, 'eventos/meu_historico.html', {
         'compras': compras
     })
+
+
+@login_required
+@require_http_methods(["GET"])
+def download_certificado(request, compra_id):
+    compra = get_object_or_404(
+        Compra.objects.select_related('ingresso', 'ingresso__evento'),
+        id=compra_id,
+        usuario=request.user,
+        status='presente'
+    )
+
+    if not compra.certificado:
+        raise Http404('Certificado não encontrado.')
+
+    filename = f'certificado-{compra.codigo_uuid}.pdf'
+    return FileResponse(
+        compra.certificado.open('rb'),
+        as_attachment=True,
+        filename=filename,
+        content_type='application/pdf'
+    )
 
 # ==================== VIEWS DO ORGANIZADOR ====================
 
