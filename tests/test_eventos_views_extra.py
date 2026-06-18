@@ -1,14 +1,13 @@
 from decimal import Decimal
 from datetime import timedelta
 from unittest.mock import patch
-
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils import timezone
-
 from eventos.models import Categoria, Compra, Evento, Ingresso, Local
+from unittest.mock import patch, ANY
 
 
 class EventosViewsExtraTest(TestCase):
@@ -168,6 +167,7 @@ class EventosViewsExtraTest(TestCase):
             descricao='Desc',
             data_evento=data_evento,
             categoria=self.categoria,
+            local=ANY,
             organizador=self.organizador,
         )
 
@@ -196,6 +196,7 @@ class EventosViewsExtraTest(TestCase):
             descricao='Desc',
             data_evento=data_evento,
             categoria=self.categoria,
+            local=ANY,
             organizador=self.organizador,
         )
 
@@ -401,6 +402,7 @@ class EventosViewsExtraTest(TestCase):
             descricao='Desc',
             data_evento=data_evento,
             categoria=self.categoria,
+            local=ANY,
             organizador=self.organizador,
         )
 

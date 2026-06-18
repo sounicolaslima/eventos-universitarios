@@ -142,8 +142,13 @@
                                 transition: all 0.3s ease;
                                 box-shadow: 0 4px 20px rgba(16,185,129,0.25);
                                 margin-bottom: 12px;
-                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(16,185,129,0.35)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(16,185,129,0.25)'" onfocus="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(16,185,129,0.35)'" onblur="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(16,185,129,0.25)'">
-                                <i class="fas fa-arrow-right me-2"></i> Ir para revisão
+                            "
+                                onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(16,185,129,0.35)'"
+                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(16,185,129,0.25)'"
+                                onfocus="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(16,185,129,0.35)'"
+                                onblur="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(16,185,129,0.25)'"
+                            >
+                                <i class="fas fa-arrow-right me-2"></i> Comprar Ingresso
                             </button>
                             
                             <a href="{% url 'detalhe_evento' ingresso.evento.id %}" style="
