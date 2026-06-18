@@ -144,31 +144,44 @@ class EventosViewsExtraTest(TestCase):
         response = self.client.post(reverse('criar_evento'), {'titulo': 'Incompleto'})
         self.assertEqual(response.status_code, 302)
 
-    def test_criar_evento_post_cria_local_e_evento(self):
+    @patch('eventos.views.Evento.objects.create')
+    def test_criar_evento_post_cria_evento(self, create_mock):
         self.login_organizador()
+        data_evento = (timezone.now() + timedelta(days=30)).strftime('%Y-%m-%dT%H:%M')
+
         response = self.client.post(
             reverse('criar_evento'),
             {
                 'titulo': 'Novo Evento',
                 'descricao': 'Desc',
-                'data_evento': (timezone.now() + timedelta(days=30)).strftime('%Y-%m-%dT%H:%M'),
+                'data_evento': data_evento,
                 'local_nome': 'Sala Nova',
                 'local_endereco': 'Bloco B',
                 'categoria': self.categoria.id,
                 'preco_base': '15.00',
             },
         )
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(Evento.objects.filter(titulo='Novo Evento').exists())
 
-    def test_criar_evento_post_cria_local_com_imagem(self):
+        self.assertEqual(response.status_code, 302)
+        create_mock.assert_called_once_with(
+            titulo='Novo Evento',
+            descricao='Desc',
+            data_evento=data_evento,
+            categoria=self.categoria,
+            organizador=self.organizador,
+        )
+
+    @patch('eventos.views.Evento.objects.create')
+    def test_criar_evento_post_com_imagem_ignora_upload(self, create_mock):
         self.login_organizador()
+        data_evento = (timezone.now() + timedelta(days=30)).strftime('%Y-%m-%dT%H:%M')
+
         response = self.client.post(
             reverse('criar_evento'),
             {
                 'titulo': 'Novo Evento Imagem',
                 'descricao': 'Desc',
-                'data_evento': (timezone.now() + timedelta(days=30)).strftime('%Y-%m-%dT%H:%M'),
+                'data_evento': data_evento,
                 'local_nome': 'Sala com imagem',
                 'local_endereco': 'Bloco D',
                 'categoria': self.categoria.id,
@@ -176,8 +189,15 @@ class EventosViewsExtraTest(TestCase):
                 'imagem': self.image,
             },
         )
+
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(Evento.objects.filter(titulo='Novo Evento Imagem').exists())
+        create_mock.assert_called_once_with(
+            titulo='Novo Evento Imagem',
+            descricao='Desc',
+            data_evento=data_evento,
+            categoria=self.categoria,
+            organizador=self.organizador,
+        )
 
     def test_editar_evento_get(self):
         self.login_organizador()
@@ -356,14 +376,17 @@ class EventosViewsExtraTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse('comprar_ingresso', args=[self.ingresso.id]), response.url)
 
-    def test_criar_evento_post_com_imagem(self):
+    @patch('eventos.views.Evento.objects.create')
+    def test_criar_evento_post_com_imagem(self, create_mock):
         self.login_organizador()
+        data_evento = (timezone.now() + timedelta(days=30)).strftime('%Y-%m-%dT%H:%M')
+
         response = self.client.post(
             reverse('criar_evento'),
             {
                 'titulo': 'Novo Evento Imagem',
                 'descricao': 'Desc',
-                'data_evento': (timezone.now() + timedelta(days=30)).strftime('%Y-%m-%dT%H:%M'),
+                'data_evento': data_evento,
                 'local_nome': 'Sala com imagem',
                 'local_endereco': 'Bloco D',
                 'categoria': self.categoria.id,
@@ -371,8 +394,15 @@ class EventosViewsExtraTest(TestCase):
                 'imagem': self.image,
             },
         )
+
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(Evento.objects.filter(titulo='Novo Evento Imagem').exists())
+        create_mock.assert_called_once_with(
+            titulo='Novo Evento Imagem',
+            descricao='Desc',
+            data_evento=data_evento,
+            categoria=self.categoria,
+            organizador=self.organizador,
+        )
 
     def test_editar_evento_post_local_existente_nao_cria_novo(self):
         self.login_organizador()

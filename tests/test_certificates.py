@@ -89,7 +89,7 @@ class CertificateTaskTest(TestCase):
         reportlab_canvas = ModuleType('reportlab.pdfgen.canvas')
 
         class FakeCanvas:
-            def __init__(self, buffer, pagesize):
+            def __init__(self, buffer, pagesize=None):
                 self.buffer = buffer
 
             def setTitle(self, title):
