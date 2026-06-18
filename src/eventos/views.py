@@ -148,28 +148,71 @@ def comprar_ingresso(request, ingresso_id):
 
 @login_required
 def confirmar_compra(request, ingresso_id):
+
     if request.method != 'POST':
-        return redirect('comprar_ingresso', ingresso_id=ingresso_id)
+        return redirect(
+            'comprar_ingresso',
+            ingresso_id=ingresso_id
+        )
 
     try:
-        quantidade = int(request.POST.get('quantidade', '1'))
+        quantidade = int(
+            request.POST.get('quantidade', '1')
+        )
     except (TypeError, ValueError):
-        messages.error(request, 'Quantidade inválida.')
-        return redirect('comprar_ingresso', ingresso_id=ingresso_id)
+
+        messages.error(
+            request,
+            'Quantidade inválida.'
+        )
+
+        return redirect(
+            'comprar_ingresso',
+            ingresso_id=ingresso_id
+        )
 
     with transaction.atomic():
+
         ingresso = get_object_or_404(
             Ingresso.objects.select_for_update(),
             id=ingresso_id
         )
 
+        if ingresso.evento.data_evento <= timezone.now():
+
+            messages.error(
+                request,
+                'Não é possível comprar ingressos para eventos já encerrados.'
+            )
+
+            return redirect(
+                'detalhe_evento',
+                evento_id=ingresso.evento.id
+            )
+
         if quantidade < 1:
-            messages.error(request, 'Quantidade inválida.')
-            return redirect('comprar_ingresso', ingresso_id=ingresso_id)
+
+            messages.error(
+                request,
+                'Quantidade inválida.'
+            )
+
+            return redirect(
+                'comprar_ingresso',
+                ingresso_id=ingresso_id
+            )
 
         if quantidade > ingresso.quantidade_disponivel:
-            messages.error(request, 'Ingressos indisponíveis.')
-            return redirect('comprar_ingresso', ingresso_id=ingresso_id)
+
+            messages.error(
+                request,
+                'Ingressos indisponíveis.'
+            )
+
+            return redirect(
+                'comprar_ingresso',
+                ingresso_id=ingresso_id
+            )
 
         compra = Compra.objects.create(
             usuario=request.user,
@@ -180,11 +223,18 @@ def confirmar_compra(request, ingresso_id):
         )
 
         ingresso.quantidade_disponivel -= quantidade
-        ingresso.save()
+        ingresso.save(
+            update_fields=[
+                'quantidade_disponivel'
+            ]
+        )
 
     schedule_event_reminder(compra)
 
-    return redirect('confirmacao_compra', codigo_uuid=compra.codigo_uuid)
+    return redirect(
+        'confirmacao_compra',
+        codigo_uuid=compra.codigo_uuid
+    )
 
 
 # ==========================
@@ -298,32 +348,114 @@ def validar_qr(request, uuid):
     if not request.user.is_staff:
         return HttpResponseForbidden("Apenas organizadores.")
 
-    compra = get_object_or_404(Compra, codigo_uuid=uuid)
+    try:
+        compra = Compra.objects.get(codigo_uuid=uuid)
+    except Compra.DoesNotExist:
+        messages.error(request, 'QR Code inválido.')
+        return redirect('home')
 
     if compra.status == 'presente':
         messages.warning(request, 'QR já utilizado.')
         return redirect('home')
 
     compra.status = 'presente'
-    compra.save()
+    compra.save(update_fields=['status'])
 
-    generate_certificate(compra.id)
+    generate_certificate.delay(compra.id)
 
     messages.success(request, 'Presença confirmada!')
     return redirect('home')
 
 @login_required
 def editar_evento(request, evento_id):
+
     evento = get_object_or_404(
         Evento,
         id=evento_id,
         organizador=request.user
     )
 
+    if request.method == 'POST':
+
+        try:
+
+            titulo = request.POST.get('titulo')
+            descricao = request.POST.get('descricao')
+            data_evento = request.POST.get('data_evento')
+            categoria_id = request.POST.get('categoria')
+            preco_base = request.POST.get('preco_base')
+
+            local_nome = request.POST.get('local_nome')
+            local_endereco = request.POST.get(
+                'local_endereco',
+                ''
+            )
+
+            if not all([
+                titulo,
+                descricao,
+                data_evento,
+                categoria_id,
+                preco_base,
+                local_nome
+            ]):
+                return redirect(
+                    'editar_evento',
+                    evento_id=evento.id
+                )
+
+            categoria = get_object_or_404(
+                Categoria,
+                id=categoria_id
+            )
+
+            local, _ = Local.objects.get_or_create(
+                nome=local_nome,
+                defaults={
+                    'capacidade': 100,
+                    'endereco': local_endereco
+                }
+            )
+
+            evento.titulo = titulo
+            evento.descricao = descricao
+            evento.data_evento = data_evento
+            evento.categoria = categoria
+            evento.preco_base = preco_base
+            evento.local = local
+
+            if request.FILES.get('imagem'):
+                evento.imagem = request.FILES['imagem']
+
+            evento.save()
+
+            messages.success(
+                request,
+                'Evento atualizado.'
+            )
+
+            return redirect(
+                'meus_eventos'
+            )
+
+        except Exception:
+
+            messages.error(
+                request,
+                'Erro ao atualizar evento.'
+            )
+
+            return redirect(
+                'editar_evento',
+                evento_id=evento.id
+            )
+
     return render(
         request,
         'eventos/editar_evento.html',
-        {'evento': evento}
+        {
+            'evento': evento
+        }
     )
 
 
@@ -349,33 +481,142 @@ def excluir_evento(request, evento_id):
 
 @login_required
 def adicionar_ingresso(request, evento_id):
+
     evento = get_object_or_404(
         Evento,
         id=evento_id,
         organizador=request.user
     )
 
+    if request.method == 'POST':
+
+        tipo = request.POST.get('tipo')
+        preco = request.POST.get('preco')
+        quantidade = request.POST.get('quantidade')
+
+        if not all([
+            tipo,
+            preco,
+            quantidade
+        ]):
+            return redirect(
+                'adicionar_ingresso',
+                evento_id=evento.id
+            )
+
+        try:
+
+            Ingresso.objects.create(
+                evento=evento,
+                tipo=tipo,
+                preco=Decimal(preco),
+                quantidade_disponivel=int(
+                    quantidade
+                )
+            )
+
+            messages.success(
+                request,
+                'Ingresso criado com sucesso.'
+            )
+
+            return redirect(
+                'editar_evento',
+                evento_id=evento.id
+            )
+
+        except (
+            ValueError,
+            InvalidOperation,
+            TypeError
+        ):
+
+            messages.error(
+                request,
+                'Dados inválidos.'
+            )
+
+            return redirect(
+                'adicionar_ingresso',
+                evento_id=evento.id
+            )
+
     return render(
         request,
         'eventos/adicionar_ingresso.html',
-        {'evento': evento}
+        {
+            'evento': evento
+        }
     )
 
 
 @login_required
 def editar_ingresso(request, ingresso_id):
+
     ingresso = get_object_or_404(
         Ingresso,
         id=ingresso_id,
         evento__organizador=request.user
     )
 
+    if request.method == 'POST':
+
+        try:
+
+            ingresso.tipo = request.POST.get(
+                'tipo',
+                ingresso.tipo
+            )
+
+            ingresso.preco = Decimal(
+                request.POST.get(
+                    'preco',
+                    ingresso.preco
+                )
+            )
+
+            ingresso.quantidade_disponivel = int(
+                request.POST.get(
+                    'quantidade',
+                    ingresso.quantidade_disponivel
+                )
+            )
+
+            ingresso.save()
+
+            messages.success(
+                request,
+                'Ingresso atualizado.'
+            )
+
+            return redirect(
+                'editar_evento',
+                evento_id=ingresso.evento.id
+            )
+
+        except (
+            ValueError,
+            InvalidOperation,
+            TypeError
+        ):
+
+            messages.error(
+                request,
+                'Dados inválidos.'
+            )
+
+            return redirect(
+                'editar_ingresso',
+                ingresso_id=ingresso.id
+            )
+
     return render(
         request,
         'eventos/editar_ingresso.html',
-        {'ingresso': ingresso}
+        {
+            'ingresso': ingresso
+        }
     )
-
 
 @login_required
 def excluir_ingresso(request, ingresso_id):
