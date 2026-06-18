@@ -1,4 +1,4 @@
-# 🎓 Plataforma de Gestão de Eventos Universitários
+# 🎓 UniEvent - Plataforma de Gestão de Eventos Universitários
 
 ![CI](https://github.com/sounicolaslima/eventos-universitarios/actions/workflows/ci.yml/badge.svg)  [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sounicolaslima_eventos-universitarios&metric=alert_status)](https://sonarcloud.io)
 
