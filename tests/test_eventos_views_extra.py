@@ -56,7 +56,8 @@ class EventosViewsExtraTest(TestCase):
         response = self.client.get(reverse('lista_eventos'), {'categoria': self.categoria.id})
         self.assertContains(response, 'Evento Principal')
 
-        response = self.client.get(reverse('lista_eventos'), {'data': self.evento.data_evento.date().isoformat()})
+        data_local = timezone.localtime(self.evento.data_evento).date().isoformat()
+        response = self.client.get(reverse('lista_eventos'), {'data': data_local})
         self.assertContains(response, 'Evento Principal')
 
     def test_detalhe_evento_renderiza_ingressos(self):

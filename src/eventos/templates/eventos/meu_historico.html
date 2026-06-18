@@ -142,7 +142,7 @@ Meu Histórico - Eventos Universitários
             {% endif %}
 
             {% if compra.status == 'presente' and compra.certificado %}
-              <a href="{{ compra.certificado.url }}"
+              <a href="{% url 'download_certificado' compra.id %}"
                  class="btn btn-sm btn-success">
                 <i class="fas fa-download me-1"></i>
                 Baixar Certificado
