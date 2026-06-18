@@ -9,7 +9,7 @@ from django.views.decorators.http import require_http_methods
 
 from decimal import Decimal, InvalidOperation
 
-from .models import Evento, Ingresso, Compra, Categoria, Local
+from .models import Evento, Categoria, Local
 from .tasks import schedule_event_reminder, generate_certificate
 
 
@@ -255,25 +255,39 @@ def criar_evento(request):
         descricao = request.POST.get('descricao')
         data_evento = request.POST.get('data_evento')
         categoria_id = request.POST.get('categoria')
+        local_nome = request.POST.get('local_nome')
+        local_endereco = request.POST.get('local_endereco')
 
-        if not all([titulo, descricao, data_evento, categoria_id]):
+        if not all([titulo, descricao, data_evento, categoria_id, local_nome]):
             messages.error(request, 'Preencha todos os campos obrigatórios.')
             return redirect('criar_evento')
 
         categoria = get_object_or_404(Categoria, id=categoria_id)
+
+        local, created = Local.objects.get_or_create(
+        nome=local_nome,
+        defaults={'endereco': local_endereco}
+        )
 
         Evento.objects.create(
             titulo=titulo,
             descricao=descricao,
             data_evento=data_evento,
             categoria=categoria,
-            organizador=request.user
+            local=local,
+            organizador=request.user,
         )
 
         messages.success(request, 'Evento criado com sucesso!')
         return redirect('meus_eventos')
 
-    return render(request, 'eventos/criar_evento.html')
+    categorias = Categoria.objects.all()
+
+    return render(
+         request,
+         'eventos/criar_evento.html',
+        {'categorias': categorias}
+)
 
 
 # ==========================
